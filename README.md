@@ -4,9 +4,9 @@ This is a Zimbra client library written in Go.
 
 Go 1.10 is required !
 
-Usage
+## Usage
 
-<code>
+```go
 package main
 
 import "fmt"
@@ -44,4 +44,4 @@ func main() {
 	fmt.Printf("%v", qaccounts)
 
 }
-</code>
+```
