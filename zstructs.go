@@ -23,9 +23,9 @@ type AuthRequest struct {
 }
 
 type AuthRequestContent struct {
-	Name string `json:"name,attr"`
+	Name     string `json:"name,attr"`
 	Password string `json:"password,attr"`
-	Urn string `json:"_jsns,attr"`
+	Urn      string `json:"_jsns,attr"`
 }
 
 type AuthResponse struct {
@@ -33,12 +33,42 @@ type AuthResponse struct {
 }
 
 type AuthResponseContent struct {
-	TOKEN []AuthResponseToken `json:"authToken"`
-	Lifetime int `json:"lifetime"`
+	TOKEN    []AuthResponseToken `json:"authToken"`
+	Lifetime int                 `json:"lifetime"`
 }
 
 type AuthResponseToken struct {
 	Content string `json:"_content"`
+}
+
+// ************* GENERIC ****************
+
+type SearchDirectoryRequest struct {
+	Content SearchDirectoryParams `json:"SearchDirectoryRequest,omitempty"`
+}
+
+type SearchDirectoryParams struct {
+	Urn           string `json:"_jsns,attr"`
+	Query         string `json:"query,omitempty"`
+	MaxResults    int    `json:"maxResults,omitempty"`
+	Limit         int    `json:"limit,omitempty"`
+	Offset        int    `json:"offset,omitempty"`
+	Domain        string `json:"domain,omitempty"`
+	ApplyCos      int    `json:"applyCos,omitempty"`
+	ApplyConfig   int    `json:"applyConfig,omitempty"`
+	SortBy        string `json:"sortBy,omitempty"`
+	Types         string `json:"types,omitempty"`
+	SortAscending int    `json:"sortAscending,omitempty"`
+	CountOnly     int    `json:"countOnly,omitempty"`
+	Attrs         string `json:"attrs,omitempty"`
+}
+
+type SearchDirectoryResponse struct {
+	Content SearchDirectoryResponseContent `json:"SearchDirectoryResponse,omitempty"`
+}
+
+type SearchDirectoryResponseContent struct {
+	Account []GenericResponse `json:"account,omitempty"`
 }
 
 // ************* ACCOUNT ****************
@@ -48,7 +78,7 @@ type GetAllAccountsRequest struct {
 }
 
 type GetAllAccountsRequestContent struct {
-	Urn string `json:"_jsns,attr"`
+	Urn    string      `json:"_jsns,attr"`
 	Server interface{} `json:"server,omitempty"`
 	Domain interface{} `json:"domain,omitempty"`
 }
@@ -68,8 +98,8 @@ type GetAccountRequest struct {
 
 type GetAccountRequestContent struct {
 	Account ByRequest `json:"account,attr"`
-	Urn string `json:"_jsns,attr"`
-	Attrs string `json:"attrs,omitempty"`
+	Urn     string    `json:"_jsns,attr"`
+	Attrs   string    `json:"attrs,omitempty"`
 }
 
 type GetAccountResponse struct {
@@ -92,8 +122,8 @@ type ModifyAccountRequest struct {
 }
 
 type ModifyAccountRequestContent struct {
-	Urn string `json:"_jsns,attr"`
-	ID string `json:"id,omitempty"`
+	Urn   string         `json:"_jsns,attr"`
+	ID    string         `json:"id,omitempty"`
 	Attrs []AttrResponse `json:"a,omitempty"`
 }
 
@@ -113,7 +143,7 @@ type GetAllServersRequest struct {
 }
 
 type GetAllServersRequestContent struct {
-	Urn string `json:"_jsns,attr"`
+	Urn     string `json:"_jsns,attr"`
 	Service string `json:"service,omitempty"`
 }
 
@@ -200,4 +230,27 @@ type QuotaResponse struct {
 	ID    string `json:"id,omitempty"`
 	Used  int    `json:"used,omitempty"`
 	Limit int    `json:"limit,omitempty"`
+}
+
+// ************* BACKUP ****************
+
+type BackupQueryRequest struct {
+	Content BackupQueryRequestContent `json:"BackupQueryRequest,omitempty"`
+}
+
+type BackupQueryRequestContent struct {
+	Urn   string            `json:"_jsns,attr"`
+	Query map[string]string `json:"query"`
+}
+
+type BackupQueryResponse struct {
+	Content BackupQueryResponseContent `json:"BackupQueryResponse,omitempty"`
+}
+
+type BackupQueryResponseContent struct {
+	TotalSpace  int       `json:"totalSpace,omitempty"`
+	FreeSpace   int       `json:"freeSpace,omitempty"`
+	NameSpace   string    `json:"_jsns,omitempty"`
+	Backups     []ZBackup `json:"backup,omitempty"`
+	MaxAccounts int
 }

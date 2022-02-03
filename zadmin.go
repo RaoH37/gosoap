@@ -1,10 +1,12 @@
 package zsoap
 
-import "log"
+import (
+	"log"
+)
 
 type ZAdmin struct {
 	AuthToken string
-	Client *Client
+	Client    *Client
 }
 
 func (s *ZAdmin) Init(url string, isTLS bool) {
@@ -20,11 +22,12 @@ func (s *ZAdmin) Login(name string, password string) {
 		log.Fatal(err)
 	}
 
-	s.Client.SetHeader(resp.Content.TOKEN[0].Content)
+	s.Client.TOKEN = resp.Content.TOKEN[0].Content
+	s.Client.SetHeader()
 }
 
 func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) *ZAccount {
-	
+
 	req, soapAction := NewGetAccountRequest(byAccount, attrs)
 	resp := GetAccountResponse{}
 
@@ -107,8 +110,14 @@ func (s *ZAdmin) GetAllServers(service string) []ZServer {
 	return servers
 }
 
-func (s *ZAdmin) GetQuotaUsage(domain string) []ZAccount {
-	req, soapAction := NewGetQuotaUsageRequest(domain)
+func (s *ZAdmin) GetQuotaUsage(domain string, isAllServers bool) []ZAccount {
+	allServers := 0
+
+	if isAllServers {
+		allServers = 1
+	}
+
+	req, soapAction := NewGetQuotaUsageRequest(domain, allServers)
 	resp := GetQuotaUsageResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
@@ -121,5 +130,89 @@ func (s *ZAdmin) GetQuotaUsage(domain string) []ZAccount {
 		accounts = append(accounts, *NewAccountQuota(account))
 	}
 
+	return accounts
+}
+
+func (s *ZAdmin) GetAllBackups() []ZBackup {
+	req, soapAction := NewBackupQueryRequest()
+	resp := BackupQueryResponse{}
+
+	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+		log.Fatal(err)
+	}
+
+	// backups := make([]ZBackup, 0)
+
+	// for _, backup := range resp.Content.Backups {
+	// 	backups = append(backups, *NewBackup(backup))
+	// }
+
+	// return backups
+	return resp.Content.Backups
+}
+
+func (s *ZAdmin) Search(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, countOnly int, attrs string) []ZAccount {
+	params := SearchDirectoryParams{
+		Urn:           urnAdmin,
+		Query:         query,
+		MaxResults:    maxResults,
+		Limit:         limit,
+		Offset:        offset,
+		Domain:        domain,
+		ApplyCos:      applyCos,
+		ApplyConfig:   applyConfig,
+		SortBy:        sortBy,
+		Types:         types,
+		SortAscending: sortAscending,
+		CountOnly:     countOnly,
+		Attrs:         attrs,
+	}
+	// fmt.Println(time.Now())
+	req, soapAction := NewSearchDirectoryRequest(&params)
+	resp := SearchDirectoryResponse{}
+	// fmt.Println(time.Now())
+	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+		log.Fatal(err)
+	}
+	// fmt.Println(time.Now())
+	accounts := make([]ZAccount, 0)
+
+	for _, account := range resp.Content.Account {
+		accounts = append(accounts, *NewAccount(account))
+	}
+	// fmt.Println(time.Now())
+	return accounts
+}
+
+func (s *ZAdmin) SearchAccounts(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, countOnly int, attrs string) []ZAccount {
+	params := SearchDirectoryParams{
+		Urn:           urnAdmin,
+		Query:         query,
+		MaxResults:    maxResults,
+		Limit:         limit,
+		Offset:        offset,
+		Domain:        domain,
+		ApplyCos:      applyCos,
+		ApplyConfig:   applyConfig,
+		SortBy:        sortBy,
+		Types:         types,
+		SortAscending: sortAscending,
+		CountOnly:     countOnly,
+		Attrs:         attrs,
+	}
+	// fmt.Println(time.Now())
+	req, soapAction := NewSearchDirectoryRequest(&params)
+	resp := SearchDirectoryResponse{}
+	// fmt.Println(time.Now())
+	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+		log.Fatal(err)
+	}
+	// fmt.Println(time.Now())
+	accounts := make([]ZAccount, 0)
+
+	for _, account := range resp.Content.Account {
+		accounts = append(accounts, *NewAccount(account))
+	}
+	// fmt.Println(time.Now())
 	return accounts
 }

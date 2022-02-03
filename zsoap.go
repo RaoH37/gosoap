@@ -17,8 +17,8 @@ const urnAdmin = "urn:zimbraAdmin"
 
 // Envelope envelope
 type Envelope struct {
-	Header  *Header  `json:",omitempty"`
-	Body interface{} `json:"Body,omitempty"`
+	Header *Header     `json:",omitempty"`
+	Body   interface{} `json:"Body,omitempty"`
 }
 
 // Header header
@@ -27,8 +27,9 @@ type Header struct {
 }
 
 type HeaderToken struct {
-	TOKEN string `json:"authToken"`
-	Urn string `json:"_jsns,attr"`
+	TOKEN    string `json:"authToken"`
+	Urn      string `json:"_jsns,attr"`
+	ServerID string `json:"targetServer,omitempty"`
 }
 
 // Fault fault
@@ -36,9 +37,9 @@ type Fault struct {
 	Content FaultContent `json:"Fault,omitempty"`
 }
 type FaultContent struct {
-	Code    interface{}   `json:"Code,omitempty"`
-	Reason  FaultReason   `json:"Reason,omitempty"`
-	Detail  interface{}   `json:"Detail,omitempty"`
+	Code   interface{} `json:"Code,omitempty"`
+	Reason FaultReason `json:"Reason,omitempty"`
+	Detail interface{} `json:"Detail,omitempty"`
 }
 type FaultReason struct {
 	Text string `json:"Text,omitempty"`
@@ -63,6 +64,7 @@ type Client struct {
 	tls       bool
 	userAgent string
 	header    interface{}
+	TOKEN     string
 }
 
 func dialTimeout(network, addr string) (net.Conn, error) {
@@ -70,11 +72,23 @@ func dialTimeout(network, addr string) (net.Conn, error) {
 	return net.DialTimeout(network, addr, timeout)
 }
 
-func (s *Client) SetHeader(token string){
+func (s *Client) SetHeader() {
 	s.header = HeaderToken{
-		TOKEN: token,
-		Urn: "urn:zimbra",
+		TOKEN: s.TOKEN,
+		Urn:   "urn:zimbra",
 	}
+}
+
+func (s *Client) SetTargetServer(serverID string) {
+	s.header = HeaderToken{
+		TOKEN:    s.TOKEN,
+		Urn:      "urn:zimbra",
+		ServerID: serverID,
+	}
+}
+
+func (s *Client) RemoveTargetServer() {
+	s.SetHeader()
 }
 
 // Call SOAP client API call
@@ -93,8 +107,8 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 		}
 	}
 
-	bb, _ := json.Marshal(envelope)
-	fmt.Println(string(bb))
+	// bb, _ := json.Marshal(envelope)
+	// fmt.Println(string(bb))
 
 	buffer := new(bytes.Buffer)
 	encoder := json.NewEncoder(buffer)
@@ -125,11 +139,13 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 	}
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
+
 		soapFault, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			return errors.Wrap(err, "failed to read SOAP fault response body")
 		}
-		
+		fmt.Println(string(soapFault))
+
 		var msg string
 		fault := Fault{}
 		faultEnvelope := Envelope{Body: &fault}
@@ -150,8 +166,6 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 	if len(rawbody) == 0 {
 		return nil
 	}
-
-	fmt.Println(string(rawbody))
 
 	respEnvelope := Envelope{Body: response}
 

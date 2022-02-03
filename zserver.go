@@ -1,28 +1,41 @@
 package zsoap
 
-import "reflect"
-import "strings"
+import (
+	"reflect"
+	"strings"
+	"time"
+)
 
 type ZServer struct {
-	Client *Client
-	ID string
-	Name string
+	Client                *Client
+	ID                    string
+	Name                  string
 	ZimbraCreateTimestamp string
-	ZimbraServiceEnabled []string
+	ZimbraServiceEnabled  []string
+}
+
+func (server *ZServer) CreatedAt() int {
+	t, err := time.Parse("20060102150405Z", server.ZimbraCreateTimestamp)
+
+	if err != nil {
+		return -1
+	}
+
+	return int(t.Unix())
 }
 
 // func NewServer(resp ServerResponse) *ZServer {
 func NewServer(resp GenericResponse) *ZServer {
 	server := &ZServer{
-		ID: resp.ID,
+		ID:   resp.ID,
 		Name: resp.Name,
 	}
-	
+
 	for _, attr := range resp.Attrs {
 		s := reflect.Indirect(reflect.ValueOf(&server)).Elem()
 		metric := s.FieldByName(strings.Title(attr.Key))
 		if metric.IsValid() {
-			switch metric.Interface().(type){
+			switch metric.Interface().(type) {
 			case string:
 				metric.SetString(attr.Value)
 			case []string:

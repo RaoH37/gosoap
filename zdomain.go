@@ -1,27 +1,30 @@
 package zsoap
 
-import "reflect"
-import "strings"
+import (
+	"reflect"
+	"strings"
+)
 
 type ZDomain struct {
-	Client *Client
-	ID string
-	Name string
-	ZimbraCreateTimestamp string
-	ZimbraMailStatus string
+	Client                   *Client
+	ID                       string
+	Name                     string
+	ZimbraCreateTimestamp    string
+	ZimbraMailStatus         string
+	ZimbraDomainDefaultCOSId string
 }
 
 func NewDomain(resp GenericResponse) *ZDomain {
 	domain := &ZDomain{
-		ID: resp.ID,
+		ID:   resp.ID,
 		Name: resp.Name,
 	}
-	
+
 	for _, attr := range resp.Attrs {
 		s := reflect.Indirect(reflect.ValueOf(&domain)).Elem()
 		metric := s.FieldByName(strings.Title(attr.Key))
 		if metric.IsValid() {
-			switch metric.Interface().(type){
+			switch metric.Interface().(type) {
 			case string:
 				metric.SetString(attr.Value)
 			case []string:

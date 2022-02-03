@@ -4,9 +4,9 @@ import "strings"
 
 func NewAuthRequest(name string, password string) (*AuthRequest, string) {
 	r := &AuthRequest{Content: AuthRequestContent{
-		Name: name,
+		Name:     name,
 		Password: password,
-		Urn: urnAdmin,
+		Urn:      urnAdmin,
 	},
 	}
 	return r, "urn:zimbraAdmin/Auth"
@@ -14,7 +14,7 @@ func NewAuthRequest(name string, password string) (*AuthRequest, string) {
 
 func NewByRequest(by string, value string) ByRequest {
 	return ByRequest{
-		By: by,
+		By:    by,
 		Value: value,
 	}
 }
@@ -22,7 +22,7 @@ func NewByRequest(by string, value string) ByRequest {
 func NewGetAccountRequest(by ByRequest, attrs []string) (*GetAccountRequest, string) {
 	r := &GetAccountRequest{
 		Content: GetAccountRequestContent{
-			Urn: urnAdmin,
+			Urn:     urnAdmin,
 			Account: by,
 		},
 	}
@@ -79,13 +79,30 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, string) {
 	return r, "urn:zimbraAdmin/GetAllServers"
 }
 
-func NewGetQuotaUsageRequest(domain string) (*GetQuotaUsageRequest, string) {
+func NewGetQuotaUsageRequest(domain string, allServers int) (*GetQuotaUsageRequest, string) {
 	r := &GetQuotaUsageRequest{
 		Content: GetQuotaUsageRequestContent{
-			Urn: urnAdmin,
-			Servers: 1,
-			Domain: domain,
+			Urn:     urnAdmin,
+			Servers: allServers,
+			Domain:  domain,
 		},
 	}
 	return r, "urn:zimbraAdmin/GetQuotaUsageRequest"
+}
+
+func NewBackupQueryRequest() (*BackupQueryRequest, string) {
+	r := &BackupQueryRequest{
+		Content: BackupQueryRequestContent{
+			Urn:   urnAdmin,
+			Query: make(map[string]string),
+		},
+	}
+	return r, "urn:zimbraAdmin/BackupQueryRequest"
+}
+
+func NewSearchDirectoryRequest(params *SearchDirectoryParams) (*SearchDirectoryRequest, string) {
+	r := &SearchDirectoryRequest{
+		Content: *params,
+	}
+	return r, "urn:zimbraAdmin/SearchDirectoryRequest"
 }
