@@ -3,7 +3,6 @@ package zsoap
 import (
 	"reflect"
 	"strconv"
-	"strings"
 )
 
 type ZLicense struct {
@@ -58,12 +57,9 @@ func NewLicense(resp GetLicenseResponseContent) *ZLicense {
 
 func SetLicenseAttrsByReflect(license *ZLicense, attrNames []AttrNamesResponse) {
 	for _, attrName := range attrNames {
-		// fmt.Println("%v", attrName)
-		// fmt.Println("===================")
 		for _, attr := range attrName.Attrs {
-			// fmt.Println("%v", attr)
 			s := reflect.Indirect(reflect.ValueOf(&license)).Elem()
-			metric := s.FieldByName(strings.Title(attr.Key))
+			metric := s.FieldByName(attr.Key)
 			if metric.IsValid() {
 				switch metric.Interface().(type) {
 				case string:

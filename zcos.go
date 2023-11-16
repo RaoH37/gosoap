@@ -2,7 +2,6 @@ package zsoap
 
 import (
 	"reflect"
-	"strings"
 )
 
 type ZCos struct {
@@ -24,7 +23,7 @@ func NewCos(resp GenericResponse) *ZCos {
 
 	for _, attr := range resp.Attrs {
 		s := reflect.Indirect(reflect.ValueOf(&cos)).Elem()
-		metric := s.FieldByName(strings.Title(attr.Key))
+		metric := s.FieldByName(attr.Key)
 		if metric.IsValid() {
 			switch metric.Interface().(type) {
 			case string:

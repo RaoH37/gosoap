@@ -118,7 +118,6 @@ type GetAllAccountsResponse struct {
 
 type GetAllAccountsResponseContent struct {
 	Account []GenericResponse `json:"account,omitempty"`
-	// Account []AccountResponse `json:"account,omitempty"`
 }
 
 type GetAccountRequest struct {
@@ -140,12 +139,6 @@ type GetAccountResponseContent struct {
 	Account []GenericResponse `json:"account,omitempty"`
 }
 
-// type AccountResponse struct {
-// 	Name string `json:"name,omitempty"`
-// 	ID string `json:"id,omitempty"`
-// 	Attrs []AttrResponse `json:"a,omitempty"`
-// }
-
 type ModifyAccountRequest struct {
 	Content ModifyAccountRequestContent `json:"ModifyAccountRequest,omitempty"`
 }
@@ -161,7 +154,6 @@ type ModifyAccountResponse struct {
 }
 
 type ModifyAccountResponseContent struct {
-	// Account []AccountResponse `json:"account,omitempty"`
 	Account []GenericResponse `json:"account,omitempty"`
 }
 
@@ -181,15 +173,8 @@ type GetAllServersResponse struct {
 }
 
 type GetAllServersResponseContent struct {
-	// Server []ServerResponse `json:"server,omitempty"`
 	Server []GenericResponse `json:"server,omitempty"`
 }
-
-// type ServerResponse struct {
-// 	Name string `json:"name,omitempty"`
-// 	ID string `json:"id,omitempty"`
-// 	Attrs []AttrResponse `json:"a,omitempty"`
-// }
 
 // ************* DOMAIN ****************
 
@@ -206,15 +191,8 @@ type GetAllDomainsResponse struct {
 }
 
 type GetAllDomainsResponseContent struct {
-	// Domain []DomainResponse `json:"domain,omitempty"`
 	Domain []GenericResponse `json:"domain,omitempty"`
 }
-
-// type DomainResponse struct {
-// 	Name string `json:"name,omitempty"`
-// 	ID string `json:"id,omitempty"`
-// 	Attrs []AttrResponse `json:"a,omitempty"`
-// }
 
 // ************* COS ****************
 

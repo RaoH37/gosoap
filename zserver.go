@@ -2,7 +2,6 @@ package zsoap
 
 import (
 	"reflect"
-	"strings"
 	"time"
 )
 
@@ -33,7 +32,7 @@ func NewServer(resp GenericResponse) *ZServer {
 
 	for _, attr := range resp.Attrs {
 		s := reflect.Indirect(reflect.ValueOf(&server)).Elem()
-		metric := s.FieldByName(strings.Title(attr.Key))
+		metric := s.FieldByName(attr.Key)
 		if metric.IsValid() {
 			switch metric.Interface().(type) {
 			case string:

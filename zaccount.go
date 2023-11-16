@@ -44,9 +44,10 @@ func NewAccount(resp GenericResponse) *ZAccount {
 		ID:   resp.ID,
 		Name: resp.Name,
 	}
+
 	for _, attr := range resp.Attrs {
 		s := reflect.Indirect(reflect.ValueOf(&account)).Elem()
-		metric := s.FieldByName(strings.Title(attr.Key))
+		metric := s.FieldByName(attr.Key)
 		if metric.IsValid() {
 			switch metric.Interface().(type) {
 			case string:

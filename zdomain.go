@@ -2,7 +2,6 @@ package zsoap
 
 import (
 	"reflect"
-	"strings"
 )
 
 type ZDomain struct {
@@ -22,7 +21,7 @@ func NewDomain(resp GenericResponse) *ZDomain {
 
 	for _, attr := range resp.Attrs {
 		s := reflect.Indirect(reflect.ValueOf(&domain)).Elem()
-		metric := s.FieldByName(strings.Title(attr.Key))
+		metric := s.FieldByName(attr.Key)
 		if metric.IsValid() {
 			switch metric.Interface().(type) {
 			case string:

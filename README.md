@@ -2,8 +2,6 @@
 
 This is a Zimbra client library written in Go.
 
-Go 1.10 is required !
-
 ## Usage
 
 ```go
