@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"time"
@@ -146,7 +146,7 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 
 	if res.StatusCode != http.StatusOK {
 
-		soapFault, err := ioutil.ReadAll(res.Body)
+		soapFault, err := io.ReadAll(res.Body)
 		if err != nil {
 			return errors.Wrap(err, "failed to read SOAP fault response body")
 		}
@@ -168,7 +168,7 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 		return errors.New(msg)
 	}
 
-	rawbody, err := ioutil.ReadAll(res.Body)
+	rawbody, err := io.ReadAll(res.Body)
 
 	if s.Debug {
 		fmt.Println(string(rawbody))
