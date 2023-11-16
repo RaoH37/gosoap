@@ -106,3 +106,12 @@ func NewSearchDirectoryRequest(params *SearchDirectoryParams) (*SearchDirectoryR
 	}
 	return r, "urn:zimbraAdmin/SearchDirectoryRequest"
 }
+
+func NewLicenseRequest() (*GetLicenseRequest, string) {
+	r := &GetLicenseRequest{
+		Content: GetLicenseRequestContent{
+			Urn: urnAdmin,
+		},
+	}
+	return r, "urn:zimbraAdmin/GetLicenseRequest"
+}

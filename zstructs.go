@@ -5,6 +5,15 @@ type AttrResponse struct {
 	Value string `json:"_content,omitempty"`
 }
 
+type AttrNamesResponse struct {
+	Attrs []AttrNameResponse `json:"attr,omitempty"`
+}
+
+type AttrNameResponse struct {
+	Key   string `json:"name,omitempty"`
+	Value string `json:"_content,omitempty"`
+}
+
 type ByRequest struct {
 	By    string `json:"by,omitempty"`
 	Value string `json:"_content,omitempty"`
@@ -69,6 +78,26 @@ type SearchDirectoryResponse struct {
 
 type SearchDirectoryResponseContent struct {
 	Account []GenericResponse `json:"account,omitempty"`
+}
+
+// ************* LICENSE ****************
+
+type GetLicenseRequest struct {
+	Content GetLicenseRequestContent `json:"GetLicenseRequest,omitempty"`
+}
+
+type GetLicenseRequestContent struct {
+	Urn string `json:"_jsns,attr"`
+}
+
+type GetLicenseResponse struct {
+	Content GetLicenseResponseContent `json:"GetLicenseResponse,omitempty"`
+}
+
+type GetLicenseResponseContent struct {
+	License    []AttrNamesResponse `json:"license,omitempty"`
+	Activation []AttrNamesResponse `json:"activation,omitempty"`
+	Info       []AttrNamesResponse `json:"info,omitempty"`
 }
 
 // ************* ACCOUNT ****************

@@ -55,6 +55,7 @@ func NewClient(url string, tls bool, header interface{}) *Client {
 		url:    url,
 		tls:    tls,
 		header: header,
+		Debug:  false,
 	}
 }
 
@@ -65,6 +66,7 @@ type Client struct {
 	userAgent string
 	header    interface{}
 	TOKEN     string
+	Debug     bool
 }
 
 func dialTimeout(network, addr string) (net.Conn, error) {
@@ -107,8 +109,10 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 		}
 	}
 
-	// bb, _ := json.Marshal(envelope)
-	// fmt.Println(string(bb))
+	if s.Debug {
+		bb, _ := json.Marshal(envelope)
+		fmt.Println(string(bb))
+	}
 
 	buffer := new(bytes.Buffer)
 	encoder := json.NewEncoder(buffer)
@@ -120,6 +124,7 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 	if err != nil {
 		return errors.Wrap(err, "failed to create POST request")
 	}
+
 	req.Header.Add("Content-Type", "application/json; charset=\"utf-8\"")
 	req.Header.Set("SOAPAction", soapAction)
 	req.Header.Set("User-Agent", s.userAgent)
@@ -138,13 +143,17 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 		return errors.Wrap(err, "failed to send SOAP request")
 	}
 	defer res.Body.Close()
+
 	if res.StatusCode != http.StatusOK {
 
 		soapFault, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			return errors.Wrap(err, "failed to read SOAP fault response body")
 		}
-		fmt.Println(string(soapFault))
+
+		if s.Debug {
+			fmt.Println(string(soapFault))
+		}
 
 		var msg string
 		fault := Fault{}
@@ -160,9 +169,15 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 	}
 
 	rawbody, err := ioutil.ReadAll(res.Body)
+
+	if s.Debug {
+		fmt.Println(string(rawbody))
+	}
+
 	if err != nil {
 		return errors.Wrap(err, "failed to read SOAP body")
 	}
+
 	if len(rawbody) == 0 {
 		return nil
 	}

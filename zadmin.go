@@ -26,6 +26,10 @@ func (s *ZAdmin) Login(name string, password string) {
 	s.Client.SetHeader()
 }
 
+func (s *ZAdmin) Debug() {
+	s.Client.Debug = true
+}
+
 func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) *ZAccount {
 
 	req, soapAction := NewGetAccountRequest(byAccount, attrs)
@@ -167,20 +171,20 @@ func (s *ZAdmin) Search(query string, maxResults int, limit int, offset int, dom
 		CountOnly:     countOnly,
 		Attrs:         attrs,
 	}
-	// fmt.Println(time.Now())
+
 	req, soapAction := NewSearchDirectoryRequest(&params)
 	resp := SearchDirectoryResponse{}
-	// fmt.Println(time.Now())
+
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(time.Now())
+
 	accounts := make([]ZAccount, 0)
 
 	for _, account := range resp.Content.Account {
 		accounts = append(accounts, *NewAccount(account))
 	}
-	// fmt.Println(time.Now())
+
 	return accounts
 }
 
@@ -200,19 +204,32 @@ func (s *ZAdmin) SearchAccounts(query string, maxResults int, limit int, offset 
 		CountOnly:     countOnly,
 		Attrs:         attrs,
 	}
-	// fmt.Println(time.Now())
+
 	req, soapAction := NewSearchDirectoryRequest(&params)
 	resp := SearchDirectoryResponse{}
-	// fmt.Println(time.Now())
+
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(time.Now())
+
 	accounts := make([]ZAccount, 0)
 
 	for _, account := range resp.Content.Account {
 		accounts = append(accounts, *NewAccount(account))
 	}
-	// fmt.Println(time.Now())
+
 	return accounts
+}
+
+func (s *ZAdmin) GetLicense() (*ZLicense, error) {
+	req, soapAction := NewLicenseRequest()
+	resp := GetLicenseResponse{}
+
+	err := s.Client.Call(soapAction, req, &resp)
+
+	if err == nil {
+		return NewLicense(resp.Content), err
+	} else {
+		return nil, err
+	}
 }
