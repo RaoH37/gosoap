@@ -22,8 +22,7 @@ func (s *ZAdmin) Login(name string, password string) {
 		log.Fatal(err)
 	}
 
-	s.Client.TOKEN = resp.Content.TOKEN[0].Content
-	s.Client.SetHeader()
+	s.Client.SetToken(resp.Content.TOKEN[0].Content)
 }
 
 func (s *ZAdmin) Debug() {

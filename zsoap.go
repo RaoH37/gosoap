@@ -74,6 +74,11 @@ func dialTimeout(network, addr string) (net.Conn, error) {
 	return net.DialTimeout(network, addr, timeout)
 }
 
+func (s *Client) SetToken(token string) {
+	s.TOKEN = token
+	s.SetHeader()
+}
+
 func (s *Client) SetHeader() {
 	s.header = HeaderToken{
 		TOKEN: s.TOKEN,
