@@ -44,6 +44,16 @@ func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) *ZAccount {
 	return account
 }
 
+func (s *ZAdmin) GetAccountByName(name string, attrs []string) *ZAccount {
+	by := NewByRequest("name", name)
+	return s.GetAccount(by, attrs)
+}
+
+func (s *ZAdmin) GetAccountById(id string, attrs []string) *ZAccount {
+	by := NewByRequest("id", id)
+	return s.GetAccount(by, attrs)
+}
+
 func (s *ZAdmin) GetAllAccounts(server *ByRequest, domain *ByRequest) []ZAccount {
 
 	req, soapAction := NewGetAllAccountsRequest(server, domain)
