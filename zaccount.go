@@ -17,8 +17,8 @@ type ZAccount struct {
 	ZimbraMailStatus                  string
 	ZimbraMailQuota                   string
 	ZimbraAccountStatus               string
-	ZimbraFeatureMobileSyncEnabled    string
-	ZimbraFeatureMAPIConnectorEnabled string
+	ZimbraFeatureMobileSyncEnabled    bool
+	ZimbraFeatureMAPIConnectorEnabled bool
 	ZimbraLastLogonTimestamp          string
 	ZimbraPrefMailForwardingAddress   string
 	ZimbraMailForwardingAddress       string

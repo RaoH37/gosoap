@@ -106,6 +106,30 @@ func (s *ZAdmin) GetAllDomains() []ZDomain {
 	return domains
 }
 
+func (s *ZAdmin) GetDomain(by ByRequest, attrs []string) *ZDomain {
+	req, soapAction := NewGetDomainRequest(by, attrs)
+	resp := GetDomainResponse{}
+
+	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+		log.Fatal(err)
+	}
+
+	domain := NewDomain(resp.Content.Domain[0])
+	domain.Client = s.Client
+
+	return domain
+}
+
+func (s *ZAdmin) GetDomainByName(name string, attrs []string) *ZDomain {
+	by := NewByRequest("name", name)
+	return s.GetDomain(by, attrs)
+}
+
+func (s *ZAdmin) GetDomainById(id string, attrs []string) *ZDomain {
+	by := NewByRequest("id", id)
+	return s.GetDomain(by, attrs)
+}
+
 func (s *ZAdmin) GetAllServers(service string) []ZServer {
 	req, soapAction := NewGetAllServersRequest(service)
 	resp := GetAllServersResponse{}

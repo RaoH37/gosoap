@@ -67,6 +67,21 @@ func NewGetAllDomainsRequest() (*GetAllDomainsRequest, string) {
 	return r, "urn:zimbraAdmin/GetAllDomains"
 }
 
+func NewGetDomainRequest(by ByRequest, attrs []string) (*GetDomainRequest, string) {
+	r := &GetDomainRequest{
+		Content: GetDomainRequestContent{
+			Urn:    urnAdmin,
+			Domain: by,
+		},
+	}
+
+	if attrs != nil {
+		r.Content.Attrs = strings.Join(attrs, ",")
+	}
+
+	return r, "urn:zimbraAdmin/GetDomain"
+}
+
 func NewGetAllServersRequest(service string) (*GetAllServersRequest, string) {
 	r := &GetAllServersRequest{
 		Content: GetAllServersRequestContent{

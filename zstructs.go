@@ -211,6 +211,24 @@ type GetAllDomainsResponseContent struct {
 	Domain []GenericResponse `json:"domain,omitempty"`
 }
 
+type GetDomainRequest struct {
+	Content GetDomainRequestContent `json:"GetDomainRequest,omitempty"`
+}
+
+type GetDomainRequestContent struct {
+	Domain ByRequest `json:"domain,attr"`
+	Urn    string    `json:"_jsns,attr"`
+	Attrs  string    `json:"attrs,omitempty"`
+}
+
+type GetDomainResponse struct {
+	Content GetDomainResponseContent `json:"GetDomainResponse,omitempty"`
+}
+
+type GetDomainResponseContent struct {
+	Domain []GenericResponse `json:"domain,omitempty"`
+}
+
 // ************* COS ****************
 
 type GetAllCosRequest struct {
