@@ -9,9 +9,26 @@ type AttrNamesResponse struct {
 	Attrs []AttrNameResponse `json:"attr,omitempty"`
 }
 
+func (anr *AttrNamesResponse) ToAttrsResponse() []AttrResponse {
+	collection := make([]AttrResponse, len(anr.Attrs))
+
+	for i, attr := range anr.Attrs {
+		collection[i] = attr.ToAttrResponse()
+	}
+
+	return collection
+}
+
 type AttrNameResponse struct {
 	Key   string `json:"name,omitempty"`
 	Value string `json:"_content,omitempty"`
+}
+
+func (anr *AttrNameResponse) ToAttrResponse() AttrResponse {
+	return AttrResponse{
+		Key:   anr.Key,
+		Value: anr.Value,
+	}
 }
 
 type ByRequest struct {

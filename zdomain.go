@@ -1,9 +1,5 @@
 package zsoap
 
-import (
-	"reflect"
-)
-
 type ZDomain struct {
 	Client                   *Client
 	ID                       string
@@ -19,18 +15,7 @@ func NewDomain(resp GenericResponse) *ZDomain {
 		Name: resp.Name,
 	}
 
-	for _, attr := range resp.Attrs {
-		s := reflect.Indirect(reflect.ValueOf(&domain)).Elem()
-		metric := s.FieldByName(attr.Key)
-		if metric.IsValid() {
-			switch metric.Interface().(type) {
-			case string:
-				metric.SetString(attr.Value)
-			case []string:
-				metric.Set(reflect.Append(metric, reflect.ValueOf(attr.Value)))
-			}
-		}
-	}
+	setResponseAttrs(resp.Attrs, &domain)
 
 	return domain
 }

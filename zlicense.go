@@ -1,10 +1,5 @@
 package zsoap
 
-import (
-	"reflect"
-	"strconv"
-)
-
 type ZLicense struct {
 	AccountsLimit                        int
 	ArchivingAccountsLimit               int
@@ -48,29 +43,17 @@ type ZLicense struct {
 func NewLicense(resp GetLicenseResponseContent) *ZLicense {
 	license := &ZLicense{}
 
-	SetLicenseAttrsByReflect(license, resp.License)
-	SetLicenseAttrsByReflect(license, resp.Activation)
-	SetLicenseAttrsByReflect(license, resp.Info)
+	for _, attrName := range resp.License {
+		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	}
+
+	for _, attrName := range resp.Activation {
+		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	}
+
+	for _, attrName := range resp.Info {
+		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	}
 
 	return license
-}
-
-func SetLicenseAttrsByReflect(license *ZLicense, attrNames []AttrNamesResponse) {
-	for _, attrName := range attrNames {
-		for _, attr := range attrName.Attrs {
-			s := reflect.Indirect(reflect.ValueOf(&license)).Elem()
-			metric := s.FieldByName(attr.Key)
-			if metric.IsValid() {
-				switch metric.Interface().(type) {
-				case string:
-					metric.SetString(attr.Value)
-				case []string:
-					metric.Set(reflect.Append(metric, reflect.ValueOf(attr.Value)))
-				case int:
-					int_vale, _ := strconv.ParseInt(attr.Value, 10, 32)
-					metric.SetInt(int_vale)
-				}
-			}
-		}
-	}
 }

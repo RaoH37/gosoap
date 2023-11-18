@@ -2,7 +2,6 @@ package zsoap
 
 import (
 	"log"
-	"reflect"
 	"strings"
 )
 
@@ -45,18 +44,8 @@ func NewAccount(resp GenericResponse) *ZAccount {
 		Name: resp.Name,
 	}
 
-	for _, attr := range resp.Attrs {
-		s := reflect.Indirect(reflect.ValueOf(&account)).Elem()
-		metric := s.FieldByName(attr.Key)
-		if metric.IsValid() {
-			switch metric.Interface().(type) {
-			case string:
-				metric.SetString(attr.Value)
-			case []string:
-				metric.Set(reflect.Append(metric, reflect.ValueOf(attr.Value)))
-			}
-		}
-	}
+	setResponseAttrs(resp.Attrs, &account)
+
 	return account
 }
 

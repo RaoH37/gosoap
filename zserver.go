@@ -32,7 +32,7 @@ func NewServer(resp GenericResponse) *ZServer {
 
 	for _, attr := range resp.Attrs {
 		s := reflect.Indirect(reflect.ValueOf(&server)).Elem()
-		metric := s.FieldByName(attr.Key)
+		metric := s.FieldByName(capitalizeByteSlice(attr.Key))
 		if metric.IsValid() {
 			switch metric.Interface().(type) {
 			case string:
