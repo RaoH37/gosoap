@@ -1,7 +1,6 @@
 package zsoap
 
 import (
-	"reflect"
 	"time"
 )
 
@@ -23,25 +22,14 @@ func (server *ZServer) CreatedAt() int {
 	return int(t.Unix())
 }
 
-// func NewServer(resp ServerResponse) *ZServer {
-func NewServer(resp GenericResponse) *ZServer {
+func NewServer(resp GenericResponse, client *Client) *ZServer {
 	server := &ZServer{
-		ID:   resp.ID,
-		Name: resp.Name,
+		Client: client,
+		ID:     resp.ID,
+		Name:   resp.Name,
 	}
 
-	for _, attr := range resp.Attrs {
-		s := reflect.Indirect(reflect.ValueOf(&server)).Elem()
-		metric := s.FieldByName(capitalizeByteSlice(attr.Key))
-		if metric.IsValid() {
-			switch metric.Interface().(type) {
-			case string:
-				metric.SetString(attr.Value)
-			case []string:
-				metric.Set(reflect.Append(metric, reflect.ValueOf(attr.Value)))
-			}
-		}
-	}
+	setResponseAttrs(resp.Attrs, &server)
 
 	return server
 }

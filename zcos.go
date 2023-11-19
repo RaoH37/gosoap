@@ -10,10 +10,11 @@ type ZCos struct {
 	ZimbraFeatureMAPIConnectorEnabled bool
 }
 
-func NewCos(resp GenericResponse) *ZCos {
+func NewCos(resp GenericResponse, client *Client) *ZCos {
 	cos := &ZCos{
-		ID:   resp.ID,
-		Name: resp.Name,
+		Client: client,
+		ID:     resp.ID,
+		Name:   resp.Name,
 	}
 
 	setResponseAttrs(resp.Attrs, &cos)

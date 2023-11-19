@@ -38,10 +38,11 @@ func (a *ZAccount) DomainName() string {
 	return strings.Split(a.Name, "@")[1]
 }
 
-func NewAccount(resp GenericResponse) *ZAccount {
+func NewAccount(resp GenericResponse, client *Client) *ZAccount {
 	account := &ZAccount{
-		ID:   resp.ID,
-		Name: resp.Name,
+		Client: client,
+		ID:     resp.ID,
+		Name:   resp.Name,
 	}
 
 	setResponseAttrs(resp.Attrs, &account)
@@ -49,13 +50,15 @@ func NewAccount(resp GenericResponse) *ZAccount {
 	return account
 }
 
-func NewAccountQuota(resp QuotaResponse) *ZAccount {
+func NewAccountQuota(resp QuotaResponse, client *Client) *ZAccount {
 	account := &ZAccount{
-		ID:    resp.ID,
-		Name:  resp.Name,
-		Used:  resp.Used,
-		Limit: resp.Limit,
+		Client: client,
+		ID:     resp.ID,
+		Name:   resp.Name,
+		Used:   resp.Used,
+		Limit:  resp.Limit,
 	}
+
 	return account
 }
 

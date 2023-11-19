@@ -4,6 +4,9 @@ import (
 	"log"
 )
 
+const NAME_STR = "name"
+const ID_STR = "id"
+
 type ZAdmin struct {
 	AuthToken string
 	Client    *Client
@@ -38,19 +41,16 @@ func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) *ZAccount {
 		log.Fatal(err)
 	}
 
-	account := NewAccount(resp.Content.Account[0])
-	account.Client = s.Client
-
-	return account
+	return NewAccount(resp.Content.Account[0], s.Client)
 }
 
 func (s *ZAdmin) GetAccountByName(name string, attrs []string) *ZAccount {
-	by := NewByRequest("name", name)
+	by := NewByRequest(NAME_STR, name)
 	return s.GetAccount(by, attrs)
 }
 
 func (s *ZAdmin) GetAccountById(id string, attrs []string) *ZAccount {
-	by := NewByRequest("id", id)
+	by := NewByRequest(ID_STR, id)
 	return s.GetAccount(by, attrs)
 }
 
@@ -63,10 +63,10 @@ func (s *ZAdmin) GetAllAccounts(server *ByRequest, domain *ByRequest) []ZAccount
 		log.Fatal(err)
 	}
 
-	accounts := make([]ZAccount, 0)
+	accounts := make([]ZAccount, len(resp.Content.Account))
 
-	for _, account := range resp.Content.Account {
-		accounts = append(accounts, *NewAccount(account))
+	for index, account := range resp.Content.Account {
+		accounts[index] = *NewAccount(account, s.Client)
 	}
 
 	return accounts
@@ -80,10 +80,10 @@ func (s *ZAdmin) GetAllCos() []ZCos {
 		log.Fatal(err)
 	}
 
-	coses := make([]ZCos, 0)
+	coses := make([]ZCos, len(resp.Content.Cos))
 
-	for _, cos := range resp.Content.Cos {
-		coses = append(coses, *NewCos(cos))
+	for index, cos := range resp.Content.Cos {
+		coses[index] = *NewCos(cos, s.Client)
 	}
 
 	return coses
@@ -97,10 +97,10 @@ func (s *ZAdmin) GetAllDomains() []ZDomain {
 		log.Fatal(err)
 	}
 
-	domains := make([]ZDomain, 0)
+	domains := make([]ZDomain, len(resp.Content.Domain))
 
-	for _, domain := range resp.Content.Domain {
-		domains = append(domains, *NewDomain(domain))
+	for index, domain := range resp.Content.Domain {
+		domains[index] = *NewDomain(domain, s.Client)
 	}
 
 	return domains
@@ -114,19 +114,19 @@ func (s *ZAdmin) GetDomain(by ByRequest, attrs []string) *ZDomain {
 		log.Fatal(err)
 	}
 
-	domain := NewDomain(resp.Content.Domain[0])
+	domain := NewDomain(resp.Content.Domain[0], s.Client)
 	domain.Client = s.Client
 
 	return domain
 }
 
 func (s *ZAdmin) GetDomainByName(name string, attrs []string) *ZDomain {
-	by := NewByRequest("name", name)
+	by := NewByRequest(NAME_STR, name)
 	return s.GetDomain(by, attrs)
 }
 
 func (s *ZAdmin) GetDomainById(id string, attrs []string) *ZDomain {
-	by := NewByRequest("id", id)
+	by := NewByRequest(ID_STR, id)
 	return s.GetDomain(by, attrs)
 }
 
@@ -138,10 +138,10 @@ func (s *ZAdmin) GetAllServers(service string) []ZServer {
 		log.Fatal(err)
 	}
 
-	servers := make([]ZServer, 0)
+	servers := make([]ZServer, len(resp.Content.Server))
 
-	for _, server := range resp.Content.Server {
-		servers = append(servers, *NewServer(server))
+	for index, server := range resp.Content.Server {
+		servers[index] = *NewServer(server, s.Client)
 	}
 
 	return servers
@@ -161,10 +161,10 @@ func (s *ZAdmin) GetQuotaUsage(domain string, isAllServers bool) []ZAccount {
 		log.Fatal(err)
 	}
 
-	accounts := make([]ZAccount, 0)
+	accounts := make([]ZAccount, len(resp.Content.Account))
 
-	for _, account := range resp.Content.Account {
-		accounts = append(accounts, *NewAccountQuota(account))
+	for index, account := range resp.Content.Account {
+		accounts[index] = *NewAccountQuota(account, s.Client)
 	}
 
 	return accounts
@@ -178,13 +178,6 @@ func (s *ZAdmin) GetAllBackups() []ZBackup {
 		log.Fatal(err)
 	}
 
-	// backups := make([]ZBackup, 0)
-
-	// for _, backup := range resp.Content.Backups {
-	// 	backups = append(backups, *NewBackup(backup))
-	// }
-
-	// return backups
 	return resp.Content.Backups
 }
 
@@ -212,10 +205,10 @@ func (s *ZAdmin) Search(query string, maxResults int, limit int, offset int, dom
 		log.Fatal(err)
 	}
 
-	accounts := make([]ZAccount, 0)
+	accounts := make([]ZAccount, len(resp.Content.Account))
 
-	for _, account := range resp.Content.Account {
-		accounts = append(accounts, *NewAccount(account))
+	for index, account := range resp.Content.Account {
+		accounts[index] = *NewAccount(account, s.Client)
 	}
 
 	return accounts
@@ -245,10 +238,10 @@ func (s *ZAdmin) SearchAccounts(query string, maxResults int, limit int, offset 
 		log.Fatal(err)
 	}
 
-	accounts := make([]ZAccount, 0)
+	accounts := make([]ZAccount, len(resp.Content.Account))
 
-	for _, account := range resp.Content.Account {
-		accounts = append(accounts, *NewAccount(account))
+	for index, account := range resp.Content.Account {
+		accounts[index] = *NewAccount(account, s.Client)
 	}
 
 	return accounts

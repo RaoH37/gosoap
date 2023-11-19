@@ -62,10 +62,11 @@ type ZDomain struct {
 	ZimbraZimletDataSensitiveInMixedModeDisabled               bool
 }
 
-func NewDomain(resp GenericResponse) *ZDomain {
+func NewDomain(resp GenericResponse, client *Client) *ZDomain {
 	domain := &ZDomain{
-		ID:   resp.ID,
-		Name: resp.Name,
+		Client: client,
+		ID:     resp.ID,
+		Name:   resp.Name,
 	}
 
 	setResponseAttrs(resp.Attrs, &domain)
