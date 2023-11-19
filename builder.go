@@ -94,14 +94,20 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, string) {
 	return r, "urn:zimbraAdmin/GetAllServers"
 }
 
-func NewGetQuotaUsageRequest(domain string, allServers int) (*GetQuotaUsageRequest, string) {
+func NewGetQuotaUsageRequest(domain string, allServers int, limit int, offset int, sortBy string, sortAscending int, refresh int) (*GetQuotaUsageRequest, string) {
 	r := &GetQuotaUsageRequest{
 		Content: GetQuotaUsageRequestContent{
-			Urn:     urnAdmin,
-			Servers: allServers,
-			Domain:  domain,
+			Urn:           urnAdmin,
+			Servers:       allServers,
+			Domain:        domain,
+			Limit:         limit,
+			Offset:        offset,
+			SortBy:        sortBy,
+			SortAscending: sortAscending,
+			Refresh:       refresh,
 		},
 	}
+
 	return r, "urn:zimbraAdmin/GetQuotaUsageRequest"
 }
 

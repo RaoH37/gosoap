@@ -254,9 +254,14 @@ type GetQuotaUsageRequest struct {
 }
 
 type GetQuotaUsageRequestContent struct {
-	Urn     string `json:"_jsns,attr"`
-	Servers int    `json:"allServers,omitempty"`
-	Domain  string `json:"domain,omitempty"`
+	Urn           string `json:"_jsns,attr"`
+	Servers       int    `json:"allServers,omitempty"`
+	Domain        string `json:"domain,omitempty"`
+	Limit         int    `json:"limit,omitempty"`
+	Offset        int    `json:"offset,omitempty"`
+	SortBy        string `json:"sortBy,omitempty"`
+	SortAscending int    `json:"sortAscending,omitempty"`
+	Refresh       int    `json:"refresh,omitempty"`
 }
 
 type GetQuotaUsageResponse struct {

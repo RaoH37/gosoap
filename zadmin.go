@@ -147,19 +147,23 @@ func (s *ZAdmin) GetAllServers(service string) []ZServer {
 	return servers
 }
 
-func (s *ZAdmin) GetQuotaUsage(domain string, isAllServers bool) []ZAccount {
+func (s *ZAdmin) GetQuotaUsage(serverId string, domain string, isAllServers bool) []ZAccount {
 	allServers := 0
 
-	if isAllServers {
+	if len(serverId) > 0 {
+		s.Client.SetTargetServer(serverId)
+	} else if isAllServers {
 		allServers = 1
 	}
 
-	req, soapAction := NewGetQuotaUsageRequest(domain, allServers)
+	req, soapAction := NewGetQuotaUsageRequest(domain, allServers, 0, 0, "", 0, 0)
 	resp := GetQuotaUsageResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
 		log.Fatal(err)
 	}
+
+	s.Client.RemoveTargetServer()
 
 	accounts := make([]ZAccount, len(resp.Content.Account))
 
