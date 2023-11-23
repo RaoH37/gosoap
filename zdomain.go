@@ -20,7 +20,7 @@ type ZDomain struct {
 	ZimbraDomainAggregateQuota                                 int
 	ZimbraDomainAggregateQuotaPolicy                           string
 	ZimbraDomainAggregateQuotaWarnPercent                      int
-	ZilbraDomainDefaultCOSId                                   string
+	ZimbraDomainDefaultCOSId                                   string
 	ZimbraDomainMandatoryMailSignatureEnabled                  bool
 	ZimbraDomainName                                           string
 	ZimbraDomainStatus                                         string
