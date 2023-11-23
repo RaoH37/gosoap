@@ -187,11 +187,12 @@ func (s *ZAdmin) GetAllBackups() []ZBackup {
 
 func (s *ZAdmin) SearchDirectoryCount(query string, domain string, types string) int {
 	params := SearchDirectoryParams{
-		Urn:       urnAdmin,
-		Query:     query,
-		Domain:    domain,
-		Types:     types,
-		CountOnly: 1,
+		Urn:        urnAdmin,
+		Query:      query,
+		MaxResults: 1_000_000,
+		Domain:     domain,
+		Types:      types,
+		CountOnly:  1,
 	}
 
 	req, soapAction := NewSearchDirectoryRequest(&params)
