@@ -185,11 +185,12 @@ func (s *ZAdmin) GetAllBackups() []ZBackup {
 	return resp.Content.Backups
 }
 
-func (s *ZAdmin) SearchDirectoryCount(query string, domain string) int {
+func (s *ZAdmin) SearchDirectoryCount(query string, domain string, types string) int {
 	params := SearchDirectoryParams{
 		Urn:       urnAdmin,
 		Query:     query,
 		Domain:    domain,
+		Types:     types,
 		CountOnly: 1,
 	}
 
@@ -253,7 +254,7 @@ func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, a
 	domains := make([]ZDomain, 0)
 	coses := make([]ZCos, 0)
 
-	total := s.SearchDirectoryCount(query, domain)
+	total := s.SearchDirectoryCount(query, domain, types)
 
 	if total == 0 {
 		return accounts, domains, coses
