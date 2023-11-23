@@ -94,7 +94,12 @@ type SearchDirectoryResponse struct {
 }
 
 type SearchDirectoryResponseContent struct {
-	Account []GenericResponse `json:"account,omitempty"`
+	Count        int               `json:"num,omitempty"`
+	Accounts     []GenericResponse `json:"account,omitempty"`
+	Dls          []GenericResponse `json:"dl,omitempty"`
+	Domains      []GenericResponse `json:"domain,omitempty"`
+	Calresources []GenericResponse `json:"calresource,omitempty"`
+	Coses        []GenericResponse `json:"cos,omitempty"`
 }
 
 // ************* LICENSE ****************
@@ -119,23 +124,23 @@ type GetLicenseResponseContent struct {
 
 // ************* ACCOUNT ****************
 
-type GetAllAccountsRequest struct {
-	Content GetAllAccountsRequestContent `json:"GetAllAccountsRequest,omitempty"`
-}
+// type GetAllAccountsRequest struct {
+// 	Content GetAllAccountsRequestContent `json:"GetAllAccountsRequest,omitempty"`
+// }
 
-type GetAllAccountsRequestContent struct {
-	Urn    string      `json:"_jsns,attr"`
-	Server interface{} `json:"server,omitempty"`
-	Domain interface{} `json:"domain,omitempty"`
-}
+// type GetAllAccountsRequestContent struct {
+// 	Urn    string      `json:"_jsns,attr"`
+// 	Server interface{} `json:"server,omitempty"`
+// 	Domain interface{} `json:"domain,omitempty"`
+// }
 
-type GetAllAccountsResponse struct {
-	Content GetAllAccountsResponseContent `json:"GetAllAccountsResponse,omitempty"`
-}
+// type GetAllAccountsResponse struct {
+// 	Content GetAllAccountsResponseContent `json:"GetAllAccountsResponse,omitempty"`
+// }
 
-type GetAllAccountsResponseContent struct {
-	Account []GenericResponse `json:"account,omitempty"`
-}
+// type GetAllAccountsResponseContent struct {
+// 	Account []GenericResponse `json:"account,omitempty"`
+// }
 
 type GetAccountRequest struct {
 	Content GetAccountRequestContent `json:"GetAccountRequest,omitempty"`

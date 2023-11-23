@@ -54,23 +54,23 @@ func (s *ZAdmin) GetAccountById(id string, attrs []string) *ZAccount {
 	return s.GetAccount(by, attrs)
 }
 
-func (s *ZAdmin) GetAllAccounts(server *ByRequest, domain *ByRequest) []ZAccount {
+// func (s *ZAdmin) GetAllAccounts(server *ByRequest, domain *ByRequest) []ZAccount {
 
-	req, soapAction := NewGetAllAccountsRequest(server, domain)
-	resp := GetAllAccountsResponse{}
+// 	req, soapAction := NewGetAllAccountsRequest(server, domain)
+// 	resp := GetAllAccountsResponse{}
 
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
-	}
+// 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+// 		log.Fatal(err)
+// 	}
 
-	accounts := make([]ZAccount, len(resp.Content.Account))
+// 	accounts := make([]ZAccount, len(resp.Content.Account))
 
-	for index, account := range resp.Content.Account {
-		accounts[index] = *NewAccount(account, s.Client)
-	}
+// 	for index, account := range resp.Content.Account {
+// 		accounts[index] = *NewAccount(account, s.Client)
+// 	}
 
-	return accounts
-}
+// 	return accounts
+// }
 
 func (s *ZAdmin) GetAllCos() []ZCos {
 	req, soapAction := NewGetAllCosRequest()
@@ -185,21 +185,12 @@ func (s *ZAdmin) GetAllBackups() []ZBackup {
 	return resp.Content.Backups
 }
 
-func (s *ZAdmin) Search(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, countOnly int, attrs string) []ZAccount {
+func (s *ZAdmin) SearchDirectoryCount(query string, domain string) int {
 	params := SearchDirectoryParams{
-		Urn:           urnAdmin,
-		Query:         query,
-		MaxResults:    maxResults,
-		Limit:         limit,
-		Offset:        offset,
-		Domain:        domain,
-		ApplyCos:      applyCos,
-		ApplyConfig:   applyConfig,
-		SortBy:        sortBy,
-		Types:         types,
-		SortAscending: sortAscending,
-		CountOnly:     countOnly,
-		Attrs:         attrs,
+		Urn:       urnAdmin,
+		Query:     query,
+		Domain:    domain,
+		CountOnly: 1,
 	}
 
 	req, soapAction := NewSearchDirectoryRequest(&params)
@@ -209,16 +200,10 @@ func (s *ZAdmin) Search(query string, maxResults int, limit int, offset int, dom
 		log.Fatal(err)
 	}
 
-	accounts := make([]ZAccount, len(resp.Content.Account))
-
-	for index, account := range resp.Content.Account {
-		accounts[index] = *NewAccount(account, s.Client)
-	}
-
-	return accounts
+	return resp.Content.Count
 }
 
-func (s *ZAdmin) SearchAccounts(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, countOnly int, attrs string) []ZAccount {
+func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDomain, []ZCos) {
 	params := SearchDirectoryParams{
 		Urn:           urnAdmin,
 		Query:         query,
@@ -231,7 +216,7 @@ func (s *ZAdmin) SearchAccounts(query string, maxResults int, limit int, offset 
 		SortBy:        sortBy,
 		Types:         types,
 		SortAscending: sortAscending,
-		CountOnly:     countOnly,
+		CountOnly:     0,
 		Attrs:         attrs,
 	}
 
@@ -242,13 +227,51 @@ func (s *ZAdmin) SearchAccounts(query string, maxResults int, limit int, offset 
 		log.Fatal(err)
 	}
 
-	accounts := make([]ZAccount, len(resp.Content.Account))
+	accounts := make([]ZAccount, len(resp.Content.Accounts))
 
-	for index, account := range resp.Content.Account {
+	for index, account := range resp.Content.Accounts {
 		accounts[index] = *NewAccount(account, s.Client)
 	}
 
-	return accounts
+	domains := make([]ZDomain, len(resp.Content.Domains))
+
+	for index, domain := range resp.Content.Domains {
+		domains[index] = *NewDomain(domain, s.Client)
+	}
+
+	coses := make([]ZCos, len(resp.Content.Coses))
+
+	for index, cos := range resp.Content.Coses {
+		coses[index] = *NewCos(cos, s.Client)
+	}
+
+	return accounts, domains, coses
+}
+
+func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDomain, []ZCos) {
+	accounts := make([]ZAccount, 0)
+	domains := make([]ZDomain, 0)
+	coses := make([]ZCos, 0)
+
+	total := s.SearchDirectoryCount(query, domain)
+
+	if total == 0 {
+		return accounts, domains, coses
+	}
+
+	const maxResults = 1_000_000
+	const limit = 500
+	offset := 0
+
+	for offset < total {
+		_accounts, _domains, _coses := s.SearchDirectory(query, maxResults, limit, offset, domain, applyCos, applyConfig, sortBy, types, sortAscending, attrs)
+		accounts = append(accounts, _accounts...)
+		domains = append(domains, _domains...)
+		coses = append(coses, _coses...)
+		offset += limit
+	}
+
+	return accounts, domains, coses
 }
 
 func (s *ZAdmin) GetLicense() (*ZLicense, error) {

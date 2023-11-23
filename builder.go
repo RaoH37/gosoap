@@ -34,20 +34,20 @@ func NewGetAccountRequest(by ByRequest, attrs []string) (*GetAccountRequest, str
 	return r, "urn:zimbraAdmin/GetAccount"
 }
 
-func NewGetAllAccountsRequest(server *ByRequest, domain *ByRequest) (*GetAllAccountsRequest, string) {
-	r := &GetAllAccountsRequest{
-		Content: GetAllAccountsRequestContent{
-			Urn: urnAdmin,
-		},
-	}
-	if server != nil {
-		r.Content.Server = server
-	}
-	if domain != nil {
-		r.Content.Domain = domain
-	}
-	return r, "urn:zimbraAdmin/GetAllAccounts"
-}
+// func NewGetAllAccountsRequest(server *ByRequest, domain *ByRequest) (*GetAllAccountsRequest, string) {
+// 	r := &GetAllAccountsRequest{
+// 		Content: GetAllAccountsRequestContent{
+// 			Urn: urnAdmin,
+// 		},
+// 	}
+// 	if server != nil {
+// 		r.Content.Server = server
+// 	}
+// 	if domain != nil {
+// 		r.Content.Domain = domain
+// 	}
+// 	return r, "urn:zimbraAdmin/GetAllAccounts"
+// }
 
 func NewGetAllCosRequest() (*GetAllCosRequest, string) {
 	r := &GetAllCosRequest{
