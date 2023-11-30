@@ -124,24 +124,6 @@ type GetLicenseResponseContent struct {
 
 // ************* ACCOUNT ****************
 
-// type GetAllAccountsRequest struct {
-// 	Content GetAllAccountsRequestContent `json:"GetAllAccountsRequest,omitempty"`
-// }
-
-// type GetAllAccountsRequestContent struct {
-// 	Urn    string      `json:"_jsns,attr"`
-// 	Server interface{} `json:"server,omitempty"`
-// 	Domain interface{} `json:"domain,omitempty"`
-// }
-
-// type GetAllAccountsResponse struct {
-// 	Content GetAllAccountsResponseContent `json:"GetAllAccountsResponse,omitempty"`
-// }
-
-// type GetAllAccountsResponseContent struct {
-// 	Account []GenericResponse `json:"account,omitempty"`
-// }
-
 type GetAccountRequest struct {
 	Content GetAccountRequestContent `json:"GetAccountRequest,omitempty"`
 }
@@ -157,7 +139,6 @@ type GetAccountResponse struct {
 }
 
 type GetAccountResponseContent struct {
-	// Account []AccountResponse `json:"account,omitempty"`
 	Account []GenericResponse `json:"account,omitempty"`
 }
 
