@@ -24,14 +24,17 @@ type ZAccount struct {
 	ZimbraMailForwardingAddress       string
 }
 
-func (a *ZAccount) Modify(attrs map[string]string) {
+func (a *ZAccount) Modify(attrs map[string]string) error {
 
 	req, soapAction := NewModifyAccountRequest(a.ID, attrs)
 	resp := ModifyAccountResponse{}
 
 	if err := a.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
+
+	return nil
 }
 
 func (a *ZAccount) DomainName() string {

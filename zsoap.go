@@ -67,6 +67,7 @@ type Client struct {
 	header    interface{}
 	TOKEN     string
 	Debug     bool
+	Timeout   time.Duration
 }
 
 func dialTimeout(network, addr string) (net.Conn, error) {
@@ -142,7 +143,7 @@ func (s *Client) Call(soapAction string, request interface{}, response interface
 		Dial: dialTimeout,
 	}
 
-	client := &http.Client{Transport: tr}
+	client := &http.Client{Transport: tr, Timeout: s.Timeout}
 	res, err := client.Do(req)
 	if err != nil {
 		return errors.Wrap(err, "failed to send SOAP request")

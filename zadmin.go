@@ -2,82 +2,76 @@ package zsoap
 
 import (
 	"log"
+	"time"
 )
 
 const NAME_STR = "name"
 const ID_STR = "id"
 
 type ZAdmin struct {
-	AuthToken string
-	Client    *Client
+	AuthToken            string
+	Client               *Client
+	RetryWaitingDuration time.Duration
 }
 
 func (s *ZAdmin) Init(url string, isTLS bool) {
 	s.Client = NewClient(url, isTLS, nil)
+	s.RetryWaitingDuration = time.Second
 }
 
-func (s *ZAdmin) Login(name string, password string) {
+func (s *ZAdmin) Login(name string, password string) error {
 
 	req, soapAction := NewAuthRequest(name, password)
 	resp := AuthResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
 
 	s.Client.SetToken(resp.Content.TOKEN[0].Content)
+
+	return nil
+}
+
+func (s *ZAdmin) setTimeout(timeout time.Duration) {
+	s.Client.Timeout = timeout
 }
 
 func (s *ZAdmin) Debug() {
 	s.Client.Debug = true
 }
 
-func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) *ZAccount {
+func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) (*ZAccount, error) {
 
 	req, soapAction := NewGetAccountRequest(byAccount, attrs)
 	resp := GetAccountResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return NewAccount(resp.Content.Account[0], s.Client)
+	return NewAccount(resp.Content.Account[0], s.Client), nil
 }
 
-func (s *ZAdmin) GetAccountByName(name string, attrs []string) *ZAccount {
+func (s *ZAdmin) GetAccountByName(name string, attrs []string) (*ZAccount, error) {
 	by := NewByRequest(NAME_STR, name)
 	return s.GetAccount(by, attrs)
 }
 
-func (s *ZAdmin) GetAccountById(id string, attrs []string) *ZAccount {
+func (s *ZAdmin) GetAccountById(id string, attrs []string) (*ZAccount, error) {
 	by := NewByRequest(ID_STR, id)
 	return s.GetAccount(by, attrs)
 }
 
-// func (s *ZAdmin) GetAllAccounts(server *ByRequest, domain *ByRequest) []ZAccount {
-
-// 	req, soapAction := NewGetAllAccountsRequest(server, domain)
-// 	resp := GetAllAccountsResponse{}
-
-// 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	accounts := make([]ZAccount, len(resp.Content.Account))
-
-// 	for index, account := range resp.Content.Account {
-// 		accounts[index] = *NewAccount(account, s.Client)
-// 	}
-
-// 	return accounts
-// }
-
-func (s *ZAdmin) GetAllCos() []ZCos {
+func (s *ZAdmin) GetAllCos() ([]ZCos, error) {
 	req, soapAction := NewGetAllCosRequest()
 	resp := GetAllCosResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	coses := make([]ZCos, len(resp.Content.Cos))
@@ -86,15 +80,16 @@ func (s *ZAdmin) GetAllCos() []ZCos {
 		coses[index] = *NewCos(cos, s.Client)
 	}
 
-	return coses
+	return coses, nil
 }
 
-func (s *ZAdmin) GetAllDomains() []ZDomain {
+func (s *ZAdmin) GetAllDomains() ([]ZDomain, error) {
 	req, soapAction := NewGetAllDomainsRequest()
 	resp := GetAllDomainsResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	domains := make([]ZDomain, len(resp.Content.Domain))
@@ -103,39 +98,41 @@ func (s *ZAdmin) GetAllDomains() []ZDomain {
 		domains[index] = *NewDomain(domain, s.Client)
 	}
 
-	return domains
+	return domains, nil
 }
 
-func (s *ZAdmin) GetDomain(by ByRequest, attrs []string) *ZDomain {
+func (s *ZAdmin) GetDomain(by ByRequest, attrs []string) (*ZDomain, error) {
 	req, soapAction := NewGetDomainRequest(by, attrs)
 	resp := GetDomainResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	domain := NewDomain(resp.Content.Domain[0], s.Client)
 	domain.Client = s.Client
 
-	return domain
+	return domain, nil
 }
 
-func (s *ZAdmin) GetDomainByName(name string, attrs []string) *ZDomain {
+func (s *ZAdmin) GetDomainByName(name string, attrs []string) (*ZDomain, error) {
 	by := NewByRequest(NAME_STR, name)
 	return s.GetDomain(by, attrs)
 }
 
-func (s *ZAdmin) GetDomainById(id string, attrs []string) *ZDomain {
+func (s *ZAdmin) GetDomainById(id string, attrs []string) (*ZDomain, error) {
 	by := NewByRequest(ID_STR, id)
 	return s.GetDomain(by, attrs)
 }
 
-func (s *ZAdmin) GetAllServers(service string) []ZServer {
+func (s *ZAdmin) GetAllServers(service string) ([]ZServer, error) {
 	req, soapAction := NewGetAllServersRequest(service)
 	resp := GetAllServersResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	servers := make([]ZServer, len(resp.Content.Server))
@@ -144,10 +141,10 @@ func (s *ZAdmin) GetAllServers(service string) []ZServer {
 		servers[index] = *NewServer(server, s.Client)
 	}
 
-	return servers
+	return servers, nil
 }
 
-func (s *ZAdmin) GetQuotaUsage(serverId string, domain string, isAllServers bool) []ZAccount {
+func (s *ZAdmin) GetQuotaUsage(serverId string, domain string, isAllServers bool) ([]ZAccount, error) {
 	allServers := 0
 
 	if len(serverId) > 0 {
@@ -160,7 +157,8 @@ func (s *ZAdmin) GetQuotaUsage(serverId string, domain string, isAllServers bool
 	resp := GetQuotaUsageResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	s.Client.RemoveTargetServer()
@@ -171,21 +169,22 @@ func (s *ZAdmin) GetQuotaUsage(serverId string, domain string, isAllServers bool
 		accounts[index] = *NewAccountQuota(account, s.Client)
 	}
 
-	return accounts
+	return accounts, nil
 }
 
-func (s *ZAdmin) GetAllBackups() []ZBackup {
+func (s *ZAdmin) GetAllBackups() ([]ZBackup, error) {
 	req, soapAction := NewBackupQueryRequest()
 	resp := BackupQueryResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return resp.Content.Backups
+	return resp.Content.Backups, nil
 }
 
-func (s *ZAdmin) SearchDirectoryCount(query string, domain string, types string) int {
+func (s *ZAdmin) SearchDirectoryCount(query string, domain string, types string) (int, error) {
 	params := SearchDirectoryParams{
 		Urn:        urnAdmin,
 		Query:      query,
@@ -199,13 +198,14 @@ func (s *ZAdmin) SearchDirectoryCount(query string, domain string, types string)
 	resp := SearchDirectoryResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return 0, err
 	}
 
-	return resp.Content.Count
+	return resp.Content.Count, nil
 }
 
-func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDomain, []ZCos) {
+func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDomain, []ZCos, error) {
 	params := SearchDirectoryParams{
 		Urn:           urnAdmin,
 		Query:         query,
@@ -226,7 +226,8 @@ func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset
 	resp := SearchDirectoryResponse{}
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, nil, nil, err
 	}
 
 	accounts := make([]ZAccount, len(resp.Content.Accounts))
@@ -247,33 +248,50 @@ func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset
 		coses[index] = *NewCos(cos, s.Client)
 	}
 
-	return accounts, domains, coses
+	return accounts, domains, coses, nil
 }
 
-func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDomain, []ZCos) {
+func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDomain, []ZCos, error) {
 	accounts := make([]ZAccount, 0)
 	domains := make([]ZDomain, 0)
 	coses := make([]ZCos, 0)
 
-	total := s.SearchDirectoryCount(query, domain, types)
+	total, err := s.SearchDirectoryCount(query, domain, types)
+	if err != nil {
+		log.Println(err)
+		return nil, nil, nil, err
+	}
 
 	if total == 0 {
-		return accounts, domains, coses
+		return accounts, domains, coses, nil
 	}
 
 	const maxResults = 1_000_000
 	const limit = 500
 	offset := 0
+	retries := 3
 
 	for offset < total {
-		_accounts, _domains, _coses := s.SearchDirectory(query, maxResults, limit, offset, domain, applyCos, applyConfig, sortBy, types, sortAscending, attrs)
+		_accounts, _domains, _coses, err := s.SearchDirectory(query, maxResults, limit, offset, domain, applyCos, applyConfig, sortBy, types, sortAscending, attrs)
+		if err != nil {
+			log.Println(err)
+			retries -= 1
+
+			if retries <= 0 {
+				return nil, nil, nil, err
+			} else {
+				time.Sleep(s.RetryWaitingDuration)
+				continue
+			}
+		}
+
 		accounts = append(accounts, _accounts...)
 		domains = append(domains, _domains...)
 		coses = append(coses, _coses...)
 		offset += limit
 	}
 
-	return accounts, domains, coses
+	return accounts, domains, coses, nil
 }
 
 func (s *ZAdmin) GetLicense() (*ZLicense, error) {
