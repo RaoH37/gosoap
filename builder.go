@@ -79,6 +79,22 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, string) {
 	return r, "urn:zimbraAdmin/GetAllServers"
 }
 
+func NewGetServerRequest(by ByRequest, applyConfig int, attrs []string) (*GetServerRequest, string) {
+	r := &GetServerRequest{
+		Content: GetServerRequestContent{
+			Urn:         urnAdmin,
+			ApplyConfig: applyConfig,
+			Server:      by,
+		},
+	}
+
+	if attrs != nil {
+		r.Content.Attrs = strings.Join(attrs, ",")
+	}
+
+	return r, "urn:zimbraAdmin/GetServer"
+}
+
 func NewGetQuotaUsageRequest(domain string, allServers int, limit int, offset int, sortBy string, sortAscending int, refresh int) (*GetQuotaUsageRequest, string) {
 	r := &GetQuotaUsageRequest{
 		Content: GetQuotaUsageRequestContent{

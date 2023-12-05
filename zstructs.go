@@ -179,6 +179,25 @@ type GetAllServersResponseContent struct {
 	Server []GenericResponse `json:"server,omitempty"`
 }
 
+type GetServerRequest struct {
+	Content GetServerRequestContent `json:"GetServerRequest,omitempty"`
+}
+
+type GetServerRequestContent struct {
+	Server      ByRequest `json:"server,attr"`
+	Urn         string    `json:"_jsns,attr"`
+	ApplyConfig int       `json:"applyConfig,omitempty"`
+	Attrs       string    `json:"attrs,omitempty"`
+}
+
+type GetServerResponse struct {
+	Content GetServerResponseContent `json:"GetServerResponse,omitempty"`
+}
+
+type GetServerResponseContent struct {
+	Server []GenericResponse `json:"server,omitempty"`
+}
+
 // ************* DOMAIN ****************
 
 type GetAllDomainsRequest struct {
