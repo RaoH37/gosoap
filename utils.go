@@ -40,7 +40,14 @@ func setResponseAttrs(attrs []AttrResponse, object interface{}) {
 			case string:
 				metric.SetString(attr.Value)
 			case []string:
-				metric.Set(reflect.Append(metric, reflect.ValueOf(attr.Value)))
+				elements := strings.Split(attr.Value, ",")
+
+				for _, element := range elements {
+					// elements[i] = strings.TrimSpace(element)
+					metric.Set(reflect.Append(metric, reflect.ValueOf(strings.TrimSpace(element))))
+				}
+
+				// metric.Set(reflect.Append(metric, reflect.ValueOf(attr.Value)))
 			}
 		}
 	}
