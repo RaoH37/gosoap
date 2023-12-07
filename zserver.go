@@ -10,6 +10,8 @@ type ZServer struct {
 	Name                  string
 	ZimbraCreateTimestamp string
 	ZimbraServiceEnabled  []string
+	ZimbraSmtpHostname    []string
+	ZimbraSmtpPort        int
 }
 
 func (server *ZServer) CreatedAt() int {
