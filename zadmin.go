@@ -42,133 +42,6 @@ func (s *ZAdmin) Debug() {
 	s.Client.Debug = true
 }
 
-func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) (*ZAccount, error) {
-
-	req, soapAction := NewGetAccountRequest(byAccount, attrs)
-	resp := GetAccountResponse{}
-
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	return NewAccount(resp.Content.Account[0], s.Client), nil
-}
-
-func (s *ZAdmin) GetAccountByName(name string, attrs []string) (*ZAccount, error) {
-	by := NewByRequest(NAME_STR, name)
-	return s.GetAccount(by, attrs)
-}
-
-func (s *ZAdmin) GetAccountById(id string, attrs []string) (*ZAccount, error) {
-	by := NewByRequest(ID_STR, id)
-	return s.GetAccount(by, attrs)
-}
-
-func (s *ZAdmin) GetAllCos() ([]ZCos, error) {
-	req, soapAction := NewGetAllCosRequest()
-	resp := GetAllCosResponse{}
-
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	coses := make([]ZCos, len(resp.Content.Cos))
-
-	for index, cos := range resp.Content.Cos {
-		coses[index] = *NewCos(cos, s.Client)
-	}
-
-	return coses, nil
-}
-
-func (s *ZAdmin) GetAllDomains() ([]ZDomain, error) {
-	req, soapAction := NewGetAllDomainsRequest()
-	resp := GetAllDomainsResponse{}
-
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	domains := make([]ZDomain, len(resp.Content.Domain))
-
-	for index, domain := range resp.Content.Domain {
-		domains[index] = *NewDomain(domain, s.Client)
-	}
-
-	return domains, nil
-}
-
-func (s *ZAdmin) GetDomain(by ByRequest, attrs []string) (*ZDomain, error) {
-	req, soapAction := NewGetDomainRequest(by, attrs)
-	resp := GetDomainResponse{}
-
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	domain := NewDomain(resp.Content.Domain[0], s.Client)
-	domain.Client = s.Client
-
-	return domain, nil
-}
-
-func (s *ZAdmin) GetDomainByName(name string, attrs []string) (*ZDomain, error) {
-	by := NewByRequest(NAME_STR, name)
-	return s.GetDomain(by, attrs)
-}
-
-func (s *ZAdmin) GetDomainById(id string, attrs []string) (*ZDomain, error) {
-	by := NewByRequest(ID_STR, id)
-	return s.GetDomain(by, attrs)
-}
-
-func (s *ZAdmin) GetAllServers(service string) ([]ZServer, error) {
-	req, soapAction := NewGetAllServersRequest(service)
-	resp := GetAllServersResponse{}
-
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	servers := make([]ZServer, len(resp.Content.Server))
-
-	for index, server := range resp.Content.Server {
-		servers[index] = *NewServer(server, s.Client)
-	}
-
-	return servers, nil
-}
-
-func (s *ZAdmin) GetServer(by ByRequest, applyConfig int, attrs []string) (*ZServer, error) {
-	req, soapAction := NewGetServerRequest(by, applyConfig, attrs)
-	resp := GetServerResponse{}
-
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	server := NewServer(resp.Content.Server[0], s.Client)
-	server.Client = s.Client
-
-	return server, nil
-}
-
-func (s *ZAdmin) GetServerByName(name string, applyConfig int, attrs []string) (*ZServer, error) {
-	by := NewByRequest(NAME_STR, name)
-	return s.GetServer(by, applyConfig, attrs)
-}
-
-func (s *ZAdmin) GetServerById(id string, applyConfig int, attrs []string) (*ZServer, error) {
-	by := NewByRequest(ID_STR, id)
-	return s.GetServer(by, applyConfig, attrs)
-}
-
 func (s *ZAdmin) GetQuotaUsage(serverId string, domain string, isAllServers bool) ([]ZAccount, error) {
 	allServers := 0
 
@@ -195,18 +68,6 @@ func (s *ZAdmin) GetQuotaUsage(serverId string, domain string, isAllServers bool
 	}
 
 	return accounts, nil
-}
-
-func (s *ZAdmin) GetAllBackups() ([]ZBackup, error) {
-	req, soapAction := NewBackupQueryRequest()
-	resp := BackupQueryResponse{}
-
-	if err := s.Client.Call(soapAction, req, &resp); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	return resp.Content.Backups, nil
 }
 
 func (s *ZAdmin) SearchDirectoryCount(query string, domain string, types string) (int, error) {
@@ -325,17 +186,4 @@ func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, a
 	}
 
 	return accounts, dls, domains, coses, nil
-}
-
-func (s *ZAdmin) GetLicense() (*ZLicense, error) {
-	req, soapAction := NewLicenseRequest()
-	resp := GetLicenseResponse{}
-
-	err := s.Client.Call(soapAction, req, &resp)
-
-	if err == nil {
-		return NewLicense(resp.Content), err
-	} else {
-		return nil, err
-	}
 }

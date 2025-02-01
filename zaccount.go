@@ -6,6 +6,39 @@ import (
 	"time"
 )
 
+func (s *ZAdmin) GetAllAccounts(query string, domain string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZAccount, error) {
+	accounts, _, _, _, err := s.SearchDirectoryAll(query, domain, applyCos, applyConfig, sortBy, "accounts", sortAscending, attrs)
+	return accounts, err
+}
+
+func (s *ZAdmin) GetAccounts(query string, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZAccount, error) {
+	accounts, _, _, _, err := s.SearchDirectory(query, 1_000_000, limit, offset, domain, applyCos, applyConfig, sortBy, "accounts", sortAscending, attrs)
+	return accounts, err
+}
+
+func (s *ZAdmin) GetAccount(byAccount ByRequest, attrs []string) (*ZAccount, error) {
+
+	req, soapAction := NewGetAccountRequest(byAccount, attrs)
+	resp := GetAccountResponse{}
+
+	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return NewAccount(resp.Content.Account[0], s.Client), nil
+}
+
+func (s *ZAdmin) GetAccountByName(name string, attrs []string) (*ZAccount, error) {
+	by := NewByRequest(NAME_STR, name)
+	return s.GetAccount(by, attrs)
+}
+
+func (s *ZAdmin) GetAccountById(id string, attrs []string) (*ZAccount, error) {
+	by := NewByRequest(ID_STR, id)
+	return s.GetAccount(by, attrs)
+}
+
 type ZAccount struct {
 	Client                              *Client
 	ID                                  string

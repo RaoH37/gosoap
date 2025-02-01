@@ -1,5 +1,18 @@
 package zsoap
 
+func (s *ZAdmin) GetLicense() (*ZLicense, error) {
+	req, soapAction := NewLicenseRequest()
+	resp := GetLicenseResponse{}
+
+	err := s.Client.Call(soapAction, req, &resp)
+
+	if err == nil {
+		return NewLicense(resp.Content), err
+	} else {
+		return nil, err
+	}
+}
+
 type ZLicense struct {
 	AccountsLimit                        int
 	ArchivingAccountsLimit               int

@@ -34,23 +34,23 @@ func NewGetAccountRequest(by ByRequest, attrs []string) (*GetAccountRequest, str
 	return r, "urn:zimbraAdmin/GetAccount"
 }
 
-func NewGetAllCosRequest() (*GetAllCosRequest, string) {
-	r := &GetAllCosRequest{
-		Content: GetAllCosRequestContent{
-			Urn: urnAdmin,
-		},
-	}
-	return r, "urn:zimbraAdmin/GetAllCos"
-}
+//func NewGetAllCosRequest() (*GetAllCosRequest, string) {
+//	r := &GetAllCosRequest{
+//		Content: GetAllCosRequestContent{
+//			Urn: urnAdmin,
+//		},
+//	}
+//	return r, "urn:zimbraAdmin/GetAllCos"
+//}
 
-func NewGetAllDomainsRequest() (*GetAllDomainsRequest, string) {
-	r := &GetAllDomainsRequest{
-		Content: GetAllDomainsRequestContent{
-			Urn: urnAdmin,
-		},
-	}
-	return r, "urn:zimbraAdmin/GetAllDomains"
-}
+//func NewGetAllDomainsRequest() (*GetAllDomainsRequest, string) {
+//	r := &GetAllDomainsRequest{
+//		Content: GetAllDomainsRequestContent{
+//			Urn: urnAdmin,
+//		},
+//	}
+//	return r, "urn:zimbraAdmin/GetAllDomains"
+//}
 
 func NewGetDomainRequest(by ByRequest, attrs []string) (*GetDomainRequest, string) {
 	r := &GetDomainRequest{

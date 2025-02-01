@@ -1,5 +1,37 @@
 package zsoap
 
+import "log"
+
+func (s *ZAdmin) GetAllDomains(query string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZDomain, error) {
+	_, _, domains, _, err := s.SearchDirectoryAll(query, "", applyCos, applyConfig, sortBy, "domains", sortAscending, attrs)
+	return domains, err
+}
+
+func (s *ZAdmin) GetDomain(by ByRequest, attrs []string) (*ZDomain, error) {
+	req, soapAction := NewGetDomainRequest(by, attrs)
+	resp := GetDomainResponse{}
+
+	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	domain := NewDomain(resp.Content.Domain[0], s.Client)
+	domain.Client = s.Client
+
+	return domain, nil
+}
+
+func (s *ZAdmin) GetDomainByName(name string, attrs []string) (*ZDomain, error) {
+	by := NewByRequest(NAME_STR, name)
+	return s.GetDomain(by, attrs)
+}
+
+func (s *ZAdmin) GetDomainById(id string, attrs []string) (*ZDomain, error) {
+	by := NewByRequest(ID_STR, id)
+	return s.GetDomain(by, attrs)
+}
+
 type ZDomain struct {
 	Client                                                     *Client
 	ID                                                         string

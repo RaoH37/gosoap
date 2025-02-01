@@ -1,5 +1,19 @@
 package zsoap
 
+import "log"
+
+func (s *ZAdmin) GetAllBackups() ([]ZBackup, error) {
+	req, soapAction := NewBackupQueryRequest()
+	resp := BackupQueryResponse{}
+
+	if err := s.Client.Call(soapAction, req, &resp); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return resp.Content.Backups, nil
+}
+
 type ZBackup struct {
 	Label      string           `json:"label,omitempty"`
 	Type       string           `json:"type,omitempty"`

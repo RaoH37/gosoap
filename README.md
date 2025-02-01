@@ -7,8 +7,10 @@ This is a Zimbra client library written in Go.
 ```go
 package main
 
-import "fmt"
-import "local/gozsoap"
+import (
+	"fmt"
+	"github.com/RaoH37/gosoap"
+)
 
 func main() {
   url := "https://server.domain.tld:7071/service/admin/soap"
@@ -19,10 +21,10 @@ func main() {
   zcs.Init(url, true)
   zcs.Login(login, pwd)
 
-  byDomain := zsoap.NewByRequest("name", "domain.tld")
-
-  accounts := zcs.GetAllAccounts(nil, &byDomain)
-  fmt.Printf("%v", accounts)
+  accounts, _ := zcs.GetAllAccounts("", "", 1, 1, "", 1, "")
+  for _, account := range accounts {
+    fmt.Printf("%v\n", account)
+  }
 
   byAccount := zsoap.NewByRequest("name", "foo@domain.tld")
   account := zcs.GetAccount(byAccount, []string{"zimbraMailHost", "zimbraMailTransport"})

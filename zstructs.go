@@ -200,21 +200,21 @@ type GetServerResponseContent struct {
 
 // ************* DOMAIN ****************
 
-type GetAllDomainsRequest struct {
-	Content GetAllDomainsRequestContent `json:"GetAllDomainsRequest,omitempty"`
-}
-
-type GetAllDomainsRequestContent struct {
-	Urn string `json:"_jsns,attr"`
-}
-
-type GetAllDomainsResponse struct {
-	Content GetAllDomainsResponseContent `json:"GetAllDomainsResponse,omitempty"`
-}
-
-type GetAllDomainsResponseContent struct {
-	Domain []GenericResponse `json:"domain,omitempty"`
-}
+//type GetAllDomainsRequest struct {
+//	Content GetAllDomainsRequestContent `json:"GetAllDomainsRequest,omitempty"`
+//}
+//
+//type GetAllDomainsRequestContent struct {
+//	Urn string `json:"_jsns,attr"`
+//}
+//
+//type GetAllDomainsResponse struct {
+//	Content GetAllDomainsResponseContent `json:"GetAllDomainsResponse,omitempty"`
+//}
+//
+//type GetAllDomainsResponseContent struct {
+//	Domain []GenericResponse `json:"domain,omitempty"`
+//}
 
 type GetDomainRequest struct {
 	Content GetDomainRequestContent `json:"GetDomainRequest,omitempty"`
@@ -236,21 +236,21 @@ type GetDomainResponseContent struct {
 
 // ************* COS ****************
 
-type GetAllCosRequest struct {
-	Content GetAllCosRequestContent `json:"GetAllCosRequest,omitempty"`
-}
-
-type GetAllCosRequestContent struct {
-	Urn string `json:"_jsns,attr"`
-}
-
-type GetAllCosResponse struct {
-	Content GetAllCosResponseContent `json:"GetAllCosResponse,omitempty"`
-}
-
-type GetAllCosResponseContent struct {
-	Cos []GenericResponse `json:"cos,omitempty"`
-}
+//type GetAllCosRequest struct {
+//	Content GetAllCosRequestContent `json:"GetAllCosRequest,omitempty"`
+//}
+//
+//type GetAllCosRequestContent struct {
+//	Urn string `json:"_jsns,attr"`
+//}
+//
+//type GetAllCosResponse struct {
+//	Content GetAllCosResponseContent `json:"GetAllCosResponse,omitempty"`
+//}
+//
+//type GetAllCosResponseContent struct {
+//	Cos []GenericResponse `json:"cos,omitempty"`
+//}
 
 // ************* QUOTA ****************
 
