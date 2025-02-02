@@ -55,7 +55,7 @@ func TestGetAccount(t *testing.T) {
 	}
 }
 
-func TestAliasAccountAlias(t *testing.T) {
+func TestAccountAlias(t *testing.T) {
 	zcs, err := NewZcsClient()
 	if err != nil {
 		t.Fatalf("%v", err)

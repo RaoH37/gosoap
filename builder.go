@@ -34,6 +34,21 @@ func NewGetAccountRequest(by ByRequest, attrs []string) (*GetAccountRequest, str
 	return r, "urn:zimbraAdmin/GetAccount"
 }
 
+func NewGetDistributionListRequest(by ByRequest, attrs []string) (*GetDistributionListRequest, string) {
+	r := &GetDistributionListRequest{
+		Content: GetDistributionListRequestContent{
+			Urn: urnAdmin,
+			Dl:  by,
+		},
+	}
+
+	if attrs != nil {
+		r.Content.Attrs = strings.Join(attrs, ",")
+	}
+
+	return r, "urn:zimbraAdmin/GetDistributionList"
+}
+
 func NewGetCalendarResourceRequest(by ByRequest, attrs []string) (*GetCalendarResourceRequest, string) {
 	r := &GetCalendarResourceRequest{
 		Content: GetCalendarResourceRequestContent{

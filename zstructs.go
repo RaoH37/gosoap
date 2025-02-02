@@ -174,6 +174,58 @@ type AccountAliasRequestContent struct {
 	Alias string `json:"alias"`
 }
 
+// ************* DISTRIBUTION LIST ****************
+
+type GetDistributionListRequest struct {
+	Content GetDistributionListRequestContent `json:"GetDistributionListRequest,omitempty"`
+}
+
+type GetDistributionListRequestContent struct {
+	Dl    ByRequest `json:"dl,attr"`
+	Urn   string    `json:"_jsns,attr"`
+	Attrs string    `json:"attrs,omitempty"`
+}
+
+type GetDistributionListResponse struct {
+	Content GetDistributionListResponseContent `json:"GetDistributionListResponse,omitempty"`
+}
+
+type GetDistributionListResponseContent struct {
+	Dl []GenericResponse `json:"dl,omitempty"`
+}
+
+type AddDistributionListAliasRequest struct {
+	Content DistributionListAliasRequestContent `json:"AddDistributionListAliasRequest"`
+}
+
+type RemoveDistributionListAliasRequest struct {
+	Content DistributionListAliasRequestContent `json:"RemoveDistributionListAliasRequest"`
+}
+
+type DistributionListAliasRequestContent struct {
+	Urn   string `json:"_jsns"`
+	ID    string `json:"id"`
+	Alias string `json:"alias"`
+}
+
+type AddDistributionListMemberRequest struct {
+	Content DistributionListMemberRequestContent `json:"AddDistributionListMemberRequest"`
+}
+
+type RemoveDistributionListMemberRequest struct {
+	Content DistributionListMemberRequestContent `json:"removeDistributionListMemberRequest"`
+}
+
+type DistributionListMemberRequestContent struct {
+	Urn     string          `json:"_jsns"`
+	ID      string          `json:"id"`
+	Members []ContentString `json:"dlm"`
+}
+
+type ContentString struct {
+	Content string `json:"_content"`
+}
+
 // ************* RESOURCE ****************
 
 type GetCalendarResourceRequest struct {

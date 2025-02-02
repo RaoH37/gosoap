@@ -52,3 +52,13 @@ func setResponseAttrs(attrs []AttrResponse, object interface{}) {
 		}
 	}
 }
+
+func convertToContentStrings(arr []string) []ContentString {
+	contentStrings := make([]ContentString, len(arr))
+
+	for i, a := range arr {
+		contentStrings[i] = ContentString{Content: a}
+	}
+
+	return contentStrings
+}

@@ -14,6 +14,7 @@ var token = os.Getenv("GOSOAP_TOKEN")
 func NewZcsClient() (zsoap.ZAdmin, error) {
 	zcs := zsoap.ZAdmin{}
 	zcs.Init(url, true)
+	zcs.Debug()
 
 	if len(token) > 0 {
 		zcs.Client.SetToken(token)
