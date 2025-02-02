@@ -98,7 +98,7 @@ type SearchDirectoryResponseContent struct {
 	Accounts     []GenericResponse `json:"account,omitempty"`
 	Dls          []GenericResponse `json:"dl,omitempty"`
 	Domains      []GenericResponse `json:"domain,omitempty"`
-	Calresources []GenericResponse `json:"calresource,omitempty"`
+	CalResources []GenericResponse `json:"calresource,omitempty"`
 	Coses        []GenericResponse `json:"cos,omitempty"`
 }
 
@@ -158,6 +158,44 @@ type ModifyAccountResponse struct {
 
 type ModifyAccountResponseContent struct {
 	Account []GenericResponse `json:"account,omitempty"`
+}
+
+// ************* RESOURCE ****************
+
+type GetCalendarResourceRequest struct {
+	Content GetCalendarResourceRequestContent `json:"GetCalendarResourceRequest,omitempty"`
+}
+
+type GetCalendarResourceRequestContent struct {
+	CalResource ByRequest `json:"calresource,attr"`
+	Urn         string    `json:"_jsns,attr"`
+	Attrs       string    `json:"attrs,omitempty"`
+}
+
+type GetCalendarResourceResponse struct {
+	Content GetCalendarResourceResponseContent `json:"GetCalendarResourceResponse,omitempty"`
+}
+
+type GetCalendarResourceResponseContent struct {
+	CalResource []GenericResponse `json:"calresource,omitempty"`
+}
+
+type ModifyCalendarResourceRequest struct {
+	Content ModifyCalendarResourceRequestContent `json:"ModifyCalendarResourceRequest,omitempty"`
+}
+
+type ModifyCalendarResourceRequestContent struct {
+	Urn   string         `json:"_jsns,attr"`
+	ID    string         `json:"id,omitempty"`
+	Attrs []AttrResponse `json:"a,omitempty"`
+}
+
+type ModifyCalendarResourceResponse struct {
+	Content ModifyCalendarResourceResponseContent `json:"ModifyCalendarResourceResponse,omitempty"`
+}
+
+type ModifyCalendarResourceResponseContent struct {
+	CalResource []GenericResponse `json:"calresource,omitempty"`
 }
 
 // ************* SERVER ****************

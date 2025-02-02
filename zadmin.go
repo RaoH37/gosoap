@@ -91,7 +91,7 @@ func (s *ZAdmin) SearchDirectoryCount(query string, domain string, types string)
 	return resp.Content.Count, nil
 }
 
-func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDistributionList, []ZDomain, []ZCos, error) {
+func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDistributionList, []ZDomain, []ZCos, []ZResource, error) {
 	params := SearchDirectoryParams{
 		Urn:           urnAdmin,
 		Query:         query,
@@ -113,7 +113,7 @@ func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset
 
 	if err := s.Client.Call(soapAction, req, &resp); err != nil {
 		log.Println(err)
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, nil, nil, err
 	}
 
 	accounts := make([]ZAccount, len(resp.Content.Accounts))
@@ -140,23 +140,30 @@ func (s *ZAdmin) SearchDirectory(query string, maxResults int, limit int, offset
 		coses[index] = *NewCos(cos, s.Client)
 	}
 
-	return accounts, dls, domains, coses, nil
+	calresources := make([]ZResource, len(resp.Content.CalResources))
+
+	for index, calresource := range resp.Content.CalResources {
+		calresources[index] = *NewResource(calresource, s.Client)
+	}
+
+	return accounts, dls, domains, coses, calresources, nil
 }
 
-func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDistributionList, []ZDomain, []ZCos, error) {
+func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string) ([]ZAccount, []ZDistributionList, []ZDomain, []ZCos, []ZResource, error) {
 	accounts := make([]ZAccount, 0)
 	dls := make([]ZDistributionList, 0)
 	domains := make([]ZDomain, 0)
 	coses := make([]ZCos, 0)
+	calresources := make([]ZResource, 0)
 
 	total, err := s.SearchDirectoryCount(query, domain, types)
 	if err != nil {
 		log.Println(err)
-		return nil, nil, nil, nil, err
+		return nil, nil, nil, nil, nil, err
 	}
 
 	if total == 0 {
-		return accounts, dls, domains, coses, nil
+		return accounts, dls, domains, coses, calresources, nil
 	}
 
 	const maxResults = 1_000_000
@@ -165,13 +172,13 @@ func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, a
 	retries := 3
 
 	for offset < total {
-		_accounts, _dls, _domains, _coses, err := s.SearchDirectory(query, maxResults, limit, offset, domain, applyCos, applyConfig, sortBy, types, sortAscending, attrs)
+		_accounts, _dls, _domains, _coses, _calresources, err := s.SearchDirectory(query, maxResults, limit, offset, domain, applyCos, applyConfig, sortBy, types, sortAscending, attrs)
 		if err != nil {
 			log.Println(err)
 			retries -= 1
 
 			if retries <= 0 {
-				return nil, nil, nil, nil, err
+				return nil, nil, nil, nil, nil, err
 			} else {
 				time.Sleep(s.RetryWaitingDuration)
 				continue
@@ -182,8 +189,9 @@ func (s *ZAdmin) SearchDirectoryAll(query string, domain string, applyCos int, a
 		dls = append(dls, _dls...)
 		domains = append(domains, _domains...)
 		coses = append(coses, _coses...)
+		calresources = append(calresources, _calresources...)
 		offset += limit
 	}
 
-	return accounts, dls, domains, coses, nil
+	return accounts, dls, domains, coses, calresources, nil
 }

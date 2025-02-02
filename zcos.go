@@ -1,7 +1,7 @@
 package zsoap
 
-func (s *ZAdmin) GetAllCos(query string, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZCos, error) {
-	_, _, _, coses, err := s.SearchDirectoryAll(query, "", 0, applyConfig, sortBy, "coses", sortAscending, attrs)
+func (s *ZAdmin) GetAllCoses(query string, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZCos, error) {
+	_, _, _, coses, _, err := s.SearchDirectoryAll(query, "", 0, applyConfig, sortBy, "coses", sortAscending, attrs)
 	return coses, err
 }
 

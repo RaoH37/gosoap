@@ -7,12 +7,12 @@ import (
 )
 
 func (s *ZAdmin) GetAllAccounts(query string, domain string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZAccount, error) {
-	accounts, _, _, _, err := s.SearchDirectoryAll(query, domain, applyCos, applyConfig, sortBy, "accounts", sortAscending, attrs)
+	accounts, _, _, _, _, err := s.SearchDirectoryAll(query, domain, applyCos, applyConfig, sortBy, "accounts", sortAscending, attrs)
 	return accounts, err
 }
 
 func (s *ZAdmin) GetAccounts(query string, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZAccount, error) {
-	accounts, _, _, _, err := s.SearchDirectory(query, 1_000_000, limit, offset, domain, applyCos, applyConfig, sortBy, "accounts", sortAscending, attrs)
+	accounts, _, _, _, _, err := s.SearchDirectory(query, 1_000_000, limit, offset, domain, applyCos, applyConfig, sortBy, "accounts", sortAscending, attrs)
 	return accounts, err
 }
 

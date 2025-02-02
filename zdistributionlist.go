@@ -3,12 +3,12 @@ package zsoap
 import "strings"
 
 func (s *ZAdmin) GetAllDistributionLists(query string, domain string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZDistributionList, error) {
-	_, dls, _, _, err := s.SearchDirectoryAll(query, domain, applyCos, applyConfig, sortBy, "distributionlists", sortAscending, attrs)
+	_, dls, _, _, _, err := s.SearchDirectoryAll(query, domain, applyCos, applyConfig, sortBy, "distributionlists", sortAscending, attrs)
 	return dls, err
 }
 
 func (s *ZAdmin) GetDistributionLists(query string, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZDistributionList, error) {
-	_, dls, _, _, err := s.SearchDirectory(query, 1_000_000, limit, offset, domain, applyCos, applyConfig, sortBy, "distributionlists", sortAscending, attrs)
+	_, dls, _, _, _, err := s.SearchDirectory(query, 1_000_000, limit, offset, domain, applyCos, applyConfig, sortBy, "distributionlists", sortAscending, attrs)
 	return dls, err
 }
 

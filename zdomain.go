@@ -3,7 +3,7 @@ package zsoap
 import "log"
 
 func (s *ZAdmin) GetAllDomains(query string, applyCos int, applyConfig int, sortBy string, sortAscending int, attrs string) ([]ZDomain, error) {
-	_, _, domains, _, err := s.SearchDirectoryAll(query, "", applyCos, applyConfig, sortBy, "domains", sortAscending, attrs)
+	_, _, domains, _, _, err := s.SearchDirectoryAll(query, "", applyCos, applyConfig, sortBy, "domains", sortAscending, attrs)
 	return domains, err
 }
 
