@@ -57,6 +57,7 @@ type ZAccount struct {
 	ZimbraPrefMailForwardingAddress     []string
 	ZimbraMailForwardingAddress         []string
 	ZimbraPrefMailLocalDeliveryDisabled bool
+	ZimbraMailAlias                     []string
 }
 
 func (a *ZAccount) LastLogon() (time.Time, error) {
@@ -123,4 +124,48 @@ func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccount
 		},
 	}
 	return r, "urn:zimbraAdmin/ModifyAccount"
+}
+
+func NewAddAccountAliasRequest(id string, alias string) (*AddAccountAliasRequest, string) {
+	r := &AddAccountAliasRequest{
+		Content: AccountAliasRequestContent{
+			Urn:   urnAdmin,
+			ID:    id,
+			Alias: alias,
+		},
+	}
+	return r, "urn:zimbraAdmin/AddAccountAlias"
+}
+
+func (s *ZAdmin) AddAccountAlias(id string, alias string) error {
+	req, soapAction := NewAddAccountAliasRequest(id, alias)
+
+	if err := s.Client.Call(soapAction, req, nil); err != nil {
+		log.Println(err)
+		return err
+	} else {
+		return nil
+	}
+}
+
+func NewRemoveAccountAliasRequest(id string, alias string) (*RemoveAccountAliasRequest, string) {
+	r := &RemoveAccountAliasRequest{
+		Content: AccountAliasRequestContent{
+			Urn:   urnAdmin,
+			ID:    id,
+			Alias: alias,
+		},
+	}
+	return r, "urn:zimbraAdmin/RemoveAccountAlias"
+}
+
+func (s *ZAdmin) RemoveAccountAlias(id string, alias string) error {
+	req, soapAction := NewRemoveAccountAliasRequest(id, alias)
+
+	if err := s.Client.Call(soapAction, req, nil); err != nil {
+		log.Println(err)
+		return err
+	} else {
+		return nil
+	}
 }

@@ -160,6 +160,20 @@ type ModifyAccountResponseContent struct {
 	Account []GenericResponse `json:"account,omitempty"`
 }
 
+type AddAccountAliasRequest struct {
+	Content AccountAliasRequestContent `json:"AddAccountAliasRequest"`
+}
+
+type RemoveAccountAliasRequest struct {
+	Content AccountAliasRequestContent `json:"RemoveAccountAliasRequest"`
+}
+
+type AccountAliasRequestContent struct {
+	Urn   string `json:"_jsns"`
+	ID    string `json:"id"`
+	Alias string `json:"alias"`
+}
+
 // ************* RESOURCE ****************
 
 type GetCalendarResourceRequest struct {
