@@ -1,169 +1,151 @@
 package zsoap
 
-import "strings"
+import (
+	"reflect"
+	"regexp"
+	"strconv"
+	"strings"
 
-func NewAuthRequest(name string, password string) (*AuthRequest, string) {
-	r := &AuthRequest{Content: AuthRequestContent{
-		Name:     name,
-		Password: password,
-		Urn:      urnAdmin,
-	},
+	"github.com/RaoH37/gosoap/zimbraAdmin"
+)
+
+var regexpStartByUpperChar = regexp.MustCompile(`^[[:upper:]]`)
+
+func capitalizeByteSlice(str string) string {
+	if regexpStartByUpperChar.MatchString(str) {
+		return str
 	}
-	return r, "urn:zimbraAdmin/Auth"
+
+	bs := []byte(str)
+	if len(bs) == 0 {
+		return ""
+	}
+	bs[0] = byte(bs[0] - 32)
+
+	return string(bs)
 }
 
-func NewByRequest(by string, value string) ByRequest {
-	return ByRequest{
-		By:    by,
-		Value: value,
+func setResponseAttrs(attrs []zimbraAdmin.AttrResponse, object interface{}) {
+	for _, attr := range attrs {
+		s := reflect.Indirect(reflect.ValueOf(object)).Elem()
+		metric := s.FieldByName(capitalizeByteSlice(attr.Key))
+
+		// fmt.Printf("key=%s upkey=%s :: value=%s (%T) valid=%s\n", attr.Key, capitalizeByteSlice(attr.Key), attr.Value, attr.Value, metric.IsValid())
+
+		if metric.IsValid() {
+			switch metric.Interface().(type) {
+			case bool:
+				metric.SetBool(strings.ToLower(attr.Value) == "true")
+			case int:
+				vint, _ := strconv.ParseInt(attr.Value, 10, 64)
+				metric.SetInt(vint)
+			case string:
+				metric.SetString(attr.Value)
+			case []string:
+				elements := strings.Split(attr.Value, ",")
+
+				for _, element := range elements {
+					// elements[i] = strings.TrimSpace(element)
+					metric.Set(reflect.Append(metric, reflect.ValueOf(strings.TrimSpace(element))))
+				}
+
+				// metric.Set(reflect.Append(metric, reflect.ValueOf(attr.Value)))
+			}
+		}
 	}
 }
 
-func NewGetAccountRequest(by ByRequest, attrs []string) (*GetAccountRequest, string) {
-	r := &GetAccountRequest{
-		Content: GetAccountRequestContent{
-			Urn:     urnAdmin,
-			Account: by,
-		},
+func buildAccount(resp zimbraAdmin.GenericResponse) *ZAccount {
+	account := &ZAccount{
+		ID:   resp.ID,
+		Name: resp.Name,
 	}
 
-	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
-	}
+	setResponseAttrs(resp.Attrs, &account)
 
-	return r, "urn:zimbraAdmin/GetAccount"
+	return account
 }
 
-func NewGetDistributionListRequest(by ByRequest, attrs []string) (*GetDistributionListRequest, string) {
-	r := &GetDistributionListRequest{
-		Content: GetDistributionListRequestContent{
-			Urn: urnAdmin,
-			Dl:  by,
-		},
+func buildAccountQuota(resp zimbraAdmin.QuotaResponse) *ZAccount {
+	account := &ZAccount{
+		ID:    resp.ID,
+		Name:  resp.Name,
+		Used:  resp.Used,
+		Limit: resp.Limit,
 	}
 
-	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
-	}
-
-	return r, "urn:zimbraAdmin/GetDistributionList"
+	return account
 }
 
-func NewGetCalendarResourceRequest(by ByRequest, attrs []string) (*GetCalendarResourceRequest, string) {
-	r := &GetCalendarResourceRequest{
-		Content: GetCalendarResourceRequestContent{
-			Urn:         urnAdmin,
-			CalResource: by,
-		},
+func buildResource(resp zimbraAdmin.GenericResponse) *ZCalendarResource {
+	resource := &ZCalendarResource{
+		ID:   resp.ID,
+		Name: resp.Name,
 	}
 
-	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
-	}
+	setResponseAttrs(resp.Attrs, &resource)
 
-	return r, "urn:zimbraAdmin/GetCalendarResource"
+	return resource
 }
 
-//func NewGetAllCosRequest() (*GetAllCosRequest, string) {
-//	r := &GetAllCosRequest{
-//		Content: GetAllCosRequestContent{
-//			Urn: urnAdmin,
-//		},
-//	}
-//	return r, "urn:zimbraAdmin/GetAllCos"
-//}
-
-//func NewGetAllDomainsRequest() (*GetAllDomainsRequest, string) {
-//	r := &GetAllDomainsRequest{
-//		Content: GetAllDomainsRequestContent{
-//			Urn: urnAdmin,
-//		},
-//	}
-//	return r, "urn:zimbraAdmin/GetAllDomains"
-//}
-
-func NewGetDomainRequest(by ByRequest, attrs []string) (*GetDomainRequest, string) {
-	r := &GetDomainRequest{
-		Content: GetDomainRequestContent{
-			Urn:    urnAdmin,
-			Domain: by,
-		},
+func buildCos(resp zimbraAdmin.GenericResponse) *ZCos {
+	cos := &ZCos{
+		ID:   resp.ID,
+		Name: resp.Name,
 	}
 
-	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
-	}
+	setResponseAttrs(resp.Attrs, &cos)
 
-	return r, "urn:zimbraAdmin/GetDomain"
+	return cos
 }
 
-func NewGetAllServersRequest(service string) (*GetAllServersRequest, string) {
-	r := &GetAllServersRequest{
-		Content: GetAllServersRequestContent{
-			Urn: urnAdmin,
-		},
+func buildDistributionList(resp zimbraAdmin.GenericResponse) *ZDistributionList {
+	dl := &ZDistributionList{
+		ID:   resp.ID,
+		Name: resp.Name,
 	}
-	if service != "" {
-		r.Content.Service = service
-	}
-	return r, "urn:zimbraAdmin/GetAllServers"
+
+	setResponseAttrs(resp.Attrs, &dl)
+
+	return dl
 }
 
-func NewGetServerRequest(by ByRequest, applyConfig int, attrs []string) (*GetServerRequest, string) {
-	r := &GetServerRequest{
-		Content: GetServerRequestContent{
-			Urn:         urnAdmin,
-			ApplyConfig: applyConfig,
-			Server:      by,
-		},
+func buildDomain(resp zimbraAdmin.GenericResponse) *ZDomain {
+	domain := &ZDomain{
+		ID:   resp.ID,
+		Name: resp.Name,
 	}
 
-	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
-	}
+	setResponseAttrs(resp.Attrs, &domain)
 
-	return r, "urn:zimbraAdmin/GetServer"
+	return domain
 }
 
-func NewGetQuotaUsageRequest(domain string, allServers int, limit int, offset int, sortBy string, sortAscending int, refresh int) (*GetQuotaUsageRequest, string) {
-	r := &GetQuotaUsageRequest{
-		Content: GetQuotaUsageRequestContent{
-			Urn:           urnAdmin,
-			Servers:       allServers,
-			Domain:        domain,
-			Limit:         limit,
-			Offset:        offset,
-			SortBy:        sortBy,
-			SortAscending: sortAscending,
-			Refresh:       refresh,
-		},
+func buildLicense(resp zimbraAdmin.GetLicenseResponseContent) *ZLicense {
+	license := &ZLicense{}
+
+	for _, attrName := range resp.License {
+		setResponseAttrs(attrName.ToAttrsResponse(), &license)
 	}
 
-	return r, "urn:zimbraAdmin/GetQuotaUsageRequest"
+	for _, attrName := range resp.Activation {
+		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	}
+
+	for _, attrName := range resp.Info {
+		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	}
+
+	return license
 }
 
-func NewBackupQueryRequest() (*BackupQueryRequest, string) {
-	r := &BackupQueryRequest{
-		Content: BackupQueryRequestContent{
-			Urn:   urnAdmin,
-			Query: make(map[string]string),
-		},
+func buildServer(resp zimbraAdmin.GenericResponse) *ZServer {
+	server := &ZServer{
+		ID:   resp.ID,
+		Name: resp.Name,
 	}
-	return r, "urn:zimbraAdmin/BackupQueryRequest"
-}
 
-func NewSearchDirectoryRequest(params *SearchDirectoryParams) (*SearchDirectoryRequest, string) {
-	r := &SearchDirectoryRequest{
-		Content: *params,
-	}
-	return r, "urn:zimbraAdmin/SearchDirectoryRequest"
-}
+	setResponseAttrs(resp.Attrs, &server)
 
-func NewLicenseRequest() (*GetLicenseRequest, string) {
-	r := &GetLicenseRequest{
-		Content: GetLicenseRequestContent{
-			Urn: urnAdmin,
-		},
-	}
-	return r, "urn:zimbraAdmin/GetLicenseRequest"
+	return server
 }

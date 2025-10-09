@@ -1,18 +1,5 @@
 package zsoap
 
-func (s *ZAdmin) GetLicense() (*ZLicense, error) {
-	req, soapAction := NewLicenseRequest()
-	resp := GetLicenseResponse{}
-
-	err := s.Client.Call(soapAction, req, &resp)
-
-	if err == nil {
-		return NewLicense(resp.Content), err
-	} else {
-		return nil, err
-	}
-}
-
 type ZLicense struct {
 	AccountsLimit                        int
 	ArchivingAccountsLimit               int
@@ -51,22 +38,4 @@ type ZLicense struct {
 	TotalAccounts                        int
 	ArchivingAccounts                    int
 	ServerTime                           int
-}
-
-func NewLicense(resp GetLicenseResponseContent) *ZLicense {
-	license := &ZLicense{}
-
-	for _, attrName := range resp.License {
-		setResponseAttrs(attrName.ToAttrsResponse(), &license)
-	}
-
-	for _, attrName := range resp.Activation {
-		setResponseAttrs(attrName.ToAttrsResponse(), &license)
-	}
-
-	for _, attrName := range resp.Info {
-		setResponseAttrs(attrName.ToAttrsResponse(), &license)
-	}
-
-	return license
 }

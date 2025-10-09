@@ -1,4 +1,10 @@
-package zsoap
+package zimbraAdmin
+
+// ************* COMMON ***************
+
+type ContentString struct {
+	Content string `json:"_content"`
+}
 
 type AttrResponse struct {
 	Key   string `json:"n,omitempty"`
@@ -31,7 +37,7 @@ func (anr *AttrNameResponse) ToAttrResponse() AttrResponse {
 	}
 }
 
-type ByRequest struct {
+type ByNode struct {
 	By    string `json:"by,omitempty"`
 	Value string `json:"_content,omitempty"`
 }
@@ -42,7 +48,17 @@ type GenericResponse struct {
 	Attrs []AttrResponse `json:"a,omitempty"`
 }
 
-// ************* LOGIN ****************
+// ************* REQUEST ***************
+
+type AddAccountAliasRequest struct {
+	Content AccountAliasRequestContent `json:"AddAccountAliasRequest"`
+}
+
+type AccountAliasRequestContent struct {
+	Urn   string `json:"_jsns"`
+	ID    string `json:"id"`
+	Alias string `json:"alias"`
+}
 
 type AuthRequest struct {
 	Content AuthRequestContent `json:"AuthRequest,omitempty"`
@@ -67,48 +83,136 @@ type AuthResponseToken struct {
 	Content string `json:"_content"`
 }
 
-// ************* GENERIC ****************
-
-type SearchDirectoryRequest struct {
-	Content SearchDirectoryParams `json:"SearchDirectoryRequest,omitempty"`
+type DelegateAuthRequest struct {
+	Content DelegateAuthRequestContent `json:"DelegateAuthRequest,omitempty"`
 }
 
-type SearchDirectoryParams struct {
+type DelegateAuthRequestContent struct {
+	Account ByNode `json:"account,attr"`
+	Urn     string `json:"_jsns,attr"`
+}
+
+type DelegateAuthResponse struct {
+	Content DelegateAuthResponseContent `json:"DelegateAuthResponse,omitempty"`
+}
+
+type DelegateAuthResponseContent struct {
+	TOKEN    string `json:"authToken,omitempty"`
+	LifeTime int    `json:"lifetime,omitempty"`
+}
+
+type DeleteAccountRequest struct {
+	Content IdRequestContent `json:"DeleteAccountRequest,omitempty"`
+}
+
+//type DeleteAccountRequestContent struct {
+//	Urn string `json:"_jsns,attr"`
+//	ID  string `json:"id,omitempty"`
+//}
+
+type DeleteCalendarResourceRequest struct {
+	Content IdRequestContent `json:"DeleteCalendarResourceRequest,omitempty"`
+}
+
+//type DeleteCalendarResourceRequestContent struct {
+//	Urn string `json:"_jsns,attr"`
+//	ID  string `json:"id,omitempty"`
+//}
+
+type DeleteCosRequest struct {
+	Content IdRequestContent `json:"DeleteCosRequest,omitempty"`
+}
+
+//type DeleteCosRequestContent struct {
+//	Urn string `json:"_jsns,attr"`
+//	ID  string `json:"id,omitempty"`
+//}
+
+type DeleteDistributionListRequest struct {
+	Content DeleteDistributionListRequestContent `json:"DeleteDistributionListRequest,omitempty"`
+}
+
+type DeleteDistributionListRequestContent struct {
 	Urn           string `json:"_jsns,attr"`
-	Query         string `json:"query,omitempty"`
-	MaxResults    int    `json:"maxResults,omitempty"`
-	Limit         int    `json:"limit,omitempty"`
-	Offset        int    `json:"offset,omitempty"`
-	Domain        string `json:"domain,omitempty"`
-	ApplyCos      int    `json:"applyCos,omitempty"`
-	ApplyConfig   int    `json:"applyConfig,omitempty"`
-	SortBy        string `json:"sortBy,omitempty"`
-	Types         string `json:"types,omitempty"`
-	SortAscending int    `json:"sortAscending,omitempty"`
-	CountOnly     int    `json:"countOnly,omitempty"`
-	Attrs         string `json:"attrs,omitempty"`
+	ID            string `json:"id,omitempty"`
+	CascadeDelete int    `json:"cascadeDelete,omitempty"`
 }
 
-type SearchDirectoryResponse struct {
-	Content SearchDirectoryResponseContent `json:"SearchDirectoryResponse,omitempty"`
+type DeleteDomainRequest struct {
+	Content IdRequestContent `json:"DeleteDomainRequest,omitempty"`
 }
 
-type SearchDirectoryResponseContent struct {
-	Count        int               `json:"num,omitempty"`
-	Accounts     []GenericResponse `json:"account,omitempty"`
-	Dls          []GenericResponse `json:"dl,omitempty"`
-	Domains      []GenericResponse `json:"domain,omitempty"`
-	CalResources []GenericResponse `json:"calresource,omitempty"`
-	Coses        []GenericResponse `json:"cos,omitempty"`
+type IdRequestContent struct {
+	Urn string `json:"_jsns,attr"`
+	ID  string `json:"id,omitempty"`
 }
 
-// ************* LICENSE ****************
+type DeleteGalSyncAccountRequest struct {
+	Content DeleteGalSyncAccountRequestContent `json:"DeleteGalSyncAccountRequest,omitempty"`
+}
+
+type DeleteGalSyncAccountRequestContent struct {
+	Account ByNode `json:"account,attr"`
+	Urn     string `json:"_jsns,attr"`
+}
+
+type GetAccountRequest struct {
+	Content GetAccountRequestContent `json:"GetAccountRequest,omitempty"`
+}
+
+type GetAccountRequestContent struct {
+	Account ByNode `json:"account,attr"`
+	Urn     string `json:"_jsns,attr"`
+	Attrs   string `json:"attrs,omitempty"`
+}
+
+type GetAccountResponse struct {
+	Content GetAccountResponseContent `json:"GetAccountResponse,omitempty"`
+}
+
+type GetAccountResponseContent struct {
+	Account []GenericResponse `json:"account,omitempty"`
+}
+
+type GetAllConfigRequest struct {
+	Content UrnRequestContent `json:"GetAllConfigRequest,omitempty"`
+}
+
+//type GetAllConfigRequestContent struct {
+//	Urn string `json:"_jsns,attr"`
+//}
+
+type GetAllConfigResponse struct {
+	Content GetAllConfigResponseContent `json:"GetAllConfigResponse,omitempty"`
+}
+
+type GetAllConfigResponseContent struct {
+	Attrs []AttrResponse `json:"a,omitempty"`
+}
+
+type GetDistributionListRequest struct {
+	Content GetDistributionListRequestContent `json:"GetDistributionListRequest,omitempty"`
+}
+
+type GetDistributionListRequestContent struct {
+	Dl    ByNode `json:"dl,attr"`
+	Urn   string `json:"_jsns,attr"`
+	Attrs string `json:"attrs,omitempty"`
+}
+
+type GetDistributionListResponse struct {
+	Content GetDistributionListResponseContent `json:"GetDistributionListResponse,omitempty"`
+}
+
+type GetDistributionListResponseContent struct {
+	Dl []GenericResponse `json:"dl,omitempty"`
+}
 
 type GetLicenseRequest struct {
-	Content GetLicenseRequestContent `json:"GetLicenseRequest,omitempty"`
+	Content UrnRequestContent `json:"GetLicenseRequest,omitempty"`
 }
 
-type GetLicenseRequestContent struct {
+type UrnRequestContent struct {
 	Urn string `json:"_jsns,attr"`
 }
 
@@ -120,26 +224,6 @@ type GetLicenseResponseContent struct {
 	License    []AttrNamesResponse `json:"license,omitempty"`
 	Activation []AttrNamesResponse `json:"activation,omitempty"`
 	Info       []AttrNamesResponse `json:"info,omitempty"`
-}
-
-// ************* ACCOUNT ****************
-
-type GetAccountRequest struct {
-	Content GetAccountRequestContent `json:"GetAccountRequest,omitempty"`
-}
-
-type GetAccountRequestContent struct {
-	Account ByRequest `json:"account,attr"`
-	Urn     string    `json:"_jsns,attr"`
-	Attrs   string    `json:"attrs,omitempty"`
-}
-
-type GetAccountResponse struct {
-	Content GetAccountResponseContent `json:"GetAccountResponse,omitempty"`
-}
-
-type GetAccountResponseContent struct {
-	Account []GenericResponse `json:"account,omitempty"`
 }
 
 type ModifyAccountRequest struct {
@@ -160,39 +244,50 @@ type ModifyAccountResponseContent struct {
 	Account []GenericResponse `json:"account,omitempty"`
 }
 
-type AddAccountAliasRequest struct {
-	Content AccountAliasRequestContent `json:"AddAccountAliasRequest"`
+type SearchDirectoryParams struct {
+	Urn           string `json:"_jsns,attr"`
+	Query         string `json:"query,omitempty"`
+	MaxResults    int    `json:"maxResults,omitempty"`
+	Limit         int    `json:"limit,omitempty"`
+	Offset        int    `json:"offset,omitempty"`
+	Domain        string `json:"domain,omitempty"`
+	ApplyCos      int    `json:"applyCos,omitempty"`
+	ApplyConfig   int    `json:"applyConfig,omitempty"`
+	SortBy        string `json:"sortBy,omitempty"`
+	Types         string `json:"types,omitempty"`
+	SortAscending int    `json:"sortAscending,omitempty"`
+	CountOnly     int    `json:"countOnly,omitempty"`
+	Attrs         string `json:"attrs,omitempty"`
+}
+
+type SearchDirectoryRequest struct {
+	Content SearchDirectoryParams `json:"SearchDirectoryRequest,omitempty"`
+}
+
+type SearchDirectoryResponse struct {
+	Content SearchDirectoryResponseContent `json:"SearchDirectoryResponse,omitempty"`
+}
+
+type SearchDirectoryResponseContent struct {
+	Count        int               `json:"num,omitempty"`
+	Accounts     []GenericResponse `json:"account,omitempty"`
+	Dls          []GenericResponse `json:"dl,omitempty"`
+	Domains      []GenericResponse `json:"domain,omitempty"`
+	CalResources []GenericResponse `json:"calresource,omitempty"`
+	Coses        []GenericResponse `json:"cos,omitempty"`
 }
 
 type RemoveAccountAliasRequest struct {
 	Content AccountAliasRequestContent `json:"RemoveAccountAliasRequest"`
 }
 
-type AccountAliasRequestContent struct {
-	Urn   string `json:"_jsns"`
-	ID    string `json:"id"`
-	Alias string `json:"alias"`
-}
+//type RemoveAccountAliasRequestContent struct {
+//	Urn   string `json:"_jsns"`
+//	ID    string `json:"id"`
+//	Alias string `json:"alias"`
+//}
 
 // ************* DISTRIBUTION LIST ****************
-
-type GetDistributionListRequest struct {
-	Content GetDistributionListRequestContent `json:"GetDistributionListRequest,omitempty"`
-}
-
-type GetDistributionListRequestContent struct {
-	Dl    ByRequest `json:"dl,attr"`
-	Urn   string    `json:"_jsns,attr"`
-	Attrs string    `json:"attrs,omitempty"`
-}
-
-type GetDistributionListResponse struct {
-	Content GetDistributionListResponseContent `json:"GetDistributionListResponse,omitempty"`
-}
-
-type GetDistributionListResponseContent struct {
-	Dl []GenericResponse `json:"dl,omitempty"`
-}
 
 type AddDistributionListAliasRequest struct {
 	Content DistributionListAliasRequestContent `json:"AddDistributionListAliasRequest"`
@@ -222,10 +317,6 @@ type DistributionListMemberRequestContent struct {
 	Members []ContentString `json:"dlm"`
 }
 
-type ContentString struct {
-	Content string `json:"_content"`
-}
-
 // ************* RESOURCE ****************
 
 type GetCalendarResourceRequest struct {
@@ -233,9 +324,9 @@ type GetCalendarResourceRequest struct {
 }
 
 type GetCalendarResourceRequestContent struct {
-	CalResource ByRequest `json:"calresource,attr"`
-	Urn         string    `json:"_jsns,attr"`
-	Attrs       string    `json:"attrs,omitempty"`
+	CalResource ByNode `json:"calresource,attr"`
+	Urn         string `json:"_jsns,attr"`
+	Attrs       string `json:"attrs,omitempty"`
 }
 
 type GetCalendarResourceResponse struct {
@@ -280,7 +371,7 @@ type GetAllServersResponse struct {
 }
 
 type GetAllServersResponseContent struct {
-	Server []GenericResponse `json:"server,omitempty"`
+	Servers []GenericResponse `json:"servers,omitempty"`
 }
 
 type GetServerRequest struct {
@@ -288,10 +379,10 @@ type GetServerRequest struct {
 }
 
 type GetServerRequestContent struct {
-	Server      ByRequest `json:"server,attr"`
-	Urn         string    `json:"_jsns,attr"`
-	ApplyConfig int       `json:"applyConfig,omitempty"`
-	Attrs       string    `json:"attrs,omitempty"`
+	Server      ByNode `json:"server,attr"`
+	Urn         string `json:"_jsns,attr"`
+	ApplyConfig int    `json:"applyConfig,omitempty"`
+	Attrs       string `json:"attrs,omitempty"`
 }
 
 type GetServerResponse struct {
@@ -304,30 +395,14 @@ type GetServerResponseContent struct {
 
 // ************* DOMAIN ****************
 
-//type GetAllDomainsRequest struct {
-//	Content GetAllDomainsRequestContent `json:"GetAllDomainsRequest,omitempty"`
-//}
-//
-//type GetAllDomainsRequestContent struct {
-//	Urn string `json:"_jsns,attr"`
-//}
-//
-//type GetAllDomainsResponse struct {
-//	Content GetAllDomainsResponseContent `json:"GetAllDomainsResponse,omitempty"`
-//}
-//
-//type GetAllDomainsResponseContent struct {
-//	Domain []GenericResponse `json:"domain,omitempty"`
-//}
-
 type GetDomainRequest struct {
 	Content GetDomainRequestContent `json:"GetDomainRequest,omitempty"`
 }
 
 type GetDomainRequestContent struct {
-	Domain ByRequest `json:"domain,attr"`
-	Urn    string    `json:"_jsns,attr"`
-	Attrs  string    `json:"attrs,omitempty"`
+	Domain ByNode `json:"domain,attr"`
+	Urn    string `json:"_jsns,attr"`
+	Attrs  string `json:"attrs,omitempty"`
 }
 
 type GetDomainResponse struct {
@@ -335,28 +410,8 @@ type GetDomainResponse struct {
 }
 
 type GetDomainResponseContent struct {
-	Domain []GenericResponse `json:"domain,omitempty"`
+	Domains []GenericResponse `json:"domain,omitempty"`
 }
-
-// ************* COS ****************
-
-//type GetAllCosRequest struct {
-//	Content GetAllCosRequestContent `json:"GetAllCosRequest,omitempty"`
-//}
-//
-//type GetAllCosRequestContent struct {
-//	Urn string `json:"_jsns,attr"`
-//}
-//
-//type GetAllCosResponse struct {
-//	Content GetAllCosResponseContent `json:"GetAllCosResponse,omitempty"`
-//}
-//
-//type GetAllCosResponseContent struct {
-//	Cos []GenericResponse `json:"cos,omitempty"`
-//}
-
-// ************* QUOTA ****************
 
 type GetQuotaUsageRequest struct {
 	Content GetQuotaUsageRequestContent `json:"GetQuotaUsageRequest,omitempty"`
@@ -409,4 +464,21 @@ type BackupQueryResponseContent struct {
 	NameSpace   string    `json:"_jsns,omitempty"`
 	Backups     []ZBackup `json:"backup,omitempty"`
 	MaxAccounts int
+}
+
+type ZBackup struct {
+	Label      string           `json:"label,omitempty"`
+	Type       string           `json:"type,omitempty"`
+	Aborted    bool             `json:"aborted,omitempty"`
+	Start      int              `json:"start,omitempty"`
+	End        int              `json:"end,omitempty"`
+	MinRedoSeq int              `json:"minRedoSeq,omitempty"`
+	MaxRedoSeq int              `json:"maxRedoSeq,omitempty"`
+	Live       bool             `json:"live,omitempty"`
+	Accounts   []ZBackupAccount `json:"accounts,omitempty"`
+}
+
+type ZBackupAccount struct {
+	Total           int `json:"total,omitempty"`
+	CompletionCount int `json:"completionCount,omitempty"`
 }
