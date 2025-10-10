@@ -2,6 +2,8 @@ package zimbraAdmin
 
 import "strings"
 
+const urnAdmin = "urn:zimbraAdmin"
+
 func NewAuthRequest(name string, password string) (*AuthRequest, AuthResponse) {
 	r := &AuthRequest{
 		Content: AuthRequestContent{
@@ -258,7 +260,7 @@ func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccount
 	}
 
 	r := &ModifyAccountRequest{
-		Content: ModifyAccountRequestContent{
+		Content: ModifyRequestContent{
 			Urn:   urnAdmin,
 			ID:    id,
 			Attrs: a,
@@ -284,8 +286,8 @@ func NewRemoveAccountAliasRequest(id string, alias string) *RemoveAccountAliasRe
 	return r
 }
 
-func newAccountAliasRequestContent(id string, alias string) AccountAliasRequestContent {
-	return AccountAliasRequestContent{
+func newAccountAliasRequestContent(id string, alias string) AliasRequestContent {
+	return AliasRequestContent{
 		Urn:   urnAdmin,
 		ID:    id,
 		Alias: alias,
@@ -303,7 +305,7 @@ func NewModifyCalendarResourceRequest(id string, attrs map[string]string) (*Modi
 	}
 
 	r := &ModifyCalendarResourceRequest{
-		Content: ModifyCalendarResourceRequestContent{
+		Content: ModifyRequestContent{
 			Urn:   urnAdmin,
 			ID:    id,
 			Attrs: a,
@@ -329,8 +331,8 @@ func NewRemoveDistributionListAliasRequest(id string, alias string) *RemoveDistr
 	return r
 }
 
-func newDistributionListAliasRequestContent(id string, alias string) DistributionListAliasRequestContent {
-	return DistributionListAliasRequestContent{
+func newDistributionListAliasRequestContent(id string, alias string) AliasRequestContent {
+	return AliasRequestContent{
 		Urn:   urnAdmin,
 		ID:    id,
 		Alias: alias,
@@ -359,4 +361,14 @@ func newDistributionListMemberRequestContent(id string, members []string) Distri
 		ID:      id,
 		Members: convertToContentStrings(members),
 	}
+}
+
+func convertToContentStrings(arr []string) []ContentString {
+	contentStrings := make([]ContentString, len(arr))
+
+	for i, a := range arr {
+		contentStrings[i] = ContentString{Content: a}
+	}
+
+	return contentStrings
 }

@@ -51,10 +51,10 @@ type GenericResponse struct {
 // ************* REQUEST ***************
 
 type AddAccountAliasRequest struct {
-	Content AccountAliasRequestContent `json:"AddAccountAliasRequest"`
+	Content AliasRequestContent `json:"AddAccountAliasRequest"`
 }
 
-type AccountAliasRequestContent struct {
+type AliasRequestContent struct {
 	Urn   string `json:"_jsns"`
 	ID    string `json:"id"`
 	Alias string `json:"alias"`
@@ -105,28 +105,13 @@ type DeleteAccountRequest struct {
 	Content IdRequestContent `json:"DeleteAccountRequest"`
 }
 
-//type DeleteAccountRequestContent struct {
-//	Urn string `json:"_jsns,attr"`
-//	ID  string `json:"id,omitempty"`
-//}
-
 type DeleteCalendarResourceRequest struct {
 	Content IdRequestContent `json:"DeleteCalendarResourceRequest"`
 }
 
-//type DeleteCalendarResourceRequestContent struct {
-//	Urn string `json:"_jsns,attr"`
-//	ID  string `json:"id,omitempty"`
-//}
-
 type DeleteCosRequest struct {
 	Content IdRequestContent `json:"DeleteCosRequest"`
 }
-
-//type DeleteCosRequestContent struct {
-//	Urn string `json:"_jsns,attr"`
-//	ID  string `json:"id"`
-//}
 
 type DeleteDistributionListRequest struct {
 	Content DeleteDistributionListRequestContent `json:"DeleteDistributionListRequest"`
@@ -178,10 +163,6 @@ type GetAllConfigRequest struct {
 	Content UrnRequestContent `json:"GetAllConfigRequest"`
 }
 
-//type GetAllConfigRequestContent struct {
-//	Urn string `json:"_jsns,attr"`
-//}
-
 type GetAllConfigResponse struct {
 	Content GetAllConfigResponseContent `json:"GetAllConfigResponse"`
 }
@@ -227,10 +208,10 @@ type GetLicenseResponseContent struct {
 }
 
 type ModifyAccountRequest struct {
-	Content ModifyAccountRequestContent `json:"ModifyAccountRequest"`
+	Content ModifyRequestContent `json:"ModifyAccountRequest"`
 }
 
-type ModifyAccountRequestContent struct {
+type ModifyRequestContent struct {
 	Urn   string         `json:"_jsns,attr"`
 	ID    string         `json:"id"`
 	Attrs []AttrResponse `json:"a"`
@@ -245,13 +226,7 @@ type ModifyAccountResponseContent struct {
 }
 
 type ModifyCalendarResourceRequest struct {
-	Content ModifyCalendarResourceRequestContent `json:"ModifyCalendarResourceRequest"`
-}
-
-type ModifyCalendarResourceRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	ID    string         `json:"id"`
-	Attrs []AttrResponse `json:"a"`
+	Content ModifyRequestContent `json:"ModifyCalendarResourceRequest"`
 }
 
 type ModifyCalendarResourceResponse struct {
@@ -263,13 +238,7 @@ type ModifyCalendarResourceResponseContent struct {
 }
 
 type ModifyCosRequest struct {
-	Content ModifyCosRequestContent `json:"ModifyCosRequest"`
-}
-
-type ModifyCosRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	ID    string         `json:"id"`
-	Attrs []AttrResponse `json:"a"`
+	Content ModifyRequestContent `json:"ModifyCosRequest"`
 }
 
 type ModifyCosResponse struct {
@@ -281,13 +250,7 @@ type ModifyCosResponseContent struct {
 }
 
 type ModifyDistributionListRequest struct {
-	Content ModifyDistributionListRequestContent `json:"ModifyDistributionListRequest"`
-}
-
-type ModifyDistributionListRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	ID    string         `json:"id"`
-	Attrs []AttrResponse `json:"a"`
+	Content ModifyRequestContent `json:"ModifyDistributionListRequest"`
 }
 
 type ModifyDistributionListResponse struct {
@@ -299,13 +262,7 @@ type ModifyDistributionListResponseContent struct {
 }
 
 type ModifyDomainRequest struct {
-	Content ModifyDomainRequestContent `json:"ModifyDomainRequest"`
-}
-
-type ModifyDomainRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	ID    string         `json:"id"`
-	Attrs []AttrResponse `json:"a"`
+	Content ModifyRequestContent `json:"ModifyDomainRequest"`
 }
 
 type ModifyDomainResponse struct {
@@ -350,29 +307,15 @@ type SearchDirectoryResponseContent struct {
 }
 
 type RemoveAccountAliasRequest struct {
-	Content AccountAliasRequestContent `json:"RemoveAccountAliasRequest"`
+	Content AliasRequestContent `json:"RemoveAccountAliasRequest"`
 }
 
-//type RemoveAccountAliasRequestContent struct {
-//	Urn   string `json:"_jsns"`
-//	ID    string `json:"id"`
-//	Alias string `json:"alias"`
-//}
-
-// ************* DISTRIBUTION LIST ****************
-
 type AddDistributionListAliasRequest struct {
-	Content DistributionListAliasRequestContent `json:"AddDistributionListAliasRequest"`
+	Content AliasRequestContent `json:"AddDistributionListAliasRequest"`
 }
 
 type RemoveDistributionListAliasRequest struct {
-	Content DistributionListAliasRequestContent `json:"RemoveDistributionListAliasRequest"`
-}
-
-type DistributionListAliasRequestContent struct {
-	Urn   string `json:"_jsns"`
-	ID    string `json:"id"`
-	Alias string `json:"alias"`
+	Content AliasRequestContent `json:"RemoveDistributionListAliasRequest"`
 }
 
 type AddDistributionListMemberRequest struct {
@@ -388,8 +331,6 @@ type DistributionListMemberRequestContent struct {
 	ID      string          `json:"id"`
 	Members []ContentString `json:"dlm"`
 }
-
-// ************* RESOURCE ****************
 
 type GetCalendarResourceRequest struct {
 	Content GetCalendarResourceRequestContent `json:"GetCalendarResourceRequest"`
@@ -408,8 +349,6 @@ type GetCalendarResourceResponse struct {
 type GetCalendarResourceResponseContent struct {
 	CalResource []GenericResponse `json:"calresource"`
 }
-
-// ************* SERVER ****************
 
 type GetAllServersRequest struct {
 	Content GetAllServersRequestContent `json:"GetAllServersRequest"`
@@ -446,8 +385,6 @@ type GetServerResponse struct {
 type GetServerResponseContent struct {
 	Server []GenericResponse `json:"server"`
 }
-
-// ************* DOMAIN ****************
 
 type GetDomainRequest struct {
 	Content GetDomainRequestContent `json:"GetDomainRequest"`
@@ -497,8 +434,6 @@ type QuotaResponse struct {
 	Limit int    `json:"limit"`
 }
 
-// ************* BACKUP ****************
-
 type BackupQueryRequest struct {
 	Content BackupQueryRequestContent `json:"BackupQueryRequest"`
 }
@@ -530,6 +465,19 @@ type ZBackup struct {
 	MaxRedoSeq int              `json:"maxRedoSeq,omitempty"`
 	Live       bool             `json:"live,omitempty"`
 	Accounts   []ZBackupAccount `json:"accounts,omitempty"`
+}
+
+func (b *ZBackup) Account() *ZBackupAccount {
+	return &b.Accounts[0]
+}
+
+func (b *ZBackup) Date() string {
+	runes := []rune(b.Label)
+	return string(runes[5:13])
+}
+
+func (a *ZBackupAccount) DiffTotalCompletionCount() int {
+	return (a.Total - a.CompletionCount)
 }
 
 type ZBackupAccount struct {
