@@ -244,6 +244,78 @@ type ModifyAccountResponseContent struct {
 	Account []GenericResponse `json:"account,omitempty"`
 }
 
+type ModifyCalendarResourceRequest struct {
+	Content ModifyCalendarResourceRequestContent `json:"ModifyCalendarResourceRequest,omitempty"`
+}
+
+type ModifyCalendarResourceRequestContent struct {
+	Urn   string         `json:"_jsns,attr"`
+	ID    string         `json:"id,omitempty"`
+	Attrs []AttrResponse `json:"a,omitempty"`
+}
+
+type ModifyCalendarResourceResponse struct {
+	Content ModifyCalendarResourceResponseContent `json:"ModifyCalendarResourceResponse,omitempty"`
+}
+
+type ModifyCalendarResourceResponseContent struct {
+	Calresource []GenericResponse `json:"calresource,omitempty"`
+}
+
+type ModifyCosRequest struct {
+	Content ModifyCosRequestContent `json:"ModifyCosRequest,omitempty"`
+}
+
+type ModifyCosRequestContent struct {
+	Urn   string         `json:"_jsns,attr"`
+	ID    string         `json:"id,omitempty"`
+	Attrs []AttrResponse `json:"a,omitempty"`
+}
+
+type ModifyCosResponse struct {
+	Content ModifyCosResponseContent `json:"ModifyCosResponse,omitempty"`
+}
+
+type ModifyCosResponseContent struct {
+	Cos []GenericResponse `json:"cos,omitempty"`
+}
+
+type ModifyDistributionListRequest struct {
+	Content ModifyDistributionListRequestContent `json:"ModifyDistributionListRequest,omitempty"`
+}
+
+type ModifyDistributionListRequestContent struct {
+	Urn   string         `json:"_jsns,attr"`
+	ID    string         `json:"id,omitempty"`
+	Attrs []AttrResponse `json:"a,omitempty"`
+}
+
+type ModifyDistributionListResponse struct {
+	Content ModifyDistributionListResponseContent `json:"ModifyDistributionListResponse,omitempty"`
+}
+
+type ModifyDistributionListResponseContent struct {
+	Dl []GenericResponse `json:"cos,omitempty"`
+}
+
+type ModifyDomainRequest struct {
+	Content ModifyDomainRequestContent `json:"ModifyDomainRequest,omitempty"`
+}
+
+type ModifyDomainRequestContent struct {
+	Urn   string         `json:"_jsns,attr"`
+	ID    string         `json:"id,omitempty"`
+	Attrs []AttrResponse `json:"a,omitempty"`
+}
+
+type ModifyDomainResponse struct {
+	Content ModifyDomainResponseContent `json:"ModifyDomainResponse,omitempty"`
+}
+
+type ModifyDomainResponseContent struct {
+	Domain []GenericResponse `json:"domain,omitempty"`
+}
+
 type SearchDirectoryParams struct {
 	Urn           string `json:"_jsns,attr"`
 	Query         string `json:"query,omitempty"`
@@ -334,24 +406,6 @@ type GetCalendarResourceResponse struct {
 }
 
 type GetCalendarResourceResponseContent struct {
-	CalResource []GenericResponse `json:"calresource,omitempty"`
-}
-
-type ModifyCalendarResourceRequest struct {
-	Content ModifyCalendarResourceRequestContent `json:"ModifyCalendarResourceRequest,omitempty"`
-}
-
-type ModifyCalendarResourceRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	ID    string         `json:"id,omitempty"`
-	Attrs []AttrResponse `json:"a,omitempty"`
-}
-
-type ModifyCalendarResourceResponse struct {
-	Content ModifyCalendarResourceResponseContent `json:"ModifyCalendarResourceResponse,omitempty"`
-}
-
-type ModifyCalendarResourceResponseContent struct {
 	CalResource []GenericResponse `json:"calresource,omitempty"`
 }
 
@@ -481,4 +535,34 @@ type ZBackup struct {
 type ZBackupAccount struct {
 	Total           int `json:"total,omitempty"`
 	CompletionCount int `json:"completionCount,omitempty"`
+}
+
+type RenameAccountRequest struct {
+	Content RenameRequestContent `json:"RenameAccountRequest"`
+}
+
+type RenameCalendarResourceRequest struct {
+	Content RenameRequestContent `json:"RenameCalendarResourceRequest"`
+}
+
+type RenameCosRequest struct {
+	Content RenameRequestContent `json:"RenameCosRequest"`
+}
+
+type RenameDistributionListRequest struct {
+	Content RenameRequestContent `json:"RenameDistributionListRequest"`
+}
+
+type RenameRequestContent struct {
+	ID      string `json:"id"`
+	NewName string `json:"newName"`
+}
+
+type SetPasswordRequest struct {
+	Content SetPasswordRequestContent `json:"SetPasswordRequest"`
+}
+
+type SetPasswordRequestContent struct {
+	ID          string `json:"id"`
+	NewPassword string `json:"newPassword"`
 }
