@@ -8,12 +8,16 @@ import (
 )
 
 type ZcsClient struct {
-	ZAdminClient zadmin.ZAdmin
+	ZAdminClient     zadmin.ZAdmin
+	SearchMaxResults int
+	SearchLimit      int
 }
 
 func NewZcsClient(urlAdmin string, tls bool, login string, password string, debug bool, retryWaitingDuration time.Duration, userAgent string, timeout time.Duration) ZcsClient {
 	return ZcsClient{
-		ZAdminClient: zadmin.NewZAdmin(urlAdmin, tls, login, password, debug, retryWaitingDuration, userAgent, timeout),
+		ZAdminClient:     zadmin.NewZAdmin(urlAdmin, tls, login, password, debug, retryWaitingDuration, userAgent, timeout),
+		SearchMaxResults: 1_000_000,
+		SearchLimit:      2_000,
 	}
 }
 
@@ -247,13 +251,11 @@ func (s *ZcsClient) SearchDirectoryAll(query string, domain string, applyCos int
 		return accounts, dls, domains, coses, calresources, nil
 	}
 
-	const maxResults = 1_000_000
-	const limit = 500
 	offset := 0
 	retries := 3
 
 	for offset < total {
-		_accounts, _dls, _domains, _coses, _calresources, err := s.SearchDirectory(query, maxResults, limit, offset, domain, applyCos, applyConfig, sortBy, types, sortAscending, attrs)
+		_accounts, _dls, _domains, _coses, _calresources, err := s.SearchDirectory(query, s.SearchMaxResults, s.SearchLimit, offset, domain, applyCos, applyConfig, sortBy, types, sortAscending, attrs)
 		if err != nil {
 			log.Println(err)
 			retries -= 1
@@ -271,7 +273,7 @@ func (s *ZcsClient) SearchDirectoryAll(query string, domain string, applyCos int
 		domains = append(domains, _domains...)
 		coses = append(coses, _coses...)
 		calresources = append(calresources, _calresources...)
-		offset += limit
+		offset += s.SearchLimit
 	}
 
 	return accounts, dls, domains, coses, calresources, nil

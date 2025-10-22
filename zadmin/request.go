@@ -6,11 +6,9 @@ import (
 	"github.com/RaoH37/gosoap/zimbraAdmin"
 )
 
-func (s *ZAdmin) AddAccountAliasRequest(id string, alias string) error {
-	req := zimbraAdmin.NewAddAccountAliasRequest(id, alias)
-
+func (s *ZAdmin) invokeWithoutResponse(req interface{}, serverId string, accountName string, userAgent string) error {
 	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector.SetHeaderContext(s.AuthToken, serverId, accountName, userAgent)
 
 	if err := connector.Invoke(req, nil); err != nil {
 		log.Println(err)
@@ -18,34 +16,24 @@ func (s *ZAdmin) AddAccountAliasRequest(id string, alias string) error {
 	} else {
 		return nil
 	}
+}
+
+func (s *ZAdmin) AddAccountAliasRequest(id string, alias string) error {
+	req := zimbraAdmin.NewAddAccountAliasRequest(id, alias)
+
+	return s.invokeWithoutResponse(req, "", "", "")
 }
 
 func (s *ZAdmin) AddDistributionListAliasRequest(id string, alias string) error {
 	req := zimbraAdmin.NewAddDistributionListAliasRequest(id, alias)
 
-	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
-
-	if err := connector.Invoke(req, nil); err != nil {
-		log.Println(err)
-		return err
-	} else {
-		return nil
-	}
+	return s.invokeWithoutResponse(req, "", "", "")
 }
 
 func (s *ZAdmin) AddDistributionListMemberRequest(id string, members []string) error {
 	req := zimbraAdmin.NewAddDistributionListMemberRequest(id, members)
 
-	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
-
-	if err := connector.Invoke(req, nil); err != nil {
-		log.Println(err)
-		return err
-	} else {
-		return nil
-	}
+	return s.invokeWithoutResponse(req, "", "", "")
 }
 
 func (s *ZAdmin) AuthRequest() (*zimbraAdmin.AuthResponse, error) {
@@ -74,18 +62,49 @@ func (s *ZAdmin) BackupQueryRequest() (*zimbraAdmin.BackupQueryResponse, error) 
 	return &resp, nil
 }
 
-func (s *ZAdmin) DeleteAccountRequest(id string) error {
-	req := zimbraAdmin.NewDeleteAccountRequest(id)
+func (s *ZAdmin) DelegateAuthRequest(id string, name string) (*zimbraAdmin.DelegateAuthResponse, error) {
+	by := s.byNode(id, name)
+	req, resp := zimbraAdmin.NewDelegateAuthRequest(by)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
 
 	if err := connector.Invoke(req, nil); err != nil {
 		log.Println(err)
-		return err
+		return nil, err
 	} else {
-		return nil
+		return &resp, nil
 	}
+}
+
+func (s *ZAdmin) DeleteAccountRequest(id string) error {
+	req := zimbraAdmin.NewDeleteAccountRequest(id)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) DeleteCalendarResourceRequest(id string) error {
+	req := zimbraAdmin.NewDeleteCalendarResourceRequest(id)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) DeleteCosRequest(id string) error {
+	req := zimbraAdmin.NewDeleteCosRequest(id)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) DeleteDistributionListRequest(id string, cascadeDelete bool) error {
+	req := zimbraAdmin.NewDeleteDistributionListRequest(id, cascadeDelete)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) DeleteDomainRequest(id string) error {
+	req := zimbraAdmin.NewDeleteDomainRequest(id)
+
+	return s.invokeWithoutResponse(req, "", "", "")
 }
 
 func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string) (*zimbraAdmin.GetAccountResponse, error) {
@@ -242,43 +261,19 @@ func (s *ZAdmin) ModifyCalendarResourceRequest(id string, attrs map[string]strin
 func (s *ZAdmin) RemoveAccountAliasRequest(id string, alias string) error {
 	req := zimbraAdmin.NewRemoveAccountAliasRequest(id, alias)
 
-	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
-
-	if err := connector.Invoke(req, nil); err != nil {
-		log.Println(err)
-		return err
-	} else {
-		return nil
-	}
+	return s.invokeWithoutResponse(req, "", "", "")
 }
 
 func (s *ZAdmin) RemoveDistributionListAliasRequest(id string, alias string) error {
 	req := zimbraAdmin.NewRemoveDistributionListAliasRequest(id, alias)
 
-	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
-
-	if err := connector.Invoke(req, nil); err != nil {
-		log.Println(err)
-		return err
-	} else {
-		return nil
-	}
+	return s.invokeWithoutResponse(req, "", "", "")
 }
 
 func (s *ZAdmin) RemoveDistributionListMemberRequest(id string, members []string) error {
 	req := zimbraAdmin.NewRemoveDistributionListMemberRequest(id, members)
 
-	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
-
-	if err := connector.Invoke(req, nil); err != nil {
-		log.Println(err)
-		return err
-	} else {
-		return nil
-	}
+	return s.invokeWithoutResponse(req, "", "", "")
 }
 
 func (s *ZAdmin) SearchDirectoryRequest(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string, countOnly int) (*zimbraAdmin.SearchDirectoryResponse, error) {

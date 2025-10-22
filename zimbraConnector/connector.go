@@ -54,7 +54,7 @@ func (connector *Connector) Invoke(request interface{}, response interface{}) er
 		fmt.Println(string(bb))
 	}
 
-	soapRequestName := connector.getSoapRequestName(request)
+	soapRequestName := getSoapRequestName(request)
 
 	return connector.doRequest(soapRequestName, envelope, response)
 }
@@ -160,7 +160,7 @@ func (connector *Connector) doRequest(soapRequestName string, envelope Envelope,
 	return nil
 }
 
-func (connector *Connector) getSoapRequestName(envelope interface{}) string {
+func getSoapRequestName(envelope interface{}) string {
 	if t := reflect.TypeOf(envelope); t.Kind() == reflect.Ptr {
 		return t.Elem().Name()
 	} else {

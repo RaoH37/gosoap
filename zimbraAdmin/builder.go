@@ -372,3 +372,114 @@ func convertToContentStrings(arr []string) []ContentString {
 
 	return contentStrings
 }
+
+func NewGetLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
+	r := &GetLicenseRequest{
+		Content: newUrnRequestContent(),
+	}
+
+	return r, GetLicenseResponse{}
+}
+
+func NewModifyCosRequest(id string, attrs map[string]string) (*ModifyCosRequest, ModifyCosResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &ModifyCosRequest{
+		Content: ModifyRequestContent{
+			Urn:   urnAdmin,
+			ID:    id,
+			Attrs: a,
+		},
+	}
+
+	return r, ModifyCosResponse{}
+}
+
+func NewModifyDistributionListRequest(id string, attrs map[string]string) (*ModifyDistributionListRequest, ModifyDistributionListResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &ModifyDistributionListRequest{
+		Content: ModifyRequestContent{
+			Urn:   urnAdmin,
+			ID:    id,
+			Attrs: a,
+		},
+	}
+
+	return r, ModifyDistributionListResponse{}
+}
+
+func NewModifyDomainRequest(id string, attrs map[string]string) (*ModifyDomainRequest, ModifyDomainResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &ModifyDomainRequest{
+		Content: ModifyRequestContent{
+			Urn:   urnAdmin,
+			ID:    id,
+			Attrs: a,
+		},
+	}
+
+	return r, ModifyDomainResponse{}
+}
+
+func NewRenameAccountRequest(id string, newName string) *RenameAccountRequest {
+	return &RenameAccountRequest{
+		Content: newRenameRequestContent(id, newName),
+	}
+}
+
+func NewRenameCalendarResourceRequest(id string, newName string) *RenameCalendarResourceRequest {
+	return &RenameCalendarResourceRequest{
+		Content: newRenameRequestContent(id, newName),
+	}
+}
+
+func NewRenameCosRequest(id string, newName string) *RenameCosRequest {
+	return &RenameCosRequest{
+		Content: newRenameRequestContent(id, newName),
+	}
+}
+
+func NewRenameDistributionListRequest(id string, newName string) *RenameDistributionListRequest {
+	return &RenameDistributionListRequest{
+		Content: newRenameRequestContent(id, newName),
+	}
+}
+
+func newRenameRequestContent(id string, newName string) RenameRequestContent {
+	return RenameRequestContent{
+		ID:      id,
+		NewName: newName,
+	}
+}
+
+func NewSetPasswordRequest(id string, newPassword string) *SetPasswordRequest {
+	return &SetPasswordRequest{
+		Content: SetPasswordRequestContent{
+			ID:          id,
+			NewPassword: newPassword,
+		},
+	}
+}
