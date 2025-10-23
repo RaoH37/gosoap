@@ -83,6 +83,25 @@ type AuthResponseToken struct {
 	Content string `json:"_content"`
 }
 
+type CopyCosRequest struct {
+	Content CopyCosRequestContent `json:"CopyCosRequest"`
+}
+
+type CopyCosRequestContent struct {
+	Name string `json:"name"`
+	By   ByNode `json:"cos"`
+	Urn  string `json:"_jsns,attr"`
+}
+
+type CopyCosResponse struct {
+	Content CopyCosResponseContent `json:"CopyCosResponse"`
+}
+
+type CopyCosResponseContent struct {
+	Urn string          `json:"_jsns,attr"`
+	Cos GenericResponse `json:"cos,omitempty"`
+}
+
 type DelegateAuthRequest struct {
 	Content DelegateAuthRequestContent `json:"DelegateAuthRequest"`
 }
@@ -205,6 +224,99 @@ type GetLicenseResponseContent struct {
 	License    []AttrNamesResponse `json:"license"`
 	Activation []AttrNamesResponse `json:"activation"`
 	Info       []AttrNamesResponse `json:"info"`
+}
+
+type CreateAccountRequest struct {
+	Content CreateAccountRequestContent `json:"CreateAccountRequest"`
+}
+
+type CreateAccountRequestContent struct {
+	Urn      string         `json:"_jsns,attr"`
+	Name     string         `json:"name"`
+	Password string         `json:"password"`
+	Attrs    []AttrResponse `json:"a"`
+}
+
+type CreateAccountResponse struct {
+	Content CreateAccountResponseContent `json:"CreateAccountResponse"`
+}
+
+type CreateAccountResponseContent struct {
+	Account GenericResponse `json:"account"`
+}
+
+type CreateCalendarResourceRequest struct {
+	Content CreateCalendarResourceRequestContent `json:"CreateCalendarResourceRequest"`
+}
+
+type CreateCalendarResourceRequestContent struct {
+	Urn      string         `json:"_jsns,attr"`
+	Name     string         `json:"name"`
+	Password string         `json:"password"`
+	Attrs    []AttrResponse `json:"a"`
+}
+
+type CreateCalendarResourceResponse struct {
+	Content CreateCalendarResourceResponseContent `json:"CreateCalendarResourceResponse"`
+}
+
+type CreateCalendarResourceResponseContent struct {
+	Calresource GenericResponse `json:"calresource"`
+}
+
+type CreateCosRequest struct {
+	Content CreateCosRequestContent `json:"CreateCosRequest"`
+}
+
+type CreateCosRequestContent struct {
+	Urn   string         `json:"_jsns,attr"`
+	Name  string         `json:"name"`
+	Attrs []AttrResponse `json:"a"`
+}
+
+type CreateCosResponse struct {
+	Content CreateCosResponseContent `json:"CreateCosResponse"`
+}
+
+type CreateCosResponseContent struct {
+	Cos GenericResponse `json:"cos"`
+}
+
+type CreateDistributionListRequest struct {
+	Content CreateDistributionListRequestContent `json:"CreateDistributionListRequest"`
+}
+
+type CreateDistributionListRequestContent struct {
+	Urn     string         `json:"_jsns,attr"`
+	Name    string         `json:"name"`
+	Dynamic int            `json:"dynamic"`
+	Attrs   []AttrResponse `json:"a"`
+}
+
+type CreateDistributionListResponse struct {
+	Content CreateDistributionListResponseContent `json:"CreateDistributionListResponse"`
+}
+
+type CreateDistributionListResponseContent struct {
+	Dl GenericResponse `json:"dl"`
+}
+
+type CreateDomainRequest struct {
+	Content CreateDomainRequestContent `json:"CreateDomainRequest"`
+}
+
+type CreateDomainRequestContent struct {
+	Urn   string         `json:"_jsns,attr"`
+	Name  string         `json:"name"`
+	Attrs []AttrResponse `json:"a"`
+}
+
+type CreateDomainResponse struct {
+	Content CreateDomainResponseContent `json:"CreateDomainResponse"`
+}
+
+type CreateDomainResponseContent struct {
+	Domain GenericResponse `json:"domain"`
 }
 
 type ModifyAccountRequest struct {

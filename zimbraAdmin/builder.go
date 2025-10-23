@@ -149,6 +149,18 @@ func NewBackupQueryRequest() (*BackupQueryRequest, BackupQueryResponse) {
 	return r, BackupQueryResponse{}
 }
 
+func NewCopyCosRequest(by ByNode, newName string) (*CopyCosRequest, CopyCosResponse) {
+	r := &CopyCosRequest{
+		Content: CopyCosRequestContent{
+			Urn:  urnAdmin,
+			By:   by,
+			Name: newName,
+		},
+	}
+
+	return r, CopyCosResponse{}
+}
+
 func NewDeleteCalendarResourceRequest(id string) *DeleteCalendarResourceRequest {
 	r := &DeleteCalendarResourceRequest{
 		Content: newIdRequestContent(id),
@@ -268,6 +280,114 @@ func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccount
 	}
 
 	return r, ModifyAccountResponse{}
+}
+
+func NewCreateAccountRequest(name string, password string, attrs map[string]string) (*CreateAccountRequest, CreateAccountResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateAccountRequest{
+		Content: CreateAccountRequestContent{
+			Urn:      urnAdmin,
+			Name:     name,
+			Password: password,
+			Attrs:    a,
+		},
+	}
+
+	return r, CreateAccountResponse{}
+}
+
+func NewCreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*CreateCalendarResourceRequest, CreateCalendarResourceResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateCalendarResourceRequest{
+		Content: CreateCalendarResourceRequestContent{
+			Urn:      urnAdmin,
+			Name:     name,
+			Password: password,
+			Attrs:    a,
+		},
+	}
+
+	return r, CreateCalendarResourceResponse{}
+}
+
+func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosRequest, CreateCosResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateCosRequest{
+		Content: CreateCosRequestContent{
+			Urn:   urnAdmin,
+			Name:  name,
+			Attrs: a,
+		},
+	}
+
+	return r, CreateCosResponse{}
+}
+
+func NewCreateDistributionListRequest(name string, dynamic int, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateDistributionListRequest{
+		Content: CreateDistributionListRequestContent{
+			Urn:     urnAdmin,
+			Name:    name,
+			Dynamic: dynamic,
+			Attrs:   a,
+		},
+	}
+
+	return r, CreateDistributionListResponse{}
+}
+
+func NewCreateDomainRequest(name string, attrs map[string]string) (*CreateDomainRequest, CreateDomainResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateDomainRequest{
+		Content: CreateDomainRequestContent{
+			Urn:   urnAdmin,
+			Name:  name,
+			Attrs: a,
+		},
+	}
+
+	return r, CreateDomainResponse{}
 }
 
 func NewAddAccountAliasRequest(id string, alias string) *AddAccountAliasRequest {
