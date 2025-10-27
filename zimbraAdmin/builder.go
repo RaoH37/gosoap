@@ -23,11 +23,12 @@ func NewByNode(by string, value string) ByNode {
 	}
 }
 
-func NewGetAccountRequest(by ByNode, attrs []string) (*GetAccountRequest, GetAccountResponse) {
+func NewGetAccountRequest(by ByNode, attrs []string, applyCos int8) (*GetAccountRequest, GetAccountResponse) {
 	r := &GetAccountRequest{
 		Content: GetAccountRequestContent{
-			Urn:     urnAdmin,
-			Account: by,
+			Urn:      urnAdmin,
+			Account:  by,
+			ApplyCos: applyCos,
 		},
 	}
 
@@ -61,11 +62,12 @@ func NewGetDistributionListRequest(by ByNode, attrs []string) (*GetDistributionL
 	return r, GetDistributionListResponse{}
 }
 
-func NewGetCalendarResourceRequest(by ByNode, attrs []string) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
+func NewGetCalendarResourceRequest(by ByNode, attrs []string, applyCos int8) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
 	r := &GetCalendarResourceRequest{
 		Content: GetCalendarResourceRequestContent{
 			Urn:         urnAdmin,
 			CalResource: by,
+			ApplyCos:    applyCos,
 		},
 	}
 
@@ -91,11 +93,12 @@ func NewGetCosRequest(by ByNode, attrs []string) (*GetCosRequest, GetCosResponse
 	return r, GetCosResponse{}
 }
 
-func NewGetDomainRequest(by ByNode, attrs []string) (*GetDomainRequest, GetDomainResponse) {
+func NewGetDomainRequest(by ByNode, attrs []string, applyConfig int8) (*GetDomainRequest, GetDomainResponse) {
 	r := &GetDomainRequest{
 		Content: GetDomainRequestContent{
-			Urn:    urnAdmin,
-			Domain: by,
+			Urn:         urnAdmin,
+			Domain:      by,
+			ApplyConfig: applyConfig,
 		},
 	}
 

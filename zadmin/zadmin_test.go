@@ -419,7 +419,7 @@ func TestGetAccountRequest(t *testing.T) {
 
 	attrs := []string{}
 
-	resp, err := zcs.GetAccountRequest("", account_name, attrs)
+	resp, err := zcs.GetAccountRequest("", account_name, attrs, true)
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -438,7 +438,7 @@ func TestGetCalendarResourceRequest(t *testing.T) {
 
 	attrs := []string{}
 
-	resp, err := zcs.GetCalendarResourceRequest("", res_name, attrs)
+	resp, err := zcs.GetCalendarResourceRequest("", res_name, attrs, true)
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -497,7 +497,7 @@ func TestGetDomainRequest(t *testing.T) {
 
 	attrs := []string{}
 
-	resp, err := zcs.GetDomainRequest("", domain_name, attrs)
+	resp, err := zcs.GetDomainRequest("", domain_name, attrs, true)
 
 	if err != nil {
 		t.Fatalf("%v", err)

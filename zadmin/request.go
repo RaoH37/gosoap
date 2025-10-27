@@ -192,9 +192,9 @@ func (s *ZAdmin) DeleteDomainRequest(id string) error {
 	return s.invokeWithoutResponse(req, "", "", "")
 }
 
-func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string) (*zimbraAdmin.GetAccountResponse, error) {
+func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string, isApplyCos bool) (*zimbraAdmin.GetAccountResponse, error) {
 	by := s.byNode(id, name)
-	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs)
+	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs, boolToRequest(isApplyCos))
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -221,9 +221,9 @@ func (s *ZAdmin) GetAllServersRequest(service string) (*zimbraAdmin.GetAllServer
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs []string) (*zimbraAdmin.GetCalendarResourceResponse, error) {
+func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs []string, isApplyCos bool) (*zimbraAdmin.GetCalendarResourceResponse, error) {
 	by := s.byNode(id, name)
-	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs)
+	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs, boolToRequest(isApplyCos))
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -266,9 +266,9 @@ func (s *ZAdmin) GetCosRequest(id string, name string, attrs []string) (*zimbraA
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string) (*zimbraAdmin.GetDomainResponse, error) {
+func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string, isApplyConfig bool) (*zimbraAdmin.GetDomainResponse, error) {
 	by := s.byNode(id, name)
-	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs)
+	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs, boolToRequest(isApplyConfig))
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")

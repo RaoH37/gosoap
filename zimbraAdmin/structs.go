@@ -165,9 +165,10 @@ type GetAccountRequest struct {
 }
 
 type GetAccountRequestContent struct {
-	Account ByNode `json:"account,attr"`
-	Urn     string `json:"_jsns,attr"`
-	Attrs   string `json:"attrs,omitempty"`
+	Account  ByNode `json:"account,attr"`
+	Urn      string `json:"_jsns,attr"`
+	Attrs    string `json:"attrs,omitempty"`
+	ApplyCos int8   `json:"applyCos,omitempty"`
 }
 
 type GetAccountResponse struct {
@@ -452,6 +453,7 @@ type GetCalendarResourceRequestContent struct {
 	CalResource ByNode `json:"calresource,attr"`
 	Urn         string `json:"_jsns,attr"`
 	Attrs       string `json:"attrs,omitempty"`
+	ApplyCos    int8   `json:"applyCos,omitempty"`
 }
 
 type GetCalendarResourceResponse struct {
@@ -521,9 +523,10 @@ type GetDomainRequest struct {
 }
 
 type GetDomainRequestContent struct {
-	Domain ByNode `json:"domain,attr"`
-	Urn    string `json:"_jsns,attr"`
-	Attrs  string `json:"attrs,omitempty"`
+	Domain      ByNode `json:"domain,attr"`
+	Urn         string `json:"_jsns,attr"`
+	Attrs       string `json:"attrs,omitempty"`
+	ApplyConfig int8   `json:"applyConfig,omitempty"`
 }
 
 type GetDomainResponse struct {
