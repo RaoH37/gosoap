@@ -7,6 +7,9 @@ import (
 	"github.com/RaoH37/gosoap/zimbraConnector"
 )
 
+const Equipment = "Equipment"
+const Emplacement = "Emplacement"
+
 func NewZAdmin(
 	urlAdmin string,
 	tls bool,
@@ -50,4 +53,12 @@ func (s *ZAdmin) byNode(id string, name string) zimbraAdmin.ByNode {
 	}
 
 	return zimbraAdmin.NewByNode("name", name)
+}
+
+func boolToRequest(b bool) int8 {
+	if b {
+		return 1
+	}
+
+	return 0
 }

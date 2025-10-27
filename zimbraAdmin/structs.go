@@ -88,9 +88,9 @@ type CopyCosRequest struct {
 }
 
 type CopyCosRequestContent struct {
-	Name string `json:"name"`
-	By   ByNode `json:"cos"`
-	Urn  string `json:"_jsns,attr"`
+	Name ContentString `json:"name"`
+	By   ByNode        `json:"cos"`
+	Urn  string        `json:"_jsns,attr"`
 }
 
 type CopyCosResponse struct {
@@ -98,8 +98,8 @@ type CopyCosResponse struct {
 }
 
 type CopyCosResponseContent struct {
-	Urn string          `json:"_jsns,attr"`
-	Cos GenericResponse `json:"cos,omitempty"`
+	Urn string            `json:"_jsns,attr"`
+	Cos []GenericResponse `json:"cos,omitempty"`
 }
 
 type DelegateAuthRequest struct {
@@ -112,12 +112,7 @@ type DelegateAuthRequestContent struct {
 }
 
 type DelegateAuthResponse struct {
-	Content DelegateAuthResponseContent `json:"DelegateAuthResponse"`
-}
-
-type DelegateAuthResponseContent struct {
-	TOKEN    string `json:"authToken"`
-	LifeTime int    `json:"lifetime,omitempty"`
+	Content AuthResponseContent `json:"DelegateAuthResponse"`
 }
 
 type DeleteAccountRequest struct {
@@ -129,7 +124,12 @@ type DeleteCalendarResourceRequest struct {
 }
 
 type DeleteCosRequest struct {
-	Content IdRequestContent `json:"DeleteCosRequest"`
+	Content DeleteCosRequestContent `json:"DeleteCosRequest"`
+}
+
+type DeleteCosRequestContent struct {
+	Urn string        `json:"_jsns,attr"`
+	ID  ContentString `json:"id"`
 }
 
 type DeleteDistributionListRequest struct {
@@ -139,7 +139,7 @@ type DeleteDistributionListRequest struct {
 type DeleteDistributionListRequestContent struct {
 	Urn           string `json:"_jsns,attr"`
 	ID            string `json:"id"`
-	CascadeDelete int    `json:"cascadeDelete,omitempty"`
+	CascadeDelete int8   `json:"cascadeDelete,omitempty"`
 }
 
 type DeleteDomainRequest struct {
@@ -242,7 +242,7 @@ type CreateAccountResponse struct {
 }
 
 type CreateAccountResponseContent struct {
-	Account GenericResponse `json:"account"`
+	Account []GenericResponse `json:"account"`
 }
 
 type CreateCalendarResourceRequest struct {
@@ -261,7 +261,7 @@ type CreateCalendarResourceResponse struct {
 }
 
 type CreateCalendarResourceResponseContent struct {
-	Calresource GenericResponse `json:"calresource"`
+	Calresource []GenericResponse `json:"calresource"`
 }
 
 type CreateCosRequest struct {
@@ -270,7 +270,7 @@ type CreateCosRequest struct {
 
 type CreateCosRequestContent struct {
 	Urn   string         `json:"_jsns,attr"`
-	Name  string         `json:"name"`
+	Name  ContentString  `json:"name"`
 	Attrs []AttrResponse `json:"a"`
 }
 
@@ -279,7 +279,7 @@ type CreateCosResponse struct {
 }
 
 type CreateCosResponseContent struct {
-	Cos GenericResponse `json:"cos"`
+	Cos []GenericResponse `json:"cos"`
 }
 
 type CreateDistributionListRequest struct {
@@ -289,7 +289,7 @@ type CreateDistributionListRequest struct {
 type CreateDistributionListRequestContent struct {
 	Urn     string         `json:"_jsns,attr"`
 	Name    string         `json:"name"`
-	Dynamic int            `json:"dynamic"`
+	Dynamic int8           `json:"dynamic"`
 	Attrs   []AttrResponse `json:"a"`
 }
 
@@ -298,7 +298,7 @@ type CreateDistributionListResponse struct {
 }
 
 type CreateDistributionListResponseContent struct {
-	Dl GenericResponse `json:"dl"`
+	Dl []GenericResponse `json:"dl"`
 }
 
 type CreateDomainRequest struct {
@@ -316,7 +316,7 @@ type CreateDomainResponse struct {
 }
 
 type CreateDomainResponseContent struct {
-	Domain GenericResponse `json:"domain"`
+	Domain []GenericResponse `json:"domain"`
 }
 
 type ModifyAccountRequest struct {
@@ -392,12 +392,12 @@ type SearchDirectoryParams struct {
 	Limit         int    `json:"limit,omitempty"`
 	Offset        int    `json:"offset,omitempty"`
 	Domain        string `json:"domain,omitempty"`
-	ApplyCos      int    `json:"applyCos,omitempty"`
-	ApplyConfig   int    `json:"applyConfig,omitempty"`
+	ApplyCos      int8   `json:"applyCos,omitempty"`
+	ApplyConfig   int8   `json:"applyConfig,omitempty"`
 	SortBy        string `json:"sortBy,omitempty"`
 	Types         string `json:"types,omitempty"`
-	SortAscending int    `json:"sortAscending,omitempty"`
-	CountOnly     int    `json:"countOnly,omitempty"`
+	SortAscending int8   `json:"sortAscending,omitempty"`
+	CountOnly     int8   `json:"countOnly,omitempty"`
 	Attrs         string `json:"attrs,omitempty"`
 }
 
@@ -462,6 +462,24 @@ type GetCalendarResourceResponseContent struct {
 	CalResource []GenericResponse `json:"calresource"`
 }
 
+type GetCosRequest struct {
+	Content GetCosRequestContent `json:"GetCosRequest"`
+}
+
+type GetCosRequestContent struct {
+	Cos   ByNode `json:"cos"`
+	Urn   string `json:"_jsns,attr"`
+	Attrs string `json:"attrs,omitempty"`
+}
+
+type GetCosResponse struct {
+	Content GetCosResponseContent `json:"GetCosResponse"`
+}
+
+type GetCosResponseContent struct {
+	Cos []GenericResponse `json:"cos"`
+}
+
 type GetAllServersRequest struct {
 	Content GetAllServersRequestContent `json:"GetAllServersRequest"`
 }
@@ -486,7 +504,7 @@ type GetServerRequest struct {
 type GetServerRequestContent struct {
 	Server      ByNode `json:"server,attr"`
 	Urn         string `json:"_jsns,attr"`
-	ApplyConfig int    `json:"applyConfig,omitempty"`
+	ApplyConfig int8   `json:"applyConfig,omitempty"`
 	Attrs       string `json:"attrs,omitempty"`
 }
 
@@ -522,13 +540,13 @@ type GetQuotaUsageRequest struct {
 
 type GetQuotaUsageRequestContent struct {
 	Urn           string `json:"_jsns,attr"`
-	Servers       int    `json:"allServers,omitempty"`
+	Servers       int8   `json:"allServers,omitempty"`
 	Domain        string `json:"domain,omitempty"`
 	Limit         int    `json:"limit,omitempty"`
 	Offset        int    `json:"offset,omitempty"`
 	SortBy        string `json:"sortBy,omitempty"`
-	SortAscending int    `json:"sortAscending,omitempty"`
-	Refresh       int    `json:"refresh,omitempty"`
+	SortAscending int8   `json:"sortAscending,omitempty"`
+	Refresh       int8   `json:"refresh,omitempty"`
 }
 
 type GetQuotaUsageResponse struct {

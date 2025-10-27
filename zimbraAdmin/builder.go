@@ -76,6 +76,21 @@ func NewGetCalendarResourceRequest(by ByNode, attrs []string) (*GetCalendarResou
 	return r, GetCalendarResourceResponse{}
 }
 
+func NewGetCosRequest(by ByNode, attrs []string) (*GetCosRequest, GetCosResponse) {
+	r := &GetCosRequest{
+		Content: GetCosRequestContent{
+			Urn: urnAdmin,
+			Cos: by,
+		},
+	}
+
+	if attrs != nil {
+		r.Content.Attrs = strings.Join(attrs, ",")
+	}
+
+	return r, GetCosResponse{}
+}
+
 func NewGetDomainRequest(by ByNode, attrs []string) (*GetDomainRequest, GetDomainResponse) {
 	r := &GetDomainRequest{
 		Content: GetDomainRequestContent{
@@ -105,7 +120,7 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, GetAllServe
 	return r, GetAllServersResponse{}
 }
 
-func NewGetServerRequest(by ByNode, applyConfig int, attrs []string) (*GetServerRequest, GetServerResponse) {
+func NewGetServerRequest(by ByNode, applyConfig int8, attrs []string) (*GetServerRequest, GetServerResponse) {
 	r := &GetServerRequest{
 		Content: GetServerRequestContent{
 			Urn:         urnAdmin,
@@ -121,7 +136,7 @@ func NewGetServerRequest(by ByNode, applyConfig int, attrs []string) (*GetServer
 	return r, GetServerResponse{}
 }
 
-func NewGetQuotaUsageRequest(domain string, allServers int, limit int, offset int, sortBy string, sortAscending int, refresh int) (*GetQuotaUsageRequest, GetQuotaUsageResponse) {
+func NewGetQuotaUsageRequest(domain string, allServers int8, limit int, offset int, sortBy string, sortAscending int8, refresh int8) (*GetQuotaUsageRequest, GetQuotaUsageResponse) {
 	r := &GetQuotaUsageRequest{
 		Content: GetQuotaUsageRequestContent{
 			Urn:           urnAdmin,
@@ -152,13 +167,125 @@ func NewBackupQueryRequest() (*BackupQueryRequest, BackupQueryResponse) {
 func NewCopyCosRequest(by ByNode, newName string) (*CopyCosRequest, CopyCosResponse) {
 	r := &CopyCosRequest{
 		Content: CopyCosRequestContent{
-			Urn:  urnAdmin,
-			By:   by,
-			Name: newName,
+			Urn: urnAdmin,
+			By:  by,
+			Name: ContentString{
+				Content: newName,
+			},
 		},
 	}
 
 	return r, CopyCosResponse{}
+}
+
+func NewCreateAccountRequest(name string, password string, attrs map[string]string) (*CreateAccountRequest, CreateAccountResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateAccountRequest{
+		Content: CreateAccountRequestContent{
+			Urn:      urnAdmin,
+			Name:     name,
+			Password: password,
+			Attrs:    a,
+		},
+	}
+
+	return r, CreateAccountResponse{}
+}
+
+func NewCreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*CreateCalendarResourceRequest, CreateCalendarResourceResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateCalendarResourceRequest{
+		Content: CreateCalendarResourceRequestContent{
+			Urn:      urnAdmin,
+			Name:     name,
+			Password: password,
+			Attrs:    a,
+		},
+	}
+
+	return r, CreateCalendarResourceResponse{}
+}
+
+func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosRequest, CreateCosResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateCosRequest{
+		Content: CreateCosRequestContent{
+			Urn: urnAdmin,
+			Name: ContentString{
+				Content: name,
+			},
+			Attrs: a,
+		},
+	}
+
+	return r, CreateCosResponse{}
+}
+
+func NewCreateDistributionListRequest(name string, dynamic int8, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateDistributionListRequest{
+		Content: CreateDistributionListRequestContent{
+			Urn:     urnAdmin,
+			Name:    name,
+			Dynamic: dynamic,
+			Attrs:   a,
+		},
+	}
+
+	return r, CreateDistributionListResponse{}
+}
+
+func NewCreateDomainRequest(name string, attrs map[string]string) (*CreateDomainRequest, CreateDomainResponse) {
+	a := make([]AttrResponse, 0)
+
+	for key, value := range attrs {
+		a = append(a, AttrResponse{
+			Key:   key,
+			Value: value,
+		})
+	}
+
+	r := &CreateDomainRequest{
+		Content: CreateDomainRequestContent{
+			Urn:   urnAdmin,
+			Name:  name,
+			Attrs: a,
+		},
+	}
+
+	return r, CreateDomainResponse{}
 }
 
 func NewDeleteCalendarResourceRequest(id string) *DeleteCalendarResourceRequest {
@@ -171,20 +298,22 @@ func NewDeleteCalendarResourceRequest(id string) *DeleteCalendarResourceRequest 
 
 func NewDeleteCosRequest(id string) *DeleteCosRequest {
 	r := &DeleteCosRequest{
-		Content: newIdRequestContent(id),
+		Content: DeleteCosRequestContent{
+			Urn: urnAdmin,
+			ID: ContentString{
+				Content: id,
+			},
+		},
 	}
 
 	return r
 }
 
-func NewDeleteDistributionListRequest(id string, cascadeDelete bool) *DeleteDistributionListRequest {
+func NewDeleteDistributionListRequest(id string, cascadeDelete int8) *DeleteDistributionListRequest {
 	content := DeleteDistributionListRequestContent{
-		Urn: urnAdmin,
-		ID:  id,
-	}
-
-	if cascadeDelete {
-		content.CascadeDelete = 1
+		Urn:           urnAdmin,
+		ID:            id,
+		CascadeDelete: cascadeDelete,
 	}
 
 	r := &DeleteDistributionListRequest{
@@ -280,114 +409,6 @@ func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccount
 	}
 
 	return r, ModifyAccountResponse{}
-}
-
-func NewCreateAccountRequest(name string, password string, attrs map[string]string) (*CreateAccountRequest, CreateAccountResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateAccountRequest{
-		Content: CreateAccountRequestContent{
-			Urn:      urnAdmin,
-			Name:     name,
-			Password: password,
-			Attrs:    a,
-		},
-	}
-
-	return r, CreateAccountResponse{}
-}
-
-func NewCreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*CreateCalendarResourceRequest, CreateCalendarResourceResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateCalendarResourceRequest{
-		Content: CreateCalendarResourceRequestContent{
-			Urn:      urnAdmin,
-			Name:     name,
-			Password: password,
-			Attrs:    a,
-		},
-	}
-
-	return r, CreateCalendarResourceResponse{}
-}
-
-func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosRequest, CreateCosResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateCosRequest{
-		Content: CreateCosRequestContent{
-			Urn:   urnAdmin,
-			Name:  name,
-			Attrs: a,
-		},
-	}
-
-	return r, CreateCosResponse{}
-}
-
-func NewCreateDistributionListRequest(name string, dynamic int, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateDistributionListRequest{
-		Content: CreateDistributionListRequestContent{
-			Urn:     urnAdmin,
-			Name:    name,
-			Dynamic: dynamic,
-			Attrs:   a,
-		},
-	}
-
-	return r, CreateDistributionListResponse{}
-}
-
-func NewCreateDomainRequest(name string, attrs map[string]string) (*CreateDomainRequest, CreateDomainResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateDomainRequest{
-		Content: CreateDomainRequestContent{
-			Urn:   urnAdmin,
-			Name:  name,
-			Attrs: a,
-		},
-	}
-
-	return r, CreateDomainResponse{}
 }
 
 func NewAddAccountAliasRequest(id string, alias string) *AddAccountAliasRequest {

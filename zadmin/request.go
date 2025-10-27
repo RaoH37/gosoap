@@ -119,8 +119,8 @@ func (s *ZAdmin) CreateCosRequest(name string, attrs map[string]string) (*zimbra
 	return &resp, nil
 }
 
-func (s *ZAdmin) CreateDistributionListRequest(name string, dynamic int, attrs map[string]string) (*zimbraAdmin.CreateDistributionListResponse, error) {
-	req, resp := zimbraAdmin.NewCreateDistributionListRequest(name, dynamic, attrs)
+func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attrs map[string]string) (*zimbraAdmin.CreateDistributionListResponse, error) {
+	req, resp := zimbraAdmin.NewCreateDistributionListRequest(name, boolToRequest(isDynamic), attrs)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -154,7 +154,7 @@ func (s *ZAdmin) DelegateAuthRequest(id string, name string) (*zimbraAdmin.Deleg
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
 
-	if err := connector.Invoke(req, nil); err != nil {
+	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
 		return nil, err
 	} else {
@@ -180,8 +180,8 @@ func (s *ZAdmin) DeleteCosRequest(id string) error {
 	return s.invokeWithoutResponse(req, "", "", "")
 }
 
-func (s *ZAdmin) DeleteDistributionListRequest(id string, cascadeDelete bool) error {
-	req := zimbraAdmin.NewDeleteDistributionListRequest(id, cascadeDelete)
+func (s *ZAdmin) DeleteDistributionListRequest(id string, isCascadeDelete bool) error {
+	req := zimbraAdmin.NewDeleteDistributionListRequest(id, boolToRequest(isCascadeDelete))
 
 	return s.invokeWithoutResponse(req, "", "", "")
 }
@@ -251,6 +251,21 @@ func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs []stri
 	return &resp, nil
 }
 
+func (s *ZAdmin) GetCosRequest(id string, name string, attrs []string) (*zimbraAdmin.GetCosResponse, error) {
+	by := s.byNode(id, name)
+	req, resp := zimbraAdmin.NewGetCosRequest(by, attrs)
+
+	connector := s.buildZimbraConnector()
+	connector.SetHeaderContext(s.AuthToken, "", "", "")
+
+	if err := connector.Invoke(req, &resp); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
 func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string) (*zimbraAdmin.GetDomainResponse, error) {
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs)
@@ -284,13 +299,7 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, isAllServe
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, serverId, "", "")
 
-	allServers := 0
-
-	if isAllServers {
-		allServers = 1
-	}
-
-	req, resp := zimbraAdmin.NewGetQuotaUsageRequest(domain, allServers, 0, 0, "", 0, 0)
+	req, resp := zimbraAdmin.NewGetQuotaUsageRequest(domain, boolToRequest(isAllServers), 0, 0, "", 0, 0)
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -300,9 +309,10 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, isAllServe
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig int, attrs []string) (*zimbraAdmin.GetServerResponse, error) {
+func (s *ZAdmin) GetServerRequest(id string, name string, isApplyConfig bool, attrs []string) (*zimbraAdmin.GetServerResponse, error) {
 	by := s.byNode(id, name)
-	req, resp := zimbraAdmin.NewGetServerRequest(by, applyConfig, attrs)
+
+	req, resp := zimbraAdmin.NewGetServerRequest(by, boolToRequest(isApplyConfig), attrs)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -403,23 +413,35 @@ func (s *ZAdmin) RemoveDistributionListMemberRequest(id string, members []string
 	return s.invokeWithoutResponse(req, "", "", "")
 }
 
-func (s *ZAdmin) SearchDirectoryRequest(query string, maxResults int, limit int, offset int, domain string, applyCos int, applyConfig int, sortBy string, types string, sortAscending int, attrs string, countOnly int) (*zimbraAdmin.SearchDirectoryResponse, error) {
+func (s *ZAdmin) SearchDirectoryRequest(
+	query string,
+	maxResults int,
+	limit int,
+	offset int,
+	domain string,
+	isApplyCos bool,
+	isApplyConfig bool,
+	sortBy string,
+	types string,
+	isSortAscending bool,
+	attrs string,
+	isCountOnly bool) (*zimbraAdmin.SearchDirectoryResponse, error) {
 	params := zimbraAdmin.SearchDirectoryParams{
 		Urn:        "urn:zimbraAdmin",
 		Query:      query,
 		MaxResults: maxResults,
 		Domain:     domain,
 		Types:      types,
-		CountOnly:  countOnly,
+		CountOnly:  boolToRequest(isCountOnly),
 	}
 
-	if countOnly == 0 {
+	if isCountOnly {
 		params.Limit = limit
 		params.Offset = offset
-		params.ApplyCos = applyCos
-		params.ApplyConfig = applyConfig
+		params.ApplyCos = boolToRequest(isApplyCos)
+		params.ApplyConfig = boolToRequest(isApplyConfig)
 		params.SortBy = sortBy
-		params.SortAscending = sortAscending
+		params.SortAscending = boolToRequest(isSortAscending)
 		params.Attrs = attrs
 	}
 
