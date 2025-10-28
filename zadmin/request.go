@@ -395,6 +395,20 @@ func (s *ZAdmin) ModifyDomainRequest(id string, attrs map[string]string) error {
 	return nil
 }
 
+func (s *ZAdmin) NoOpRequest() error {
+	req := zimbraAdmin.NewNoOpRequest()
+
+	connector := s.buildZimbraConnector()
+	connector.SetHeaderContext(s.AuthToken, "", "", "")
+
+	if err := connector.Invoke(req, nil); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
 func (s *ZAdmin) RemoveAccountAliasRequest(id string, alias string) error {
 	req := zimbraAdmin.NewRemoveAccountAliasRequest(id, alias)
 

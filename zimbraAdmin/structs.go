@@ -386,6 +386,14 @@ type ModifyDomainResponseContent struct {
 	Domain []GenericResponse `json:"domain"`
 }
 
+type NoOpRequest struct {
+	Content NoOpRequestContent `json:"NoOpRequest"`
+}
+
+type NoOpRequestContent struct {
+	Urn string `json:"_jsns,attr"`
+}
+
 type SearchDirectoryParams struct {
 	Urn           string `json:"_jsns,attr"`
 	Query         string `json:"query,omitempty"`

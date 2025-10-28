@@ -588,6 +588,14 @@ func NewModifyDomainRequest(id string, attrs map[string]string) (*ModifyDomainRe
 	return r, ModifyDomainResponse{}
 }
 
+func NewNoOpRequest() *NoOpRequest {
+	return &NoOpRequest{
+		Content: NoOpRequestContent{
+			Urn: urnAdmin,
+		},
+	}
+}
+
 func NewRenameAccountRequest(id string, newName string) *RenameAccountRequest {
 	return &RenameAccountRequest{
 		Content: newRenameRequestContent(id, newName),

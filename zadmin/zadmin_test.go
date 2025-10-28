@@ -546,6 +546,19 @@ func TestGetServerRequest(t *testing.T) {
 	}
 }
 
+func TestNoOpRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	err = zcs.NoOpRequest()
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
 func TestSearchDirectoryRequest(t *testing.T) {
 	zcs, err := NewZAdmin()
 	if err != nil {
