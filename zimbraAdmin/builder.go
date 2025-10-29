@@ -393,22 +393,26 @@ func newUrnRequestContent() UrnRequestContent {
 	}
 }
 
-func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccountRequest, ModifyAccountResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
+func newModifyRequestContent(id string, a []AttrResponse) ModifyRequestContent {
+	return ModifyRequestContent{
+		Urn:   urnAdmin,
+		ID:    id,
+		Attrs: a,
 	}
+}
+
+func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccountRequest, ModifyAccountResponse) {
+	//a := make([]AttrResponse, 0)
+	//
+	//for key, value := range attrs {
+	//	a = append(a, AttrResponse{
+	//		Key:   key,
+	//		Value: value,
+	//	})
+	//}
 
 	r := &ModifyAccountRequest{
-		Content: ModifyRequestContent{
-			Urn:   urnAdmin,
-			ID:    id,
-			Attrs: a,
-		},
+		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
 	}
 
 	return r, ModifyAccountResponse{}
@@ -439,21 +443,17 @@ func newAccountAliasRequestContent(id string, alias string) AliasRequestContent 
 }
 
 func NewModifyCalendarResourceRequest(id string, attrs map[string]string) (*ModifyCalendarResourceRequest, ModifyCalendarResourceResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
+	//a := make([]AttrResponse, 0)
+	//
+	//for key, value := range attrs {
+	//	a = append(a, AttrResponse{
+	//		Key:   key,
+	//		Value: value,
+	//	})
+	//}
 
 	r := &ModifyCalendarResourceRequest{
-		Content: ModifyRequestContent{
-			Urn:   urnAdmin,
-			ID:    id,
-			Attrs: a,
-		},
+		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
 	}
 
 	return r, ModifyCalendarResourceResponse{}
@@ -526,20 +526,20 @@ func NewGetLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
 }
 
 func NewModifyCosRequest(id string, attrs map[string]string) (*ModifyCosRequest, ModifyCosResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
+	//a := make([]AttrResponse, 0)
+	//
+	//for key, value := range attrs {
+	//	a = append(a, AttrResponse{
+	//		Key:   key,
+	//		Value: value,
+	//	})
+	//}
 
 	r := &ModifyCosRequest{
-		Content: ModifyRequestContent{
+		Content: ModifyCosRequestContent{
 			Urn:   urnAdmin,
-			ID:    id,
-			Attrs: a,
+			ID:    ContentString{Content: id},
+			Attrs: buildAttrResponses(attrs),
 		},
 	}
 
@@ -547,45 +547,69 @@ func NewModifyCosRequest(id string, attrs map[string]string) (*ModifyCosRequest,
 }
 
 func NewModifyDistributionListRequest(id string, attrs map[string]string) (*ModifyDistributionListRequest, ModifyDistributionListResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
+	//a := make([]AttrResponse, 0)
+	//
+	//for key, value := range attrs {
+	//	a = append(a, AttrResponse{
+	//		Key:   key,
+	//		Value: value,
+	//	})
+	//}
 
 	r := &ModifyDistributionListRequest{
-		Content: ModifyRequestContent{
-			Urn:   urnAdmin,
-			ID:    id,
-			Attrs: a,
-		},
+		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
 	}
 
 	return r, ModifyDistributionListResponse{}
 }
 
 func NewModifyDomainRequest(id string, attrs map[string]string) (*ModifyDomainRequest, ModifyDomainResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
+	//a := make([]AttrResponse, 0)
+	//
+	//for key, value := range attrs {
+	//	a = append(a, AttrResponse{
+	//		Key:   key,
+	//		Value: value,
+	//	})
+	//}
 
 	r := &ModifyDomainRequest{
-		Content: ModifyRequestContent{
-			Urn:   urnAdmin,
-			ID:    id,
-			Attrs: a,
-		},
+		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
 	}
 
 	return r, ModifyDomainResponse{}
+}
+
+func NewModifyServerRequest(id string, attrs map[string]string) (*ModifyServerRequest, ModifyServerResponse) {
+	//a := make([]AttrResponse, 0)
+	//
+	//for key, value := range attrs {
+	//	a = append(a, AttrResponse{
+	//		Key:   key,
+	//		Value: value,
+	//	})
+	//}
+
+	r := &ModifyServerRequest{
+		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
+	}
+
+	return r, ModifyServerResponse{}
+}
+
+func buildAttrResponses(attrs map[string]string) []AttrResponse {
+	a := make([]AttrResponse, len(attrs))
+
+	i := 0
+	for key, value := range attrs {
+		a[i] = AttrResponse{
+			Key:   key,
+			Value: value,
+		}
+		i++
+	}
+
+	return a
 }
 
 func NewNoOpRequest() *NoOpRequest {
@@ -610,7 +634,11 @@ func NewRenameCalendarResourceRequest(id string, newName string) *RenameCalendar
 
 func NewRenameCosRequest(id string, newName string) *RenameCosRequest {
 	return &RenameCosRequest{
-		Content: newRenameRequestContent(id, newName),
+		Content: RenameCosRequestContent{
+			Urn:     urnAdmin,
+			ID:      ContentString{Content: id},
+			NewName: ContentString{Content: newName},
+		},
 	}
 }
 
@@ -622,6 +650,7 @@ func NewRenameDistributionListRequest(id string, newName string) *RenameDistribu
 
 func newRenameRequestContent(id string, newName string) RenameRequestContent {
 	return RenameRequestContent{
+		Urn:     urnAdmin,
 		ID:      id,
 		NewName: newName,
 	}
@@ -630,6 +659,7 @@ func newRenameRequestContent(id string, newName string) RenameRequestContent {
 func NewSetPasswordRequest(id string, newPassword string) *SetPasswordRequest {
 	return &SetPasswordRequest{
 		Content: SetPasswordRequestContent{
+			Urn:         urnAdmin,
 			ID:          id,
 			NewPassword: newPassword,
 		},

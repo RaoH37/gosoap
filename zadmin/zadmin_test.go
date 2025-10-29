@@ -20,7 +20,9 @@ var res_name = os.Getenv("GOSOAP_RES_NAME")
 var dl_name = os.Getenv("GOSOAP_DL_NAME")
 var dl_id = os.Getenv("GOSOAP_DL_ID")
 var domain_name = os.Getenv("GOSOAP_DOMAIN_NAME")
+var domain_id = os.Getenv("GOSOAP_DOMAIN_ID")
 var server_name = os.Getenv("GOSOAP_SERVER_NAME")
+var server_id = os.Getenv("GOSOAP_SERVER_ID")
 
 var letters = os.Getenv("GOSOAP_LETTERS")
 
@@ -546,6 +548,119 @@ func TestGetServerRequest(t *testing.T) {
 	}
 }
 
+func TestModifyAccountRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	id := findRandomOjectId("accounts")
+
+	attrs := map[string]string{
+		"displayName": "modified",
+		"sn":          "modified",
+		"givenName":   "modified",
+		"description": "modified",
+	}
+
+	err = zcs.ModifyAccountRequest(id, attrs)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func TestModifyCalendarResourceRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	id := findRandomOjectId("resources")
+
+	attrs := map[string]string{
+		"displayName": "modified",
+	}
+
+	err = zcs.ModifyCalendarResourceRequest(id, attrs)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func TestModifyCosRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	id := findRandomOjectId("coses")
+
+	attrs := map[string]string{
+		"description": "modified",
+	}
+
+	err = zcs.ModifyCosRequest(id, attrs)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func TestModifyDistributionListRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	id := findRandomOjectId("distributionlists")
+
+	attrs := map[string]string{
+		"displayName": "modified",
+	}
+
+	err = zcs.ModifyDistributionListRequest(id, attrs)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func TestModifyDomainRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	attrs := map[string]string{
+		"description": "modified",
+	}
+
+	err = zcs.ModifyDomainRequest(domain_id, attrs)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func TestModifyServerRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	attrs := map[string]string{
+		"description": "modified",
+	}
+
+	err = zcs.ModifyServerRequest(server_id, attrs)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
 func TestNoOpRequest(t *testing.T) {
 	zcs, err := NewZAdmin()
 	if err != nil {
@@ -553,6 +668,50 @@ func TestNoOpRequest(t *testing.T) {
 	}
 
 	err = zcs.NoOpRequest()
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func TestRenameAccountRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	newAccountName := prefix + RandStringRunes(10) + "@" + domain_name
+
+	id := findRandomOjectId("accounts")
+
+	if id == "" {
+		t.Errorf("id is empty")
+		return
+	}
+
+	err = zcs.RenameAccountRequest(id, newAccountName)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func TestRenameCosRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	newCosName := prefix + RandStringRunes(10)
+
+	id := findRandomOjectId("coses")
+
+	if id == "" {
+		t.Errorf("id is empty")
+		return
+	}
+
+	err = zcs.RenameCosRequest(id, newCosName)
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -592,5 +751,27 @@ func TestSearchDirectoryRequestCount(t *testing.T) {
 
 	if testing.Verbose() {
 		fmt.Printf("%v\n", resp.Content.Count)
+	}
+}
+
+func TestSetPasswordRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	newPassword := RandStringRunes(12)
+
+	id := findRandomOjectId("accounts")
+
+	if id == "" {
+		t.Errorf("id is empty")
+		return
+	}
+
+	err = zcs.SetPassword(id, newPassword)
+
+	if err != nil {
+		t.Fatalf("%v", err)
 	}
 }

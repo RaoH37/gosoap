@@ -335,7 +335,7 @@ type ModifyAccountResponse struct {
 }
 
 type ModifyAccountResponseContent struct {
-	Account []GenericResponse `json:"account"`
+	Accounts []GenericResponse `json:"account"`
 }
 
 type ModifyCalendarResourceRequest struct {
@@ -347,11 +347,17 @@ type ModifyCalendarResourceResponse struct {
 }
 
 type ModifyCalendarResourceResponseContent struct {
-	Calresource []GenericResponse `json:"calresource"`
+	Calresources []GenericResponse `json:"calresource"`
 }
 
 type ModifyCosRequest struct {
-	Content ModifyRequestContent `json:"ModifyCosRequest"`
+	Content ModifyCosRequestContent `json:"ModifyCosRequest"`
+}
+
+type ModifyCosRequestContent struct {
+	Urn   string         `json:"_jsns"`
+	ID    ContentString  `json:"id"`
+	Attrs []AttrResponse `json:"a"`
 }
 
 type ModifyCosResponse struct {
@@ -359,7 +365,7 @@ type ModifyCosResponse struct {
 }
 
 type ModifyCosResponseContent struct {
-	Cos []GenericResponse `json:"cos"`
+	Coses []GenericResponse `json:"cos"`
 }
 
 type ModifyDistributionListRequest struct {
@@ -371,7 +377,7 @@ type ModifyDistributionListResponse struct {
 }
 
 type ModifyDistributionListResponseContent struct {
-	Dl []GenericResponse `json:"cos"`
+	Dls []GenericResponse `json:"cos"`
 }
 
 type ModifyDomainRequest struct {
@@ -383,7 +389,19 @@ type ModifyDomainResponse struct {
 }
 
 type ModifyDomainResponseContent struct {
-	Domain []GenericResponse `json:"domain"`
+	Domains []GenericResponse `json:"domain"`
+}
+
+type ModifyServerRequest struct {
+	Content ModifyRequestContent `json:"ModifyServerRequest"`
+}
+
+type ModifyServerResponse struct {
+	Content ModifyServerResponseContent `json:"ModifyServerResponse"`
+}
+
+type ModifyServerResponseContent struct {
+	Servers []GenericResponse `json:"server"`
 }
 
 type NoOpRequest struct {
@@ -635,7 +653,13 @@ type RenameCalendarResourceRequest struct {
 }
 
 type RenameCosRequest struct {
-	Content RenameRequestContent `json:"RenameCosRequest"`
+	Content RenameCosRequestContent `json:"RenameCosRequest"`
+}
+
+type RenameCosRequestContent struct {
+	Urn     string        `json:"_jsns,attr"`
+	ID      ContentString `json:"id"`
+	NewName ContentString `json:"newName"`
 }
 
 type RenameDistributionListRequest struct {
@@ -643,6 +667,7 @@ type RenameDistributionListRequest struct {
 }
 
 type RenameRequestContent struct {
+	Urn     string `json:"_jsns,attr"`
 	ID      string `json:"id"`
 	NewName string `json:"newName"`
 }
@@ -652,6 +677,7 @@ type SetPasswordRequest struct {
 }
 
 type SetPasswordRequestContent struct {
+	Urn         string `json:"_jsns,attr"`
 	ID          string `json:"id"`
 	NewPassword string `json:"newPassword"`
 }

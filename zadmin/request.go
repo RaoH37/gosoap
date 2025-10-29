@@ -395,6 +395,20 @@ func (s *ZAdmin) ModifyDomainRequest(id string, attrs map[string]string) error {
 	return nil
 }
 
+func (s *ZAdmin) ModifyServerRequest(id string, attrs map[string]string) error {
+	req, resp := zimbraAdmin.NewModifyServerRequest(id, attrs)
+
+	connector := s.buildZimbraConnector()
+	connector.SetHeaderContext(s.AuthToken, "", "", "")
+
+	if err := connector.Invoke(req, &resp); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
+}
+
 func (s *ZAdmin) NoOpRequest() error {
 	req := zimbraAdmin.NewNoOpRequest()
 
@@ -423,6 +437,30 @@ func (s *ZAdmin) RemoveDistributionListAliasRequest(id string, alias string) err
 
 func (s *ZAdmin) RemoveDistributionListMemberRequest(id string, members []string) error {
 	req := zimbraAdmin.NewRemoveDistributionListMemberRequest(id, members)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) RenameAccountRequest(id string, newName string) error {
+	req := zimbraAdmin.NewRenameAccountRequest(id, newName)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) RenameCalendarResourceRequest(id string, newName string) error {
+	req := zimbraAdmin.NewRenameCalendarResourceRequest(id, newName)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) RenameDistributionListRequest(id string, newName string) error {
+	req := zimbraAdmin.NewRenameDistributionListRequest(id, newName)
+
+	return s.invokeWithoutResponse(req, "", "", "")
+}
+
+func (s *ZAdmin) RenameCosRequest(id string, newName string) error {
+	req := zimbraAdmin.NewRenameCosRequest(id, newName)
 
 	return s.invokeWithoutResponse(req, "", "", "")
 }
@@ -470,4 +508,9 @@ func (s *ZAdmin) SearchDirectoryRequest(
 	}
 
 	return &resp, nil
+}
+
+func (s *ZAdmin) SetPassword(id string, newPassword string) error {
+	req := zimbraAdmin.NewSetPasswordRequest(id, newPassword)
+	return s.invokeWithoutResponse(req, "", "", "")
 }
