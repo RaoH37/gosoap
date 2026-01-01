@@ -1,4 +1,4 @@
-package zsoap
+package zclient
 
 type ZCos struct {
 	ID                                string

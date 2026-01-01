@@ -1,4 +1,4 @@
-package zsoap
+package zclient
 
 type ZDomain struct {
 	ID                                                         string
