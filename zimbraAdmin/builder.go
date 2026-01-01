@@ -1,6 +1,10 @@
 package zimbraAdmin
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/RaoH37/gosoap/zimbraCommon"
+)
 
 const urnAdmin = "urn:zimbraAdmin"
 
@@ -14,14 +18,7 @@ func NewAuthRequest(name string, password string) (*AuthRequest, AuthResponse) {
 	}, AuthResponse{}
 }
 
-func NewByNode(by string, value string) ByNode {
-	return ByNode{
-		By:    by,
-		Value: value,
-	}
-}
-
-func NewGetAccountRequest(by ByNode, attrs []string, applyCos int8) (*GetAccountRequest, GetAccountResponse) {
+func NewGetAccountRequest(by zimbraCommon.ByNode, attrs []string, applyCos int8) (*GetAccountRequest, GetAccountResponse) {
 	r := &GetAccountRequest{
 		Content: GetAccountRequestContent{
 			Urn:      urnAdmin,
@@ -37,13 +34,13 @@ func NewGetAccountRequest(by ByNode, attrs []string, applyCos int8) (*GetAccount
 	return r, GetAccountResponse{}
 }
 
-func NewGetAllConfigRequest(by ByNode, attrs []string) (*GetAllConfigRequest, GetAllConfigResponse) {
+func NewGetAllConfigRequest(by zimbraCommon.ByNode, attrs []string) (*GetAllConfigRequest, GetAllConfigResponse) {
 	return &GetAllConfigRequest{
 		Content: newUrnRequestContent(),
 	}, GetAllConfigResponse{}
 }
 
-func NewGetDistributionListRequest(by ByNode, attrs []string) (*GetDistributionListRequest, GetDistributionListResponse) {
+func NewGetDistributionListRequest(by zimbraCommon.ByNode, attrs []string) (*GetDistributionListRequest, GetDistributionListResponse) {
 	r := &GetDistributionListRequest{
 		Content: GetDistributionListRequestContent{
 			Urn: urnAdmin,
@@ -58,7 +55,7 @@ func NewGetDistributionListRequest(by ByNode, attrs []string) (*GetDistributionL
 	return r, GetDistributionListResponse{}
 }
 
-func NewGetCalendarResourceRequest(by ByNode, attrs []string, applyCos int8) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
+func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs []string, applyCos int8) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
 	r := &GetCalendarResourceRequest{
 		Content: GetCalendarResourceRequestContent{
 			Urn:         urnAdmin,
@@ -74,7 +71,7 @@ func NewGetCalendarResourceRequest(by ByNode, attrs []string, applyCos int8) (*G
 	return r, GetCalendarResourceResponse{}
 }
 
-func NewGetCosRequest(by ByNode, attrs []string) (*GetCosRequest, GetCosResponse) {
+func NewGetCosRequest(by zimbraCommon.ByNode, attrs []string) (*GetCosRequest, GetCosResponse) {
 	r := &GetCosRequest{
 		Content: GetCosRequestContent{
 			Urn: urnAdmin,
@@ -89,7 +86,7 @@ func NewGetCosRequest(by ByNode, attrs []string) (*GetCosRequest, GetCosResponse
 	return r, GetCosResponse{}
 }
 
-func NewGetDomainRequest(by ByNode, attrs []string, applyConfig int8) (*GetDomainRequest, GetDomainResponse) {
+func NewGetDomainRequest(by zimbraCommon.ByNode, attrs []string, applyConfig int8) (*GetDomainRequest, GetDomainResponse) {
 	r := &GetDomainRequest{
 		Content: GetDomainRequestContent{
 			Urn:         urnAdmin,
@@ -119,7 +116,7 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, GetAllServe
 	return r, GetAllServersResponse{}
 }
 
-func NewGetServerRequest(by ByNode, applyConfig int8, attrs []string) (*GetServerRequest, GetServerResponse) {
+func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig int8, attrs []string) (*GetServerRequest, GetServerResponse) {
 	r := &GetServerRequest{
 		Content: GetServerRequestContent{
 			Urn:         urnAdmin,
@@ -159,7 +156,7 @@ func NewBackupQueryRequest() (*BackupQueryRequest, BackupQueryResponse) {
 	}, BackupQueryResponse{}
 }
 
-func NewCopyCosRequest(by ByNode, newName string) (*CopyCosRequest, CopyCosResponse) {
+func NewCopyCosRequest(by zimbraCommon.ByNode, newName string) (*CopyCosRequest, CopyCosResponse) {
 	return &CopyCosRequest{
 		Content: CopyCosRequestContent{
 			Urn: urnAdmin,
@@ -272,7 +269,7 @@ func newIdRequestContent(id string) IdRequestContent {
 	}
 }
 
-func NewDelegateAuthRequest(by ByNode) (*DelegateAuthRequest, DelegateAuthResponse) {
+func NewDelegateAuthRequest(by zimbraCommon.ByNode) (*DelegateAuthRequest, DelegateAuthResponse) {
 	return &DelegateAuthRequest{
 		Content: DelegateAuthRequestContent{
 			Urn:     urnAdmin,
@@ -281,7 +278,7 @@ func NewDelegateAuthRequest(by ByNode) (*DelegateAuthRequest, DelegateAuthRespon
 	}, DelegateAuthResponse{}
 }
 
-func NewDeleteGalSyncAccountRequest(by ByNode) *DeleteGalSyncAccountRequest {
+func NewDeleteGalSyncAccountRequest(by zimbraCommon.ByNode) *DeleteGalSyncAccountRequest {
 	return &DeleteGalSyncAccountRequest{
 		Content: DeleteGalSyncAccountRequestContent{
 			Urn:     urnAdmin,

@@ -11,6 +11,7 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/RaoH37/gosoap/zimbraCommon"
 	"github.com/pkg/errors"
 )
 
@@ -36,11 +37,12 @@ func (connector *Connector) SetHeaderContext(token string, serverId string, acco
 	}
 
 	if accountName != "" {
-		headerContext.Account = ByNode{By: "name", Value: accountName}
+		by := zimbraCommon.NewByNode(zimbraCommon.NAME, accountName)
+		headerContext.Account = &by
 	}
 
 	if userAgent != "" {
-		headerContext.UserAgent = NameNode{Name: userAgent}
+		headerContext.UserAgent = &NameNode{Name: userAgent}
 	}
 
 	connector.header = headerContext

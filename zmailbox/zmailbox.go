@@ -1,7 +1,6 @@
-package zadmin
+package zmailbox
 
 import (
-	"net"
 	"net/url"
 	"strings"
 	"time"
@@ -10,23 +9,24 @@ import (
 	"github.com/RaoH37/gosoap/zimbraConnector"
 )
 
-const Equipment = "Equipment"
-const Emplacement = "Emplacement"
-
-func NewZAdmin(
-	urlAdmin string,
+func NewZMailbox(
+	url string,
 	tls bool,
-	login string,
+	id string,
+	name string,
 	password string,
+	domainKey string,
 	debug bool,
 	retryWaitingDuration time.Duration,
 	userAgent string,
-	timeout time.Duration) ZAdmin {
-	return ZAdmin{
-		urlAdmin:             buildUrl(urlAdmin),
+	timeout time.Duration) ZMailbox {
+	return ZMailbox{
+		url:                  buildUrl(url),
 		tls:                  tls,
-		login:                login,
+		id:                   id,
+		name:                 name,
 		password:             password,
+		domainKey:            domainKey,
 		debug:                debug,
 		RetryWaitingDuration: retryWaitingDuration,
 		userAgent:            userAgent,
@@ -45,44 +45,40 @@ func buildUrl(inputUrl string) string {
 	}
 
 	if u.Path == "" || u.Path == "/" {
-		u.Path = "/service/admin/soap"
-	}
-
-	if u.Port() == "" {
-		u.Host = net.JoinHostPort(u.Hostname(), "7071")
+		u.Path = "/service/soap"
 	}
 
 	return u.String()
 }
 
-type ZAdmin struct {
+type ZMailbox struct {
 	AuthToken            string
-	urlAdmin             string
+	url                  string
 	tls                  bool
-	login                string
+	id                   string
+	name                 string
 	password             string
+	domainKey            string
 	debug                bool
 	RetryWaitingDuration time.Duration
 	userAgent            string
 	timeout              time.Duration
 }
 
-func (s *ZAdmin) buildZimbraConnector() *zimbraConnector.Connector {
-	return zimbraConnector.BuildConnector(s.urlAdmin, s.tls, s.userAgent, nil, s.debug, s.timeout)
+func (s *ZMailbox) buildZimbraConnector() *zimbraConnector.Connector {
+	return zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
 }
 
-func (s *ZAdmin) byNode(id string, name string) zimbraCommon.ByNode {
-	if id != "" {
-		return zimbraCommon.NewByNode(zimbraCommon.ID, id)
+func (s *ZMailbox) authRequestByNode() zimbraCommon.ByNode {
+	if s.id != "" {
+		return zimbraCommon.ByNode{
+			By:    zimbraCommon.ID,
+			Value: s.id,
+		}
 	}
 
-	return zimbraCommon.NewByNode(zimbraCommon.NAME, name)
-}
-
-func boolToRequest(b bool) int8 {
-	if b {
-		return 1
+	return zimbraCommon.ByNode{
+		By:    zimbraCommon.NAME,
+		Value: s.name,
 	}
-
-	return 0
 }

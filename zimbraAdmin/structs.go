@@ -1,5 +1,7 @@
 package zimbraAdmin
 
+import "github.com/RaoH37/gosoap/zimbraCommon"
+
 // ************* COMMON ***************
 
 type ContentString struct {
@@ -37,10 +39,10 @@ func (anr *AttrNameResponse) ToAttrResponse() AttrResponse {
 	}
 }
 
-type ByNode struct {
-	By    string `json:"by"`
-	Value string `json:"_content"`
-}
+//type ByNode struct {
+//	By    string `json:"by"`
+//	Value string `json:"_content"`
+//}
 
 type GenericResponse struct {
 	Name  string         `json:"name,omitempty"`
@@ -88,9 +90,9 @@ type CopyCosRequest struct {
 }
 
 type CopyCosRequestContent struct {
-	Name ContentString `json:"name"`
-	By   ByNode        `json:"cos"`
-	Urn  string        `json:"_jsns,attr"`
+	Name ContentString       `json:"name"`
+	By   zimbraCommon.ByNode `json:"cos"`
+	Urn  string              `json:"_jsns,attr"`
 }
 
 type CopyCosResponse struct {
@@ -107,8 +109,8 @@ type DelegateAuthRequest struct {
 }
 
 type DelegateAuthRequestContent struct {
-	Account ByNode `json:"account,attr"`
-	Urn     string `json:"_jsns,attr"`
+	Account zimbraCommon.ByNode `json:"account,attr"`
+	Urn     string              `json:"_jsns,attr"`
 }
 
 type DelegateAuthResponse struct {
@@ -156,8 +158,8 @@ type DeleteGalSyncAccountRequest struct {
 }
 
 type DeleteGalSyncAccountRequestContent struct {
-	Account ByNode `json:"account,attr"`
-	Urn     string `json:"_jsns,attr"`
+	Account zimbraCommon.ByNode `json:"account,attr"`
+	Urn     string              `json:"_jsns,attr"`
 }
 
 type GetAccountRequest struct {
@@ -165,10 +167,10 @@ type GetAccountRequest struct {
 }
 
 type GetAccountRequestContent struct {
-	Account  ByNode `json:"account,attr"`
-	Urn      string `json:"_jsns,attr"`
-	Attrs    string `json:"attrs,omitempty"`
-	ApplyCos int8   `json:"applyCos,omitempty"`
+	Account  zimbraCommon.ByNode `json:"account,attr"`
+	Urn      string              `json:"_jsns,attr"`
+	Attrs    string              `json:"attrs,omitempty"`
+	ApplyCos int8                `json:"applyCos,omitempty"`
 }
 
 type GetAccountResponse struct {
@@ -196,9 +198,9 @@ type GetDistributionListRequest struct {
 }
 
 type GetDistributionListRequestContent struct {
-	Dl    ByNode `json:"dl,attr"`
-	Urn   string `json:"_jsns,attr"`
-	Attrs string `json:"attrs,omitempty"`
+	Dl    zimbraCommon.ByNode `json:"dl,attr"`
+	Urn   string              `json:"_jsns,attr"`
+	Attrs string              `json:"attrs,omitempty"`
 }
 
 type GetDistributionListResponse struct {
@@ -476,10 +478,10 @@ type GetCalendarResourceRequest struct {
 }
 
 type GetCalendarResourceRequestContent struct {
-	CalResource ByNode `json:"calresource,attr"`
-	Urn         string `json:"_jsns,attr"`
-	Attrs       string `json:"attrs,omitempty"`
-	ApplyCos    int8   `json:"applyCos,omitempty"`
+	CalResource zimbraCommon.ByNode `json:"calresource,attr"`
+	Urn         string              `json:"_jsns,attr"`
+	Attrs       string              `json:"attrs,omitempty"`
+	ApplyCos    int8                `json:"applyCos,omitempty"`
 }
 
 type GetCalendarResourceResponse struct {
@@ -495,9 +497,9 @@ type GetCosRequest struct {
 }
 
 type GetCosRequestContent struct {
-	Cos   ByNode `json:"cos"`
-	Urn   string `json:"_jsns,attr"`
-	Attrs string `json:"attrs,omitempty"`
+	Cos   zimbraCommon.ByNode `json:"cos"`
+	Urn   string              `json:"_jsns,attr"`
+	Attrs string              `json:"attrs,omitempty"`
 }
 
 type GetCosResponse struct {
@@ -530,10 +532,10 @@ type GetServerRequest struct {
 }
 
 type GetServerRequestContent struct {
-	Server      ByNode `json:"server,attr"`
-	Urn         string `json:"_jsns,attr"`
-	ApplyConfig int8   `json:"applyConfig,omitempty"`
-	Attrs       string `json:"attrs,omitempty"`
+	Server      zimbraCommon.ByNode `json:"server,attr"`
+	Urn         string              `json:"_jsns,attr"`
+	ApplyConfig int8                `json:"applyConfig,omitempty"`
+	Attrs       string              `json:"attrs,omitempty"`
 }
 
 type GetServerResponse struct {
@@ -549,10 +551,10 @@ type GetDomainRequest struct {
 }
 
 type GetDomainRequestContent struct {
-	Domain      ByNode `json:"domain,attr"`
-	Urn         string `json:"_jsns,attr"`
-	Attrs       string `json:"attrs,omitempty"`
-	ApplyConfig int8   `json:"applyConfig,omitempty"`
+	Domain      zimbraCommon.ByNode `json:"domain,attr"`
+	Urn         string              `json:"_jsns,attr"`
+	Attrs       string              `json:"attrs,omitempty"`
+	ApplyConfig int8                `json:"applyConfig,omitempty"`
 }
 
 type GetDomainResponse struct {

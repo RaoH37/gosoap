@@ -1,5 +1,7 @@
 package zimbraConnector
 
+import "github.com/RaoH37/gosoap/zimbraCommon"
+
 type Envelope struct {
 	Header *Header     `json:",omitempty"`
 	Body   interface{} `json:"Body,omitempty"`
@@ -16,16 +18,11 @@ type HeaderToken struct {
 }
 
 type HeaderContext struct {
-	Urn       string   `json:"_jsns,attr"`
-	Token     string   `json:"authToken,omitempty"`
-	UserAgent NameNode `json:"userAgent,omitempty"`
-	Account   ByNode   `json:"account,omitempty"`
-	ServerID  string   `json:"targetServer,omitempty"`
-}
-
-type ByNode struct {
-	By    string `json:"by,omitempty"`
-	Value string `json:"_content,omitempty"`
+	Urn       string               `json:"_jsns,attr"`
+	Token     string               `json:"authToken,omitempty"`
+	UserAgent *NameNode            `json:"userAgent,omitempty"`
+	Account   *zimbraCommon.ByNode `json:"account,omitempty"`
+	ServerID  string               `json:"targetServer,omitempty"`
 }
 
 type NameNode struct {
