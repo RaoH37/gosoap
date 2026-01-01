@@ -13,9 +13,9 @@ func (s *ZAdmin) invokeWithoutResponse(req interface{}, serverId string, account
 	if err := connector.Invoke(req, nil); err != nil {
 		log.Println(err)
 		return err
-	} else {
-		return nil
 	}
+
+	return nil
 }
 
 func (s *ZAdmin) AddAccountAliasRequest(id string, alias string) error {
@@ -72,9 +72,9 @@ func (s *ZAdmin) CopyCosRequest(id string, name string, newName string) (*zimbra
 	if err := connector.Invoke(req, nil); err != nil {
 		log.Println(err)
 		return nil, err
-	} else {
-		return &resp, nil
 	}
+
+	return &resp, nil
 }
 
 func (s *ZAdmin) CreateAccountRequest(name string, password string, attrs map[string]string) (*zimbraAdmin.CreateAccountResponse, error) {
@@ -157,9 +157,9 @@ func (s *ZAdmin) DelegateAuthRequest(id string, name string) (*zimbraAdmin.Deleg
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
 		return nil, err
-	} else {
-		return &resp, nil
 	}
+
+	return &resp, nil
 }
 
 func (s *ZAdmin) DeleteAccountRequest(id string) error {

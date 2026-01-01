@@ -5,15 +5,13 @@ import "strings"
 const urnAdmin = "urn:zimbraAdmin"
 
 func NewAuthRequest(name string, password string) (*AuthRequest, AuthResponse) {
-	r := &AuthRequest{
+	return &AuthRequest{
 		Content: AuthRequestContent{
 			Name:     name,
 			Password: password,
 			Urn:      urnAdmin,
 		},
-	}
-
-	return r, AuthResponse{}
+	}, AuthResponse{}
 }
 
 func NewByNode(by string, value string) ByNode {
@@ -40,11 +38,9 @@ func NewGetAccountRequest(by ByNode, attrs []string, applyCos int8) (*GetAccount
 }
 
 func NewGetAllConfigRequest(by ByNode, attrs []string) (*GetAllConfigRequest, GetAllConfigResponse) {
-	r := &GetAllConfigRequest{
+	return &GetAllConfigRequest{
 		Content: newUrnRequestContent(),
-	}
-
-	return r, GetAllConfigResponse{}
+	}, GetAllConfigResponse{}
 }
 
 func NewGetDistributionListRequest(by ByNode, attrs []string) (*GetDistributionListRequest, GetDistributionListResponse) {
@@ -140,7 +136,7 @@ func NewGetServerRequest(by ByNode, applyConfig int8, attrs []string) (*GetServe
 }
 
 func NewGetQuotaUsageRequest(domain string, allServers int8, limit int, offset int, sortBy string, sortAscending int8, refresh int8) (*GetQuotaUsageRequest, GetQuotaUsageResponse) {
-	r := &GetQuotaUsageRequest{
+	return &GetQuotaUsageRequest{
 		Content: GetQuotaUsageRequestContent{
 			Urn:           urnAdmin,
 			Servers:       allServers,
@@ -151,24 +147,20 @@ func NewGetQuotaUsageRequest(domain string, allServers int8, limit int, offset i
 			SortAscending: sortAscending,
 			Refresh:       refresh,
 		},
-	}
-
-	return r, GetQuotaUsageResponse{}
+	}, GetQuotaUsageResponse{}
 }
 
 func NewBackupQueryRequest() (*BackupQueryRequest, BackupQueryResponse) {
-	r := &BackupQueryRequest{
+	return &BackupQueryRequest{
 		Content: BackupQueryRequestContent{
 			Urn:   urnAdmin,
 			Query: make(map[string]string),
 		},
-	}
-
-	return r, BackupQueryResponse{}
+	}, BackupQueryResponse{}
 }
 
 func NewCopyCosRequest(by ByNode, newName string) (*CopyCosRequest, CopyCosResponse) {
-	r := &CopyCosRequest{
+	return &CopyCosRequest{
 		Content: CopyCosRequestContent{
 			Urn: urnAdmin,
 			By:  by,
@@ -176,131 +168,72 @@ func NewCopyCosRequest(by ByNode, newName string) (*CopyCosRequest, CopyCosRespo
 				Content: newName,
 			},
 		},
-	}
-
-	return r, CopyCosResponse{}
+	}, CopyCosResponse{}
 }
 
 func NewCreateAccountRequest(name string, password string, attrs map[string]string) (*CreateAccountRequest, CreateAccountResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateAccountRequest{
+	return &CreateAccountRequest{
 		Content: CreateAccountRequestContent{
 			Urn:      urnAdmin,
 			Name:     name,
 			Password: password,
-			Attrs:    a,
+			Attrs:    buildAttrResponses(attrs),
 		},
-	}
-
-	return r, CreateAccountResponse{}
+	}, CreateAccountResponse{}
 }
 
 func NewCreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*CreateCalendarResourceRequest, CreateCalendarResourceResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateCalendarResourceRequest{
+	return &CreateCalendarResourceRequest{
 		Content: CreateCalendarResourceRequestContent{
 			Urn:      urnAdmin,
 			Name:     name,
 			Password: password,
-			Attrs:    a,
+			Attrs:    buildAttrResponses(attrs),
 		},
-	}
-
-	return r, CreateCalendarResourceResponse{}
+	}, CreateCalendarResourceResponse{}
 }
 
 func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosRequest, CreateCosResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateCosRequest{
+	return &CreateCosRequest{
 		Content: CreateCosRequestContent{
 			Urn: urnAdmin,
 			Name: ContentString{
 				Content: name,
 			},
-			Attrs: a,
+			Attrs: buildAttrResponses(attrs),
 		},
-	}
-
-	return r, CreateCosResponse{}
+	}, CreateCosResponse{}
 }
 
 func NewCreateDistributionListRequest(name string, dynamic int8, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateDistributionListRequest{
+	return &CreateDistributionListRequest{
 		Content: CreateDistributionListRequestContent{
 			Urn:     urnAdmin,
 			Name:    name,
 			Dynamic: dynamic,
-			Attrs:   a,
+			Attrs:   buildAttrResponses(attrs),
 		},
-	}
-
-	return r, CreateDistributionListResponse{}
+	}, CreateDistributionListResponse{}
 }
 
 func NewCreateDomainRequest(name string, attrs map[string]string) (*CreateDomainRequest, CreateDomainResponse) {
-	a := make([]AttrResponse, 0)
-
-	for key, value := range attrs {
-		a = append(a, AttrResponse{
-			Key:   key,
-			Value: value,
-		})
-	}
-
-	r := &CreateDomainRequest{
+	return &CreateDomainRequest{
 		Content: CreateDomainRequestContent{
 			Urn:   urnAdmin,
 			Name:  name,
-			Attrs: a,
+			Attrs: buildAttrResponses(attrs),
 		},
-	}
-
-	return r, CreateDomainResponse{}
+	}, CreateDomainResponse{}
 }
 
 func NewDeleteCalendarResourceRequest(id string) *DeleteCalendarResourceRequest {
-	r := &DeleteCalendarResourceRequest{
+	return &DeleteCalendarResourceRequest{
 		Content: newIdRequestContent(id),
 	}
-
-	return r
 }
 
 func NewDeleteCosRequest(id string) *DeleteCosRequest {
-	r := &DeleteCosRequest{
+	return &DeleteCosRequest{
 		Content: DeleteCosRequestContent{
 			Urn: urnAdmin,
 			ID: ContentString{
@@ -308,38 +241,28 @@ func NewDeleteCosRequest(id string) *DeleteCosRequest {
 			},
 		},
 	}
-
-	return r
 }
 
 func NewDeleteDistributionListRequest(id string, cascadeDelete int8) *DeleteDistributionListRequest {
-	content := DeleteDistributionListRequestContent{
-		Urn:           urnAdmin,
-		ID:            id,
-		CascadeDelete: cascadeDelete,
+	return &DeleteDistributionListRequest{
+		Content: DeleteDistributionListRequestContent{
+			Urn:           urnAdmin,
+			ID:            id,
+			CascadeDelete: cascadeDelete,
+		},
 	}
-
-	r := &DeleteDistributionListRequest{
-		Content: content,
-	}
-
-	return r
 }
 
 func NewDeleteDomainRequest(id string) *DeleteDomainRequest {
-	r := &DeleteDomainRequest{
+	return &DeleteDomainRequest{
 		Content: newIdRequestContent(id),
 	}
-
-	return r
 }
 
 func NewDeleteAccountRequest(id string) *DeleteAccountRequest {
-	r := &DeleteAccountRequest{
+	return &DeleteAccountRequest{
 		Content: newIdRequestContent(id),
 	}
-
-	return r
 }
 
 func newIdRequestContent(id string) IdRequestContent {
@@ -350,41 +273,33 @@ func newIdRequestContent(id string) IdRequestContent {
 }
 
 func NewDelegateAuthRequest(by ByNode) (*DelegateAuthRequest, DelegateAuthResponse) {
-	r := &DelegateAuthRequest{
+	return &DelegateAuthRequest{
 		Content: DelegateAuthRequestContent{
 			Urn:     urnAdmin,
 			Account: by,
 		},
-	}
-
-	return r, DelegateAuthResponse{}
+	}, DelegateAuthResponse{}
 }
 
 func NewDeleteGalSyncAccountRequest(by ByNode) *DeleteGalSyncAccountRequest {
-	r := &DeleteGalSyncAccountRequest{
+	return &DeleteGalSyncAccountRequest{
 		Content: DeleteGalSyncAccountRequestContent{
 			Urn:     urnAdmin,
 			Account: by,
 		},
 	}
-
-	return r
 }
 
 func NewSearchDirectoryRequest(params *SearchDirectoryParams) (*SearchDirectoryRequest, SearchDirectoryResponse) {
-	r := &SearchDirectoryRequest{
+	return &SearchDirectoryRequest{
 		Content: *params,
-	}
-
-	return r, SearchDirectoryResponse{}
+	}, SearchDirectoryResponse{}
 }
 
 func NewLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
-	r := &GetLicenseRequest{
+	return &GetLicenseRequest{
 		Content: newUrnRequestContent(),
-	}
-
-	return r, GetLicenseResponse{}
+	}, GetLicenseResponse{}
 }
 
 func newUrnRequestContent() UrnRequestContent {
@@ -402,36 +317,21 @@ func newModifyRequestContent(id string, a []AttrResponse) ModifyRequestContent {
 }
 
 func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccountRequest, ModifyAccountResponse) {
-	//a := make([]AttrResponse, 0)
-	//
-	//for key, value := range attrs {
-	//	a = append(a, AttrResponse{
-	//		Key:   key,
-	//		Value: value,
-	//	})
-	//}
-
-	r := &ModifyAccountRequest{
+	return &ModifyAccountRequest{
 		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
-	}
-
-	return r, ModifyAccountResponse{}
+	}, ModifyAccountResponse{}
 }
 
 func NewAddAccountAliasRequest(id string, alias string) *AddAccountAliasRequest {
-	r := &AddAccountAliasRequest{
+	return &AddAccountAliasRequest{
 		Content: newAccountAliasRequestContent(id, alias),
 	}
-
-	return r
 }
 
 func NewRemoveAccountAliasRequest(id string, alias string) *RemoveAccountAliasRequest {
-	r := &RemoveAccountAliasRequest{
+	return &RemoveAccountAliasRequest{
 		Content: newAccountAliasRequestContent(id, alias),
 	}
-
-	return r
 }
 
 func newAccountAliasRequestContent(id string, alias string) AliasRequestContent {
@@ -443,36 +343,21 @@ func newAccountAliasRequestContent(id string, alias string) AliasRequestContent 
 }
 
 func NewModifyCalendarResourceRequest(id string, attrs map[string]string) (*ModifyCalendarResourceRequest, ModifyCalendarResourceResponse) {
-	//a := make([]AttrResponse, 0)
-	//
-	//for key, value := range attrs {
-	//	a = append(a, AttrResponse{
-	//		Key:   key,
-	//		Value: value,
-	//	})
-	//}
-
-	r := &ModifyCalendarResourceRequest{
+	return &ModifyCalendarResourceRequest{
 		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
-	}
-
-	return r, ModifyCalendarResourceResponse{}
+	}, ModifyCalendarResourceResponse{}
 }
 
 func NewAddDistributionListAliasRequest(id string, alias string) *AddDistributionListAliasRequest {
-	r := &AddDistributionListAliasRequest{
+	return &AddDistributionListAliasRequest{
 		Content: newDistributionListAliasRequestContent(id, alias),
 	}
-
-	return r
 }
 
 func NewRemoveDistributionListAliasRequest(id string, alias string) *RemoveDistributionListAliasRequest {
-	r := &RemoveDistributionListAliasRequest{
+	return &RemoveDistributionListAliasRequest{
 		Content: newDistributionListAliasRequestContent(id, alias),
 	}
-
-	return r
 }
 
 func newDistributionListAliasRequestContent(id string, alias string) AliasRequestContent {
@@ -484,19 +369,15 @@ func newDistributionListAliasRequestContent(id string, alias string) AliasReques
 }
 
 func NewAddDistributionListMemberRequest(id string, members []string) *AddDistributionListMemberRequest {
-	r := &AddDistributionListMemberRequest{
+	return &AddDistributionListMemberRequest{
 		Content: newDistributionListMemberRequestContent(id, members),
 	}
-
-	return r
 }
 
 func NewRemoveDistributionListMemberRequest(id string, members []string) *RemoveDistributionListMemberRequest {
-	r := &RemoveDistributionListMemberRequest{
+	return &RemoveDistributionListMemberRequest{
 		Content: newDistributionListMemberRequestContent(id, members),
 	}
-
-	return r
 }
 
 func newDistributionListMemberRequestContent(id string, members []string) DistributionListMemberRequestContent {
@@ -518,83 +399,37 @@ func convertToContentStrings(arr []string) []ContentString {
 }
 
 func NewGetLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
-	r := &GetLicenseRequest{
+	return &GetLicenseRequest{
 		Content: newUrnRequestContent(),
-	}
-
-	return r, GetLicenseResponse{}
+	}, GetLicenseResponse{}
 }
 
 func NewModifyCosRequest(id string, attrs map[string]string) (*ModifyCosRequest, ModifyCosResponse) {
-	//a := make([]AttrResponse, 0)
-	//
-	//for key, value := range attrs {
-	//	a = append(a, AttrResponse{
-	//		Key:   key,
-	//		Value: value,
-	//	})
-	//}
-
-	r := &ModifyCosRequest{
+	return &ModifyCosRequest{
 		Content: ModifyCosRequestContent{
 			Urn:   urnAdmin,
 			ID:    ContentString{Content: id},
 			Attrs: buildAttrResponses(attrs),
 		},
-	}
-
-	return r, ModifyCosResponse{}
+	}, ModifyCosResponse{}
 }
 
 func NewModifyDistributionListRequest(id string, attrs map[string]string) (*ModifyDistributionListRequest, ModifyDistributionListResponse) {
-	//a := make([]AttrResponse, 0)
-	//
-	//for key, value := range attrs {
-	//	a = append(a, AttrResponse{
-	//		Key:   key,
-	//		Value: value,
-	//	})
-	//}
-
-	r := &ModifyDistributionListRequest{
+	return &ModifyDistributionListRequest{
 		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
-	}
-
-	return r, ModifyDistributionListResponse{}
+	}, ModifyDistributionListResponse{}
 }
 
 func NewModifyDomainRequest(id string, attrs map[string]string) (*ModifyDomainRequest, ModifyDomainResponse) {
-	//a := make([]AttrResponse, 0)
-	//
-	//for key, value := range attrs {
-	//	a = append(a, AttrResponse{
-	//		Key:   key,
-	//		Value: value,
-	//	})
-	//}
-
-	r := &ModifyDomainRequest{
+	return &ModifyDomainRequest{
 		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
-	}
-
-	return r, ModifyDomainResponse{}
+	}, ModifyDomainResponse{}
 }
 
 func NewModifyServerRequest(id string, attrs map[string]string) (*ModifyServerRequest, ModifyServerResponse) {
-	//a := make([]AttrResponse, 0)
-	//
-	//for key, value := range attrs {
-	//	a = append(a, AttrResponse{
-	//		Key:   key,
-	//		Value: value,
-	//	})
-	//}
-
-	r := &ModifyServerRequest{
+	return &ModifyServerRequest{
 		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
-	}
-
-	return r, ModifyServerResponse{}
+	}, ModifyServerResponse{}
 }
 
 func buildAttrResponses(attrs map[string]string) []AttrResponse {

@@ -5,7 +5,6 @@ type Envelope struct {
 	Body   interface{} `json:"Body,omitempty"`
 }
 
-// Header header
 type Header struct {
 	Content interface{} `json:"context,omitempty"`
 }
@@ -33,15 +32,16 @@ type NameNode struct {
 	Name string `json:"name,omitempty"`
 }
 
-// Fault fault
 type Fault struct {
 	Content FaultContent `json:"Fault,omitempty"`
 }
+
 type FaultContent struct {
 	Code   interface{} `json:"Code,omitempty"`
 	Reason FaultReason `json:"Reason,omitempty"`
 	Detail interface{} `json:"Detail,omitempty"`
 }
+
 type FaultReason struct {
 	Text string `json:"Text,omitempty"`
 }

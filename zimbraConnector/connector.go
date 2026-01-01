@@ -111,7 +111,12 @@ func (connector *Connector) doRequest(soapRequestName string, envelope Envelope,
 	if err != nil {
 		return errors.Wrap(err, "failed to send SOAP request")
 	}
-	defer res.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(res.Body)
 
 	if res.StatusCode != http.StatusOK {
 
@@ -161,9 +166,11 @@ func (connector *Connector) doRequest(soapRequestName string, envelope Envelope,
 }
 
 func getSoapRequestName(envelope interface{}) string {
-	if t := reflect.TypeOf(envelope); t.Kind() == reflect.Ptr {
+	t := reflect.TypeOf(envelope)
+
+	if t.Kind() == reflect.Ptr {
 		return t.Elem().Name()
-	} else {
-		return t.Name()
 	}
+
+	return t.Name()
 }
