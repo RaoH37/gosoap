@@ -44,7 +44,7 @@ func (s *ZMailbox) AuthRequestByPreauth(expires int) (*zimbraAccount.AuthRespons
 }
 
 func (s *ZMailbox) GetFolderRequest() (*zimbraMail.GetFolderResponse, error) {
-	req, resp := zimbraMail.NewGetFolderRequest()
+	req, resp := zimbraMail.NewGetFolderRequest("")
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")

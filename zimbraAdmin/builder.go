@@ -18,12 +18,12 @@ func NewAuthRequest(name string, password string) (*AuthRequest, AuthResponse) {
 	}, AuthResponse{}
 }
 
-func NewGetAccountRequest(by zimbraCommon.ByNode, attrs []string, applyCos int8) (*GetAccountRequest, GetAccountResponse) {
+func NewGetAccountRequest(by zimbraCommon.ByNode, attrs []string, applyCos bool) (*GetAccountRequest, GetAccountResponse) {
 	r := &GetAccountRequest{
 		Content: GetAccountRequestContent{
 			Urn:      urnAdmin,
 			Account:  by,
-			ApplyCos: applyCos,
+			ApplyCos: zimbraCommon.ZBool(applyCos),
 		},
 	}
 
@@ -55,12 +55,12 @@ func NewGetDistributionListRequest(by zimbraCommon.ByNode, attrs []string) (*Get
 	return r, GetDistributionListResponse{}
 }
 
-func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs []string, applyCos int8) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
+func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs []string, applyCos bool) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
 	r := &GetCalendarResourceRequest{
 		Content: GetCalendarResourceRequestContent{
 			Urn:         urnAdmin,
 			CalResource: by,
-			ApplyCos:    applyCos,
+			ApplyCos:    zimbraCommon.ZBool(applyCos),
 		},
 	}
 
@@ -86,12 +86,12 @@ func NewGetCosRequest(by zimbraCommon.ByNode, attrs []string) (*GetCosRequest, G
 	return r, GetCosResponse{}
 }
 
-func NewGetDomainRequest(by zimbraCommon.ByNode, attrs []string, applyConfig int8) (*GetDomainRequest, GetDomainResponse) {
+func NewGetDomainRequest(by zimbraCommon.ByNode, attrs []string, applyConfig bool) (*GetDomainRequest, GetDomainResponse) {
 	r := &GetDomainRequest{
 		Content: GetDomainRequestContent{
 			Urn:         urnAdmin,
 			Domain:      by,
-			ApplyConfig: applyConfig,
+			ApplyConfig: zimbraCommon.ZBool(applyConfig),
 		},
 	}
 
@@ -116,11 +116,11 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, GetAllServe
 	return r, GetAllServersResponse{}
 }
 
-func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig int8, attrs []string) (*GetServerRequest, GetServerResponse) {
+func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig bool, attrs []string) (*GetServerRequest, GetServerResponse) {
 	r := &GetServerRequest{
 		Content: GetServerRequestContent{
 			Urn:         urnAdmin,
-			ApplyConfig: applyConfig,
+			ApplyConfig: zimbraCommon.ZBool(applyConfig),
 			Server:      by,
 		},
 	}
@@ -132,17 +132,17 @@ func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig int8, attrs []strin
 	return r, GetServerResponse{}
 }
 
-func NewGetQuotaUsageRequest(domain string, allServers int8, limit int, offset int, sortBy string, sortAscending int8, refresh int8) (*GetQuotaUsageRequest, GetQuotaUsageResponse) {
+func NewGetQuotaUsageRequest(domain string, allServers bool, limit int, offset int, sortBy string, sortAscending bool, refresh bool) (*GetQuotaUsageRequest, GetQuotaUsageResponse) {
 	return &GetQuotaUsageRequest{
 		Content: GetQuotaUsageRequestContent{
 			Urn:           urnAdmin,
-			Servers:       allServers,
+			Servers:       zimbraCommon.ZBool(allServers),
 			Domain:        domain,
 			Limit:         limit,
 			Offset:        offset,
 			SortBy:        sortBy,
-			SortAscending: sortAscending,
-			Refresh:       refresh,
+			SortAscending: zimbraCommon.ZBool(sortAscending),
+			Refresh:       zimbraCommon.ZBool(refresh),
 		},
 	}, GetQuotaUsageResponse{}
 }
@@ -202,12 +202,12 @@ func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosReques
 	}, CreateCosResponse{}
 }
 
-func NewCreateDistributionListRequest(name string, dynamic int8, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
+func NewCreateDistributionListRequest(name string, dynamic bool, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
 	return &CreateDistributionListRequest{
 		Content: CreateDistributionListRequestContent{
 			Urn:     urnAdmin,
 			Name:    name,
-			Dynamic: dynamic,
+			Dynamic: zimbraCommon.ZBool(dynamic),
 			Attrs:   buildAttrResponses(attrs),
 		},
 	}, CreateDistributionListResponse{}
@@ -240,12 +240,12 @@ func NewDeleteCosRequest(id string) *DeleteCosRequest {
 	}
 }
 
-func NewDeleteDistributionListRequest(id string, cascadeDelete int8) *DeleteDistributionListRequest {
+func NewDeleteDistributionListRequest(id string, cascadeDelete bool) *DeleteDistributionListRequest {
 	return &DeleteDistributionListRequest{
 		Content: DeleteDistributionListRequestContent{
 			Urn:           urnAdmin,
 			ID:            id,
-			CascadeDelete: cascadeDelete,
+			CascadeDelete: zimbraCommon.ZBool(cascadeDelete),
 		},
 	}
 }
@@ -299,8 +299,8 @@ func NewLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
 	}, GetLicenseResponse{}
 }
 
-func newUrnRequestContent() UrnRequestContent {
-	return UrnRequestContent{
+func newUrnRequestContent() zimbraCommon.UrnRequestContent {
+	return zimbraCommon.UrnRequestContent{
 		Urn: urnAdmin,
 	}
 }

@@ -2,14 +2,19 @@ package zimbraMail
 
 const urnMail = "urn:zimbraMail"
 
-func NewGetFolderRequest() (*GetFolderRequest, GetFolderResponse) {
+func NewGetFolderRequest(view string) (*GetFolderRequest, GetFolderResponse) {
+	content := GetFolderRequestContent{
+		Visible:         true,
+		NeedGranteeName: true,
+		Tr:              true,
+		Urn:             urnMail,
+	}
+
+	if view != "" {
+		content.View = view
+	}
+
 	return &GetFolderRequest{
-		Content: GetFolderRequestContent{
-			Visible:         true,
-			NeedGranteeName: true,
-			View:            "message",
-			Tr:              true,
-			Urn:             urnMail,
-		},
+		Content: content,
 	}, GetFolderResponse{}
 }

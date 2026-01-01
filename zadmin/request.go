@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/RaoH37/gosoap/zimbraAdmin"
+	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
 func (s *ZAdmin) invokeWithoutResponse(req interface{}, serverId string, accountName string, userAgent string) error {
@@ -120,7 +121,7 @@ func (s *ZAdmin) CreateCosRequest(name string, attrs map[string]string) (*zimbra
 }
 
 func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attrs map[string]string) (*zimbraAdmin.CreateDistributionListResponse, error) {
-	req, resp := zimbraAdmin.NewCreateDistributionListRequest(name, boolToRequest(isDynamic), attrs)
+	req, resp := zimbraAdmin.NewCreateDistributionListRequest(name, isDynamic, attrs)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -180,8 +181,8 @@ func (s *ZAdmin) DeleteCosRequest(id string) error {
 	return s.invokeWithoutResponse(req, "", "", "")
 }
 
-func (s *ZAdmin) DeleteDistributionListRequest(id string, isCascadeDelete bool) error {
-	req := zimbraAdmin.NewDeleteDistributionListRequest(id, boolToRequest(isCascadeDelete))
+func (s *ZAdmin) DeleteDistributionListRequest(id string, cascadeDelete bool) error {
+	req := zimbraAdmin.NewDeleteDistributionListRequest(id, cascadeDelete)
 
 	return s.invokeWithoutResponse(req, "", "", "")
 }
@@ -192,9 +193,9 @@ func (s *ZAdmin) DeleteDomainRequest(id string) error {
 	return s.invokeWithoutResponse(req, "", "", "")
 }
 
-func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string, isApplyCos bool) (*zimbraAdmin.GetAccountResponse, error) {
+func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string, applyCos bool) (*zimbraAdmin.GetAccountResponse, error) {
 	by := s.byNode(id, name)
-	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs, boolToRequest(isApplyCos))
+	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs, applyCos)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -221,9 +222,9 @@ func (s *ZAdmin) GetAllServersRequest(service string) (*zimbraAdmin.GetAllServer
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs []string, isApplyCos bool) (*zimbraAdmin.GetCalendarResourceResponse, error) {
+func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs []string, applyCos bool) (*zimbraAdmin.GetCalendarResourceResponse, error) {
 	by := s.byNode(id, name)
-	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs, boolToRequest(isApplyCos))
+	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs, applyCos)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -266,9 +267,9 @@ func (s *ZAdmin) GetCosRequest(id string, name string, attrs []string) (*zimbraA
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string, isApplyConfig bool) (*zimbraAdmin.GetDomainResponse, error) {
+func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string, applyConfig bool) (*zimbraAdmin.GetDomainResponse, error) {
 	by := s.byNode(id, name)
-	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs, boolToRequest(isApplyConfig))
+	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs, applyConfig)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -295,11 +296,11 @@ func (s *ZAdmin) GetLicenseRequest() (*zimbraAdmin.GetLicenseResponse, error) {
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, isAllServers bool) (*zimbraAdmin.GetQuotaUsageResponse, error) {
+func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers bool) (*zimbraAdmin.GetQuotaUsageResponse, error) {
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, serverId, "", "")
 
-	req, resp := zimbraAdmin.NewGetQuotaUsageRequest(domain, boolToRequest(isAllServers), 0, 0, "", 0, 0)
+	req, resp := zimbraAdmin.NewGetQuotaUsageRequest(domain, allServers, 0, 0, "", true, false)
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -309,10 +310,10 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, isAllServe
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetServerRequest(id string, name string, isApplyConfig bool, attrs []string) (*zimbraAdmin.GetServerResponse, error) {
+func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attrs []string) (*zimbraAdmin.GetServerResponse, error) {
 	by := s.byNode(id, name)
 
-	req, resp := zimbraAdmin.NewGetServerRequest(by, boolToRequest(isApplyConfig), attrs)
+	req, resp := zimbraAdmin.NewGetServerRequest(by, applyConfig, attrs)
 
 	connector := s.buildZimbraConnector()
 	connector.SetHeaderContext(s.AuthToken, "", "", "")
@@ -471,11 +472,11 @@ func (s *ZAdmin) SearchDirectoryRequest(
 	limit int,
 	offset int,
 	domain string,
-	isApplyCos bool,
-	isApplyConfig bool,
+	applyCos bool,
+	applyConfig bool,
 	sortBy string,
 	types string,
-	isSortAscending bool,
+	sortAscending bool,
 	attrs string,
 	isCountOnly bool) (*zimbraAdmin.SearchDirectoryResponse, error) {
 	params := zimbraAdmin.SearchDirectoryParams{
@@ -484,16 +485,16 @@ func (s *ZAdmin) SearchDirectoryRequest(
 		MaxResults: maxResults,
 		Domain:     domain,
 		Types:      types,
-		CountOnly:  boolToRequest(isCountOnly),
+		CountOnly:  zimbraCommon.ZBool(isCountOnly),
 	}
 
 	if isCountOnly {
 		params.Limit = limit
 		params.Offset = offset
-		params.ApplyCos = boolToRequest(isApplyCos)
-		params.ApplyConfig = boolToRequest(isApplyConfig)
+		params.ApplyCos = zimbraCommon.ZBool(applyCos)
+		params.ApplyConfig = zimbraCommon.ZBool(applyConfig)
 		params.SortBy = sortBy
-		params.SortAscending = boolToRequest(isSortAscending)
+		params.SortAscending = zimbraCommon.ZBool(sortAscending)
 		params.Attrs = attrs
 	}
 

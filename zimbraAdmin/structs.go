@@ -39,11 +39,6 @@ func (anr *AttrNameResponse) ToAttrResponse() AttrResponse {
 	}
 }
 
-//type ByNode struct {
-//	By    string `json:"by"`
-//	Value string `json:"_content"`
-//}
-
 type GenericResponse struct {
 	Name  string         `json:"name,omitempty"`
 	ID    string         `json:"id,omitempty"`
@@ -139,9 +134,9 @@ type DeleteDistributionListRequest struct {
 }
 
 type DeleteDistributionListRequestContent struct {
-	Urn           string `json:"_jsns,attr"`
-	ID            string `json:"id"`
-	CascadeDelete int8   `json:"cascadeDelete,omitempty"`
+	Urn           string             `json:"_jsns,attr"`
+	ID            string             `json:"id"`
+	CascadeDelete zimbraCommon.ZBool `json:"cascadeDelete,omitempty"`
 }
 
 type DeleteDomainRequest struct {
@@ -170,7 +165,7 @@ type GetAccountRequestContent struct {
 	Account  zimbraCommon.ByNode `json:"account,attr"`
 	Urn      string              `json:"_jsns,attr"`
 	Attrs    string              `json:"attrs,omitempty"`
-	ApplyCos int8                `json:"applyCos,omitempty"`
+	ApplyCos zimbraCommon.ZBool  `json:"applyCos,omitempty"`
 }
 
 type GetAccountResponse struct {
@@ -182,7 +177,7 @@ type GetAccountResponseContent struct {
 }
 
 type GetAllConfigRequest struct {
-	Content UrnRequestContent `json:"GetAllConfigRequest"`
+	Content zimbraCommon.UrnRequestContent `json:"GetAllConfigRequest"`
 }
 
 type GetAllConfigResponse struct {
@@ -212,11 +207,7 @@ type GetDistributionListResponseContent struct {
 }
 
 type GetLicenseRequest struct {
-	Content UrnRequestContent `json:"GetLicenseRequest"`
-}
-
-type UrnRequestContent struct {
-	Urn string `json:"_jsns,attr"`
+	Content zimbraCommon.UrnRequestContent `json:"GetLicenseRequest"`
 }
 
 type GetLicenseResponse struct {
@@ -290,10 +281,10 @@ type CreateDistributionListRequest struct {
 }
 
 type CreateDistributionListRequestContent struct {
-	Urn     string         `json:"_jsns,attr"`
-	Name    string         `json:"name"`
-	Dynamic int8           `json:"dynamic"`
-	Attrs   []AttrResponse `json:"a"`
+	Urn     string             `json:"_jsns,attr"`
+	Name    string             `json:"name"`
+	Dynamic zimbraCommon.ZBool `json:"dynamic"`
+	Attrs   []AttrResponse     `json:"a"`
 }
 
 type CreateDistributionListResponse struct {
@@ -415,19 +406,19 @@ type NoOpRequestContent struct {
 }
 
 type SearchDirectoryParams struct {
-	Urn           string `json:"_jsns,attr"`
-	Query         string `json:"query,omitempty"`
-	MaxResults    int    `json:"maxResults,omitempty"`
-	Limit         int    `json:"limit,omitempty"`
-	Offset        int    `json:"offset,omitempty"`
-	Domain        string `json:"domain,omitempty"`
-	ApplyCos      int8   `json:"applyCos,omitempty"`
-	ApplyConfig   int8   `json:"applyConfig,omitempty"`
-	SortBy        string `json:"sortBy,omitempty"`
-	Types         string `json:"types,omitempty"`
-	SortAscending int8   `json:"sortAscending,omitempty"`
-	CountOnly     int8   `json:"countOnly,omitempty"`
-	Attrs         string `json:"attrs,omitempty"`
+	Urn           string             `json:"_jsns,attr"`
+	Query         string             `json:"query,omitempty"`
+	MaxResults    int                `json:"maxResults,omitempty"`
+	Limit         int                `json:"limit,omitempty"`
+	Offset        int                `json:"offset,omitempty"`
+	Domain        string             `json:"domain,omitempty"`
+	ApplyCos      zimbraCommon.ZBool `json:"applyCos,omitempty"`
+	ApplyConfig   zimbraCommon.ZBool `json:"applyConfig,omitempty"`
+	SortBy        string             `json:"sortBy,omitempty"`
+	Types         string             `json:"types,omitempty"`
+	SortAscending zimbraCommon.ZBool `json:"sortAscending,omitempty"`
+	CountOnly     zimbraCommon.ZBool `json:"countOnly,omitempty"`
+	Attrs         string             `json:"attrs,omitempty"`
 }
 
 type SearchDirectoryRequest struct {
@@ -481,7 +472,7 @@ type GetCalendarResourceRequestContent struct {
 	CalResource zimbraCommon.ByNode `json:"calresource,attr"`
 	Urn         string              `json:"_jsns,attr"`
 	Attrs       string              `json:"attrs,omitempty"`
-	ApplyCos    int8                `json:"applyCos,omitempty"`
+	ApplyCos    zimbraCommon.ZBool  `json:"applyCos,omitempty"`
 }
 
 type GetCalendarResourceResponse struct {
@@ -534,7 +525,7 @@ type GetServerRequest struct {
 type GetServerRequestContent struct {
 	Server      zimbraCommon.ByNode `json:"server,attr"`
 	Urn         string              `json:"_jsns,attr"`
-	ApplyConfig int8                `json:"applyConfig,omitempty"`
+	ApplyConfig zimbraCommon.ZBool  `json:"applyConfig,omitempty"`
 	Attrs       string              `json:"attrs,omitempty"`
 }
 
@@ -554,7 +545,7 @@ type GetDomainRequestContent struct {
 	Domain      zimbraCommon.ByNode `json:"domain,attr"`
 	Urn         string              `json:"_jsns,attr"`
 	Attrs       string              `json:"attrs,omitempty"`
-	ApplyConfig int8                `json:"applyConfig,omitempty"`
+	ApplyConfig zimbraCommon.ZBool  `json:"applyConfig,omitempty"`
 }
 
 type GetDomainResponse struct {
@@ -570,14 +561,14 @@ type GetQuotaUsageRequest struct {
 }
 
 type GetQuotaUsageRequestContent struct {
-	Urn           string `json:"_jsns,attr"`
-	Servers       int8   `json:"allServers,omitempty"`
-	Domain        string `json:"domain,omitempty"`
-	Limit         int    `json:"limit,omitempty"`
-	Offset        int    `json:"offset,omitempty"`
-	SortBy        string `json:"sortBy,omitempty"`
-	SortAscending int8   `json:"sortAscending,omitempty"`
-	Refresh       int8   `json:"refresh,omitempty"`
+	Urn           string             `json:"_jsns,attr"`
+	Servers       zimbraCommon.ZBool `json:"allServers,omitempty"`
+	Domain        string             `json:"domain,omitempty"`
+	Limit         int                `json:"limit,omitempty"`
+	Offset        int                `json:"offset,omitempty"`
+	SortBy        string             `json:"sortBy,omitempty"`
+	SortAscending zimbraCommon.ZBool `json:"sortAscending,omitempty"`
+	Refresh       zimbraCommon.ZBool `json:"refresh,omitempty"`
 }
 
 type GetQuotaUsageResponse struct {

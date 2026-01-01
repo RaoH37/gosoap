@@ -58,5 +58,13 @@ func TestGetFolderRequest(t *testing.T) {
 
 	if testing.Verbose() {
 		fmt.Printf("%v\n", resp)
+		for _, folder := range resp.Content.Folders {
+			fmt.Printf("%v\n", folder)
+			if len(folder.Folders) > 0 {
+				for _, subfolder := range folder.Folders {
+					fmt.Printf("%v\n", subfolder)
+				}
+			}
+		}
 	}
 }

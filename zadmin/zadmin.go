@@ -78,11 +78,3 @@ func (s *ZAdmin) byNode(id string, name string) zimbraCommon.ByNode {
 
 	return zimbraCommon.NewByNode(zimbraCommon.NAME, name)
 }
-
-func boolToRequest(b bool) int8 {
-	if b {
-		return 1
-	}
-
-	return 0
-}
