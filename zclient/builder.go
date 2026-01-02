@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/RaoH37/gosoap/zimbraAdmin"
+	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
 var regexpStartByUpperChar = regexp.MustCompile(`^[[:upper:]]`)
@@ -25,12 +26,12 @@ func capitalizeByteSlice(str string) string {
 	return string(bs)
 }
 
-func setResponseAttrs(attrs []zimbraAdmin.AttrResponse, object interface{}) {
+func setResponseAttrs(attrs []zimbraCommon.AttrNode, object interface{}) {
 	for _, attr := range attrs {
 		s := reflect.Indirect(reflect.ValueOf(object)).Elem()
-		metric := s.FieldByName(capitalizeByteSlice(attr.Key))
+		metric := s.FieldByName(capitalizeByteSlice(attr.Name))
 
-		// fmt.Printf("key=%s upkey=%s :: value=%s (%T) valid=%s\n", attr.Key, capitalizeByteSlice(attr.Key), attr.Value, attr.Value, metric.IsValid())
+		// fmt.Printf("key=%s upkey=%s :: value=%s (%T) valid=%s\n", attr.Name, capitalizeByteSlice(attr.Name), attr.Value, attr.Value, metric.IsValid())
 
 		if metric.IsValid() {
 			switch metric.Interface().(type) {
@@ -124,16 +125,16 @@ func buildDomain(resp zimbraAdmin.GenericResponse) *ZDomain {
 func buildLicense(resp zimbraAdmin.GetLicenseResponseContent) *ZLicense {
 	license := &ZLicense{}
 
-	for _, attrName := range resp.License {
-		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	for _, attrNames := range resp.License {
+		setResponseAttrs(attrNames.ToAttrsNode(), &license)
 	}
 
-	for _, attrName := range resp.Activation {
-		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	for _, attrNames := range resp.Activation {
+		setResponseAttrs(attrNames.ToAttrsNode(), &license)
 	}
 
-	for _, attrName := range resp.Info {
-		setResponseAttrs(attrName.ToAttrsResponse(), &license)
+	for _, attrNames := range resp.Info {
+		setResponseAttrs(attrNames.ToAttrsNode(), &license)
 	}
 
 	return license

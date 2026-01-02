@@ -6,14 +6,14 @@ import (
 	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
-const urnAdmin = "urn:zimbraAdmin"
+const Urn = "urn:zimbraAdmin"
 
 func NewAuthRequest(name string, password string) (*AuthRequest, AuthResponse) {
 	return &AuthRequest{
 		Content: AuthRequestContent{
 			Name:     name,
 			Password: password,
-			Urn:      urnAdmin,
+			Urn:      Urn,
 		},
 	}, AuthResponse{}
 }
@@ -21,7 +21,7 @@ func NewAuthRequest(name string, password string) (*AuthRequest, AuthResponse) {
 func NewGetAccountRequest(by zimbraCommon.ByNode, attrs []string, applyCos bool) (*GetAccountRequest, GetAccountResponse) {
 	r := &GetAccountRequest{
 		Content: GetAccountRequestContent{
-			Urn:      urnAdmin,
+			Urn:      Urn,
 			Account:  by,
 			ApplyCos: zimbraCommon.ZBool(applyCos),
 		},
@@ -43,7 +43,7 @@ func NewGetAllConfigRequest(by zimbraCommon.ByNode, attrs []string) (*GetAllConf
 func NewGetDistributionListRequest(by zimbraCommon.ByNode, attrs []string) (*GetDistributionListRequest, GetDistributionListResponse) {
 	r := &GetDistributionListRequest{
 		Content: GetDistributionListRequestContent{
-			Urn: urnAdmin,
+			Urn: Urn,
 			Dl:  by,
 		},
 	}
@@ -58,7 +58,7 @@ func NewGetDistributionListRequest(by zimbraCommon.ByNode, attrs []string) (*Get
 func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs []string, applyCos bool) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
 	r := &GetCalendarResourceRequest{
 		Content: GetCalendarResourceRequestContent{
-			Urn:         urnAdmin,
+			Urn:         Urn,
 			CalResource: by,
 			ApplyCos:    zimbraCommon.ZBool(applyCos),
 		},
@@ -74,7 +74,7 @@ func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs []string, apply
 func NewGetCosRequest(by zimbraCommon.ByNode, attrs []string) (*GetCosRequest, GetCosResponse) {
 	r := &GetCosRequest{
 		Content: GetCosRequestContent{
-			Urn: urnAdmin,
+			Urn: Urn,
 			Cos: by,
 		},
 	}
@@ -89,7 +89,7 @@ func NewGetCosRequest(by zimbraCommon.ByNode, attrs []string) (*GetCosRequest, G
 func NewGetDomainRequest(by zimbraCommon.ByNode, attrs []string, applyConfig bool) (*GetDomainRequest, GetDomainResponse) {
 	r := &GetDomainRequest{
 		Content: GetDomainRequestContent{
-			Urn:         urnAdmin,
+			Urn:         Urn,
 			Domain:      by,
 			ApplyConfig: zimbraCommon.ZBool(applyConfig),
 		},
@@ -105,7 +105,7 @@ func NewGetDomainRequest(by zimbraCommon.ByNode, attrs []string, applyConfig boo
 func NewGetAllServersRequest(service string) (*GetAllServersRequest, GetAllServersResponse) {
 	r := &GetAllServersRequest{
 		Content: GetAllServersRequestContent{
-			Urn: urnAdmin,
+			Urn: Urn,
 		},
 	}
 
@@ -119,7 +119,7 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, GetAllServe
 func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig bool, attrs []string) (*GetServerRequest, GetServerResponse) {
 	r := &GetServerRequest{
 		Content: GetServerRequestContent{
-			Urn:         urnAdmin,
+			Urn:         Urn,
 			ApplyConfig: zimbraCommon.ZBool(applyConfig),
 			Server:      by,
 		},
@@ -135,7 +135,7 @@ func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig bool, attrs []strin
 func NewGetQuotaUsageRequest(domain string, allServers bool, limit int, offset int, sortBy string, sortAscending bool, refresh bool) (*GetQuotaUsageRequest, GetQuotaUsageResponse) {
 	return &GetQuotaUsageRequest{
 		Content: GetQuotaUsageRequestContent{
-			Urn:           urnAdmin,
+			Urn:           Urn,
 			Servers:       zimbraCommon.ZBool(allServers),
 			Domain:        domain,
 			Limit:         limit,
@@ -150,7 +150,7 @@ func NewGetQuotaUsageRequest(domain string, allServers bool, limit int, offset i
 func NewBackupQueryRequest() (*BackupQueryRequest, BackupQueryResponse) {
 	return &BackupQueryRequest{
 		Content: BackupQueryRequestContent{
-			Urn:   urnAdmin,
+			Urn:   Urn,
 			Query: make(map[string]string),
 		},
 	}, BackupQueryResponse{}
@@ -159,9 +159,9 @@ func NewBackupQueryRequest() (*BackupQueryRequest, BackupQueryResponse) {
 func NewCopyCosRequest(by zimbraCommon.ByNode, newName string) (*CopyCosRequest, CopyCosResponse) {
 	return &CopyCosRequest{
 		Content: CopyCosRequestContent{
-			Urn: urnAdmin,
+			Urn: Urn,
 			By:  by,
-			Name: ContentString{
+			Name: zimbraCommon.ContentString{
 				Content: newName,
 			},
 		},
@@ -171,7 +171,7 @@ func NewCopyCosRequest(by zimbraCommon.ByNode, newName string) (*CopyCosRequest,
 func NewCreateAccountRequest(name string, password string, attrs map[string]string) (*CreateAccountRequest, CreateAccountResponse) {
 	return &CreateAccountRequest{
 		Content: CreateAccountRequestContent{
-			Urn:      urnAdmin,
+			Urn:      Urn,
 			Name:     name,
 			Password: password,
 			Attrs:    buildAttrResponses(attrs),
@@ -182,7 +182,7 @@ func NewCreateAccountRequest(name string, password string, attrs map[string]stri
 func NewCreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*CreateCalendarResourceRequest, CreateCalendarResourceResponse) {
 	return &CreateCalendarResourceRequest{
 		Content: CreateCalendarResourceRequestContent{
-			Urn:      urnAdmin,
+			Urn:      Urn,
 			Name:     name,
 			Password: password,
 			Attrs:    buildAttrResponses(attrs),
@@ -193,8 +193,8 @@ func NewCreateCalendarResourceRequest(name string, password string, attrs map[st
 func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosRequest, CreateCosResponse) {
 	return &CreateCosRequest{
 		Content: CreateCosRequestContent{
-			Urn: urnAdmin,
-			Name: ContentString{
+			Urn: Urn,
+			Name: zimbraCommon.ContentString{
 				Content: name,
 			},
 			Attrs: buildAttrResponses(attrs),
@@ -205,7 +205,7 @@ func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosReques
 func NewCreateDistributionListRequest(name string, dynamic bool, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
 	return &CreateDistributionListRequest{
 		Content: CreateDistributionListRequestContent{
-			Urn:     urnAdmin,
+			Urn:     Urn,
 			Name:    name,
 			Dynamic: zimbraCommon.ZBool(dynamic),
 			Attrs:   buildAttrResponses(attrs),
@@ -216,7 +216,7 @@ func NewCreateDistributionListRequest(name string, dynamic bool, attrs map[strin
 func NewCreateDomainRequest(name string, attrs map[string]string) (*CreateDomainRequest, CreateDomainResponse) {
 	return &CreateDomainRequest{
 		Content: CreateDomainRequestContent{
-			Urn:   urnAdmin,
+			Urn:   Urn,
 			Name:  name,
 			Attrs: buildAttrResponses(attrs),
 		},
@@ -232,8 +232,8 @@ func NewDeleteCalendarResourceRequest(id string) *DeleteCalendarResourceRequest 
 func NewDeleteCosRequest(id string) *DeleteCosRequest {
 	return &DeleteCosRequest{
 		Content: DeleteCosRequestContent{
-			Urn: urnAdmin,
-			ID: ContentString{
+			Urn: Urn,
+			ID: zimbraCommon.ContentString{
 				Content: id,
 			},
 		},
@@ -243,7 +243,7 @@ func NewDeleteCosRequest(id string) *DeleteCosRequest {
 func NewDeleteDistributionListRequest(id string, cascadeDelete bool) *DeleteDistributionListRequest {
 	return &DeleteDistributionListRequest{
 		Content: DeleteDistributionListRequestContent{
-			Urn:           urnAdmin,
+			Urn:           Urn,
 			ID:            id,
 			CascadeDelete: zimbraCommon.ZBool(cascadeDelete),
 		},
@@ -264,7 +264,7 @@ func NewDeleteAccountRequest(id string) *DeleteAccountRequest {
 
 func newIdRequestContent(id string) IdRequestContent {
 	return IdRequestContent{
-		Urn: urnAdmin,
+		Urn: Urn,
 		ID:  id,
 	}
 }
@@ -272,7 +272,7 @@ func newIdRequestContent(id string) IdRequestContent {
 func NewDelegateAuthRequest(by zimbraCommon.ByNode) (*DelegateAuthRequest, DelegateAuthResponse) {
 	return &DelegateAuthRequest{
 		Content: DelegateAuthRequestContent{
-			Urn:     urnAdmin,
+			Urn:     Urn,
 			Account: by,
 		},
 	}, DelegateAuthResponse{}
@@ -281,7 +281,7 @@ func NewDelegateAuthRequest(by zimbraCommon.ByNode) (*DelegateAuthRequest, Deleg
 func NewDeleteGalSyncAccountRequest(by zimbraCommon.ByNode) *DeleteGalSyncAccountRequest {
 	return &DeleteGalSyncAccountRequest{
 		Content: DeleteGalSyncAccountRequestContent{
-			Urn:     urnAdmin,
+			Urn:     Urn,
 			Account: by,
 		},
 	}
@@ -301,13 +301,13 @@ func NewLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
 
 func newUrnRequestContent() zimbraCommon.UrnRequestContent {
 	return zimbraCommon.UrnRequestContent{
-		Urn: urnAdmin,
+		Urn: Urn,
 	}
 }
 
-func newModifyRequestContent(id string, a []AttrResponse) ModifyRequestContent {
+func newModifyRequestContent(id string, a []zimbraCommon.AttrNode) ModifyRequestContent {
 	return ModifyRequestContent{
-		Urn:   urnAdmin,
+		Urn:   Urn,
 		ID:    id,
 		Attrs: a,
 	}
@@ -333,7 +333,7 @@ func NewRemoveAccountAliasRequest(id string, alias string) *RemoveAccountAliasRe
 
 func newAccountAliasRequestContent(id string, alias string) AliasRequestContent {
 	return AliasRequestContent{
-		Urn:   urnAdmin,
+		Urn:   Urn,
 		ID:    id,
 		Alias: alias,
 	}
@@ -359,7 +359,7 @@ func NewRemoveDistributionListAliasRequest(id string, alias string) *RemoveDistr
 
 func newDistributionListAliasRequestContent(id string, alias string) AliasRequestContent {
 	return AliasRequestContent{
-		Urn:   urnAdmin,
+		Urn:   Urn,
 		ID:    id,
 		Alias: alias,
 	}
@@ -379,17 +379,17 @@ func NewRemoveDistributionListMemberRequest(id string, members []string) *Remove
 
 func newDistributionListMemberRequestContent(id string, members []string) DistributionListMemberRequestContent {
 	return DistributionListMemberRequestContent{
-		Urn:     urnAdmin,
+		Urn:     Urn,
 		ID:      id,
 		Members: convertToContentStrings(members),
 	}
 }
 
-func convertToContentStrings(arr []string) []ContentString {
-	contentStrings := make([]ContentString, len(arr))
+func convertToContentStrings(arr []string) []zimbraCommon.ContentString {
+	contentStrings := make([]zimbraCommon.ContentString, len(arr))
 
 	for i, a := range arr {
-		contentStrings[i] = ContentString{Content: a}
+		contentStrings[i] = zimbraCommon.ContentString{Content: a}
 	}
 
 	return contentStrings
@@ -404,8 +404,8 @@ func NewGetLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
 func NewModifyCosRequest(id string, attrs map[string]string) (*ModifyCosRequest, ModifyCosResponse) {
 	return &ModifyCosRequest{
 		Content: ModifyCosRequestContent{
-			Urn:   urnAdmin,
-			ID:    ContentString{Content: id},
+			Urn:   Urn,
+			ID:    zimbraCommon.ContentString{Content: id},
 			Attrs: buildAttrResponses(attrs),
 		},
 	}, ModifyCosResponse{}
@@ -429,13 +429,13 @@ func NewModifyServerRequest(id string, attrs map[string]string) (*ModifyServerRe
 	}, ModifyServerResponse{}
 }
 
-func buildAttrResponses(attrs map[string]string) []AttrResponse {
-	a := make([]AttrResponse, len(attrs))
+func buildAttrResponses(attrs map[string]string) []zimbraCommon.AttrNode {
+	a := make([]zimbraCommon.AttrNode, len(attrs))
 
 	i := 0
-	for key, value := range attrs {
-		a[i] = AttrResponse{
-			Key:   key,
+	for name, value := range attrs {
+		a[i] = zimbraCommon.AttrNode{
+			Name:  name,
 			Value: value,
 		}
 		i++
@@ -447,7 +447,7 @@ func buildAttrResponses(attrs map[string]string) []AttrResponse {
 func NewNoOpRequest() *NoOpRequest {
 	return &NoOpRequest{
 		Content: NoOpRequestContent{
-			Urn: urnAdmin,
+			Urn: Urn,
 		},
 	}
 }
@@ -467,9 +467,9 @@ func NewRenameCalendarResourceRequest(id string, newName string) *RenameCalendar
 func NewRenameCosRequest(id string, newName string) *RenameCosRequest {
 	return &RenameCosRequest{
 		Content: RenameCosRequestContent{
-			Urn:     urnAdmin,
-			ID:      ContentString{Content: id},
-			NewName: ContentString{Content: newName},
+			Urn:     Urn,
+			ID:      zimbraCommon.ContentString{Content: id},
+			NewName: zimbraCommon.ContentString{Content: newName},
 		},
 	}
 }
@@ -482,7 +482,7 @@ func NewRenameDistributionListRequest(id string, newName string) *RenameDistribu
 
 func newRenameRequestContent(id string, newName string) RenameRequestContent {
 	return RenameRequestContent{
-		Urn:     urnAdmin,
+		Urn:     Urn,
 		ID:      id,
 		NewName: newName,
 	}
@@ -491,7 +491,7 @@ func newRenameRequestContent(id string, newName string) RenameRequestContent {
 func NewSetPasswordRequest(id string, newPassword string) *SetPasswordRequest {
 	return &SetPasswordRequest{
 		Content: SetPasswordRequestContent{
-			Urn:         urnAdmin,
+			Urn:         Urn,
 			ID:          id,
 			NewPassword: newPassword,
 		},

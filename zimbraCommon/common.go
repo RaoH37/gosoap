@@ -21,6 +21,48 @@ func NewByNode(by string, value string) ByNode {
 	}
 }
 
+type ContentString struct {
+	Content string `json:"_content"`
+}
+
+type IdNameNode struct {
+	ID   string `json:"id,attr"`
+	Name string `json:"name,attr"`
+}
+
+type AttrNode struct {
+	Name  string `json:"n,attr"`
+	Value string `json:"_content"`
+}
+
+type NameNode struct {
+	Name  string `json:"name,attr"`
+	Value string `json:"_content"`
+}
+
+type AttrNamesNode struct {
+	Attributs []NameNode `json:"attr,omitempty"`
+}
+
+func (anr *AttrNamesNode) ToAttrsNode() []AttrNode {
+	collection := make([]AttrNode, len(anr.Attributs))
+
+	for i, attr := range anr.Attributs {
+		collection[i] = AttrNode(attr)
+	}
+
+	return collection
+}
+
+type GrantNode struct {
+	Perm        string `json:"perm"`
+	GranteeType string `json:"gt"`
+	ZID         string `json:"zid,omitempty"`
+	Expiry      int64  `json:"expiry,omitempty"`
+	GranteeName string `json:"d,omitempty"`
+	Password    string `json:"pw,omitempty"`
+}
+
 type UrnRequestContent struct {
 	Urn string `json:"_jsns,attr"`
 }

@@ -2,47 +2,10 @@ package zimbraAdmin
 
 import "github.com/RaoH37/gosoap/zimbraCommon"
 
-// ************* COMMON ***************
-
-type ContentString struct {
-	Content string `json:"_content"`
-}
-
-type AttrResponse struct {
-	Key   string `json:"n,omitempty"`
-	Value string `json:"_content,omitempty"`
-}
-
-type AttrNamesResponse struct {
-	Attrs []AttrNameResponse `json:"attr,omitempty"`
-}
-
-func (anr *AttrNamesResponse) ToAttrsResponse() []AttrResponse {
-	collection := make([]AttrResponse, len(anr.Attrs))
-
-	for i, attr := range anr.Attrs {
-		collection[i] = attr.ToAttrResponse()
-	}
-
-	return collection
-}
-
-type AttrNameResponse struct {
-	Key   string `json:"name"`
-	Value string `json:"_content"`
-}
-
-func (anr *AttrNameResponse) ToAttrResponse() AttrResponse {
-	return AttrResponse{
-		Key:   anr.Key,
-		Value: anr.Value,
-	}
-}
-
 type GenericResponse struct {
-	Name  string         `json:"name,omitempty"`
-	ID    string         `json:"id,omitempty"`
-	Attrs []AttrResponse `json:"a,omitempty"`
+	Name  string                  `json:"name,omitempty"`
+	ID    string                  `json:"id,omitempty"`
+	Attrs []zimbraCommon.AttrNode `json:"a,omitempty"`
 }
 
 // ************* REQUEST ***************
@@ -85,9 +48,9 @@ type CopyCosRequest struct {
 }
 
 type CopyCosRequestContent struct {
-	Name ContentString       `json:"name"`
-	By   zimbraCommon.ByNode `json:"cos"`
-	Urn  string              `json:"_jsns,attr"`
+	Name zimbraCommon.ContentString `json:"name"`
+	By   zimbraCommon.ByNode        `json:"cos"`
+	Urn  string                     `json:"_jsns,attr"`
 }
 
 type CopyCosResponse struct {
@@ -125,8 +88,8 @@ type DeleteCosRequest struct {
 }
 
 type DeleteCosRequestContent struct {
-	Urn string        `json:"_jsns,attr"`
-	ID  ContentString `json:"id"`
+	Urn string                     `json:"_jsns,attr"`
+	ID  zimbraCommon.ContentString `json:"id"`
 }
 
 type DeleteDistributionListRequest struct {
@@ -185,7 +148,7 @@ type GetAllConfigResponse struct {
 }
 
 type GetAllConfigResponseContent struct {
-	Attrs []AttrResponse `json:"a"`
+	Attrs []zimbraCommon.AttrNode `json:"a"`
 }
 
 type GetDistributionListRequest struct {
@@ -215,9 +178,9 @@ type GetLicenseResponse struct {
 }
 
 type GetLicenseResponseContent struct {
-	License    []AttrNamesResponse `json:"license"`
-	Activation []AttrNamesResponse `json:"activation"`
-	Info       []AttrNamesResponse `json:"info"`
+	License    []zimbraCommon.AttrNamesNode `json:"license"`
+	Activation []zimbraCommon.AttrNamesNode `json:"activation"`
+	Info       []zimbraCommon.AttrNamesNode `json:"info"`
 }
 
 type CreateAccountRequest struct {
@@ -225,10 +188,10 @@ type CreateAccountRequest struct {
 }
 
 type CreateAccountRequestContent struct {
-	Urn      string         `json:"_jsns,attr"`
-	Name     string         `json:"name"`
-	Password string         `json:"password"`
-	Attrs    []AttrResponse `json:"a"`
+	Urn      string                  `json:"_jsns,attr"`
+	Name     string                  `json:"name"`
+	Password string                  `json:"password"`
+	Attrs    []zimbraCommon.AttrNode `json:"a"`
 }
 
 type CreateAccountResponse struct {
@@ -244,10 +207,10 @@ type CreateCalendarResourceRequest struct {
 }
 
 type CreateCalendarResourceRequestContent struct {
-	Urn      string         `json:"_jsns,attr"`
-	Name     string         `json:"name"`
-	Password string         `json:"password"`
-	Attrs    []AttrResponse `json:"a"`
+	Urn      string                  `json:"_jsns,attr"`
+	Name     string                  `json:"name"`
+	Password string                  `json:"password"`
+	Attrs    []zimbraCommon.AttrNode `json:"a"`
 }
 
 type CreateCalendarResourceResponse struct {
@@ -263,9 +226,9 @@ type CreateCosRequest struct {
 }
 
 type CreateCosRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	Name  ContentString  `json:"name"`
-	Attrs []AttrResponse `json:"a"`
+	Urn   string                     `json:"_jsns,attr"`
+	Name  zimbraCommon.ContentString `json:"name"`
+	Attrs []zimbraCommon.AttrNode    `json:"a"`
 }
 
 type CreateCosResponse struct {
@@ -281,10 +244,10 @@ type CreateDistributionListRequest struct {
 }
 
 type CreateDistributionListRequestContent struct {
-	Urn     string             `json:"_jsns,attr"`
-	Name    string             `json:"name"`
-	Dynamic zimbraCommon.ZBool `json:"dynamic"`
-	Attrs   []AttrResponse     `json:"a"`
+	Urn     string                  `json:"_jsns,attr"`
+	Name    string                  `json:"name"`
+	Dynamic zimbraCommon.ZBool      `json:"dynamic"`
+	Attrs   []zimbraCommon.AttrNode `json:"a"`
 }
 
 type CreateDistributionListResponse struct {
@@ -300,9 +263,9 @@ type CreateDomainRequest struct {
 }
 
 type CreateDomainRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	Name  string         `json:"name"`
-	Attrs []AttrResponse `json:"a"`
+	Urn   string                  `json:"_jsns,attr"`
+	Name  string                  `json:"name"`
+	Attrs []zimbraCommon.AttrNode `json:"a"`
 }
 
 type CreateDomainResponse struct {
@@ -318,9 +281,9 @@ type ModifyAccountRequest struct {
 }
 
 type ModifyRequestContent struct {
-	Urn   string         `json:"_jsns,attr"`
-	ID    string         `json:"id"`
-	Attrs []AttrResponse `json:"a"`
+	Urn   string                  `json:"_jsns,attr"`
+	ID    string                  `json:"id"`
+	Attrs []zimbraCommon.AttrNode `json:"a"`
 }
 
 type ModifyAccountResponse struct {
@@ -348,9 +311,9 @@ type ModifyCosRequest struct {
 }
 
 type ModifyCosRequestContent struct {
-	Urn   string         `json:"_jsns"`
-	ID    ContentString  `json:"id"`
-	Attrs []AttrResponse `json:"a"`
+	Urn   string                     `json:"_jsns"`
+	ID    zimbraCommon.ContentString `json:"id"`
+	Attrs []zimbraCommon.AttrNode    `json:"a"`
 }
 
 type ModifyCosResponse struct {
@@ -459,9 +422,9 @@ type RemoveDistributionListMemberRequest struct {
 }
 
 type DistributionListMemberRequestContent struct {
-	Urn     string          `json:"_jsns"`
-	ID      string          `json:"id"`
-	Members []ContentString `json:"dlm"`
+	Urn     string                       `json:"_jsns"`
+	ID      string                       `json:"id"`
+	Members []zimbraCommon.ContentString `json:"dlm"`
 }
 
 type GetCalendarResourceRequest struct {
@@ -650,9 +613,9 @@ type RenameCosRequest struct {
 }
 
 type RenameCosRequestContent struct {
-	Urn     string        `json:"_jsns,attr"`
-	ID      ContentString `json:"id"`
-	NewName ContentString `json:"newName"`
+	Urn     string                     `json:"_jsns,attr"`
+	ID      zimbraCommon.ContentString `json:"id"`
+	NewName zimbraCommon.ContentString `json:"newName"`
 }
 
 type RenameDistributionListRequest struct {

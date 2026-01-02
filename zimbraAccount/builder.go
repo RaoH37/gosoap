@@ -10,14 +10,14 @@ import (
 	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
-const urnAccount = "urn:zimbraAccount"
+const Urn = "urn:zimbraAccount"
 
 func NewAuthRequestByPassword(by zimbraCommon.ByNode, password string) (*AuthRequest, AuthResponse) {
 	return &AuthRequest{
 		Content: AuthRequestContent{
 			Account:  by,
 			Password: password,
-			Urn:      urnAccount,
+			Urn:      Urn,
 		},
 	}, AuthResponse{}
 }
@@ -26,8 +26,8 @@ func NewAuthRequestByPreauth(by zimbraCommon.ByNode, preauth Preauth) (*AuthRequ
 	return &AuthRequest{
 		Content: AuthRequestContent{
 			Account: by,
-			Preauth: &preauth,
-			Urn:     urnAccount,
+			Preauth: preauth,
+			Urn:     Urn,
 		},
 	}, AuthResponse{}
 }
@@ -43,4 +43,22 @@ func NewPreauth(by zimbraCommon.ByNode, expires int, domainKey string) Preauth {
 		Expires:   expires,
 		Value:     hex.EncodeToString(h.Sum(nil)),
 	}
+}
+
+func NewGetInfoRequest(rights string, sections string) (*GetInfoRequest, GetInfoResponse) {
+	content := GetInfoRequestContent{
+		Urn: Urn,
+	}
+
+	if rights != "" {
+		content.Rights = rights
+	}
+
+	if sections != "" {
+		content.Sections = sections
+	}
+
+	return &GetInfoRequest{
+		Content: content,
+	}, GetInfoResponse{}
 }

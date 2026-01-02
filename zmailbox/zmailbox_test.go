@@ -16,7 +16,7 @@ var domainKey = os.Getenv("GOSOAP_DOMAIN_KEY")
 var token = os.Getenv("GOSOAP_TOKEN")
 
 func NewZMailbox() (zmailbox.ZMailbox, error) {
-	zcs := zmailbox.NewZMailbox(url, true, "", login, "", domainKey, testing.Verbose(), time.Second*5, "zsoap", time.Second*30)
+	zcs := zmailbox.NewZMailbox(url, true, "", login, pwd, "", testing.Verbose(), time.Second*5, "zsoap", time.Second*30)
 
 	if len(token) > 0 {
 		zcs.AuthToken = token
@@ -66,5 +66,22 @@ func TestGetFolderRequest(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestGetInfoRequest(t *testing.T) {
+	zcs, err := NewZMailbox()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	resp, err := zcs.GetInfoRequest("", "")
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	if testing.Verbose() {
+		fmt.Printf("%v\n", resp)
 	}
 }
