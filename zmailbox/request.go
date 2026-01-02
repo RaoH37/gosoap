@@ -47,7 +47,7 @@ func (s *ZMailbox) GetFolderRequest() (*zimbraMail.GetFolderResponse, error) {
 	req, resp := zimbraMail.NewGetFolderRequest("", false, false, false)
 
 	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector.SetHeaderContext(s.GetToken(), "", "", "")
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -61,7 +61,7 @@ func (s *ZMailbox) GetInfoRequest(rights string, sections string) (*zimbraAccoun
 	req, resp := zimbraAccount.NewGetInfoRequest(rights, sections)
 
 	connector := s.buildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector.SetHeaderContext(s.GetToken(), "", "", "")
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)

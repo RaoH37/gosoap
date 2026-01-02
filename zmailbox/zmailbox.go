@@ -52,7 +52,7 @@ func buildUrl(inputUrl string) string {
 }
 
 type ZMailbox struct {
-	AuthToken            string
+	Token                *zimbraCommon.Token
 	url                  string
 	tls                  bool
 	id                   string
@@ -63,6 +63,22 @@ type ZMailbox struct {
 	RetryWaitingDuration time.Duration
 	userAgent            string
 	timeout              time.Duration
+}
+
+func (s *ZMailbox) GetToken() string {
+	if s.Token == nil {
+		return ""
+	}
+
+	return s.Token.String()
+}
+
+func (s *ZMailbox) SetToken(rawToken string) {
+	s.Token = zimbraCommon.NewToken(rawToken)
+}
+
+func (s *ZMailbox) IsTokenValid() bool {
+	return s.Token != nil && !s.Token.IsExpired()
 }
 
 func (s *ZMailbox) buildZimbraConnector() *zimbraConnector.Connector {
