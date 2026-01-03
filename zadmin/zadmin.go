@@ -67,7 +67,7 @@ type ZAdmin struct {
 	timeout              time.Duration
 }
 
-func (s *ZAdmin) buildZimbraConnector() *zimbraConnector.Connector {
+func (s *ZAdmin) BuildZimbraConnector() *zimbraConnector.Connector {
 	return zimbraConnector.BuildConnector(s.urlAdmin, s.tls, s.userAgent, nil, s.debug, s.timeout)
 }
 

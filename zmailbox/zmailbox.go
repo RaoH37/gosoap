@@ -81,7 +81,7 @@ func (s *ZMailbox) IsTokenValid() bool {
 	return s.Token != nil && !s.Token.IsExpired()
 }
 
-func (s *ZMailbox) buildZimbraConnector() *zimbraConnector.Connector {
+func (s *ZMailbox) BuildZimbraConnector() *zimbraConnector.Connector {
 	return zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
 }
 
