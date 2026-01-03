@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/RaoH37/gosoap/zadmin"
+	"github.com/RaoH37/gosoap/zimbraAdmin"
 	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
@@ -51,20 +52,37 @@ func findRandomOjectId(objType string) string {
 
 	var query string
 
+	var types zimbraAdmin.SearchTypeList
+
 	switch objType {
 	case "accounts":
 		query = "(zimbraMailDeliveryAddress=" + prefix + "*)"
+		types = zimbraAdmin.SearchTypeList{
+			zimbraAdmin.SearchTypeAccounts,
+		}
 	case "resources":
 		query = "(zimbraMailDeliveryAddress=" + prefix + "*)"
+		types = zimbraAdmin.SearchTypeList{
+			zimbraAdmin.SearchTypeResources,
+		}
 	case "distributionlists":
 		query = "(mail=" + prefix + "*)"
+		types = zimbraAdmin.SearchTypeList{
+			zimbraAdmin.SearchTypeDistributionLists,
+		}
 	case "domains":
 		query = "(zimbraDomainName=" + prefix + "*)"
+		types = zimbraAdmin.SearchTypeList{
+			zimbraAdmin.SearchTypeDomains,
+		}
 	case "coses":
 		query = "(cn=" + prefix + "*)"
+		types = zimbraAdmin.SearchTypeList{
+			zimbraAdmin.SearchTypeCoses,
+		}
 	}
 
-	resp, err := zcs.SearchDirectoryRequest(query, 1_000_000, 1, 0, "", true, true, "mail", objType, true, zimbraCommon.StringList{}, false)
+	resp, err := zcs.SearchDirectoryRequest(query, 1_000_000, 1, 0, "", true, true, "mail", types, true, zimbraCommon.StringList{}, false)
 
 	if err != nil || (len(resp.Content.Accounts) == 0 && len(resp.Content.CalResources) == 0 && len(resp.Content.Dls) == 0 && len(resp.Content.Domains) == 0 && len(resp.Content.Coses) == 0) {
 		return ""
@@ -182,7 +200,18 @@ func TestCreateAccountRequest(t *testing.T) {
 
 	newAccountName := prefix + RandStringRunes(10) + "@" + domain_name
 
-	resp, err := zcs.CreateAccountRequest(newAccountName, RandStringRunes(10), make(map[string]string))
+	attrs := zimbraCommon.AttrsNode{
+		zimbraCommon.AttrNode{
+			Name:  "sn",
+			Value: "Désécot",
+		},
+		zimbraCommon.AttrNode{
+			Name:  "givenName",
+			Value: "Maxime",
+		},
+	}
+
+	resp, err := zcs.CreateAccountRequest(newAccountName, RandStringRunes(10), attrs)
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -201,10 +230,10 @@ func TestCreateCalendarResourceRequest(t *testing.T) {
 
 	newAccountName := prefix + RandStringRunes(10) + "@" + domain_name
 
-	attrs := map[string]string{
+	attrs := zimbraCommon.BuildAttrsNode(map[string]string{
 		"displayName":      "resource test",
 		"zimbraCalResType": zadmin.Equipment,
-	}
+	})
 
 	resp, err := zcs.CreateCalendarResourceRequest(newAccountName, RandStringRunes(10), attrs)
 
@@ -225,7 +254,7 @@ func TestCreateCosRequest(t *testing.T) {
 
 	newCosName := prefix + RandStringRunes(10)
 
-	attrs := make(map[string]string)
+	attrs := zimbraCommon.AttrsNode{}
 
 	resp, err := zcs.CreateCosRequest(newCosName, attrs)
 
@@ -246,7 +275,7 @@ func TestCreateDistributionListRequest(t *testing.T) {
 
 	newAccountName := prefix + RandStringRunes(10) + "@" + domain_name
 
-	attrs := make(map[string]string)
+	attrs := zimbraCommon.AttrsNode{}
 
 	resp, err := zcs.CreateDistributionListRequest(newAccountName, false, attrs)
 
@@ -267,7 +296,7 @@ func TestCreateDomainRequest(t *testing.T) {
 
 	newDomainName := prefix + RandStringRunes(10) + ".com"
 
-	attrs := make(map[string]string)
+	attrs := zimbraCommon.AttrsNode{}
 
 	resp, err := zcs.CreateDomainRequest(newDomainName, attrs)
 
@@ -557,12 +586,12 @@ func TestModifyAccountRequest(t *testing.T) {
 
 	id := findRandomOjectId("accounts")
 
-	attrs := map[string]string{
+	attrs := zimbraCommon.BuildAttrsNode(map[string]string{
 		"displayName": "modified",
 		"sn":          "modified",
 		"givenName":   "modified",
 		"description": "modified",
-	}
+	})
 
 	err = zcs.ModifyAccountRequest(id, attrs)
 
@@ -579,9 +608,9 @@ func TestModifyCalendarResourceRequest(t *testing.T) {
 
 	id := findRandomOjectId("resources")
 
-	attrs := map[string]string{
+	attrs := zimbraCommon.BuildAttrsNode(map[string]string{
 		"displayName": "modified",
-	}
+	})
 
 	err = zcs.ModifyCalendarResourceRequest(id, attrs)
 
@@ -598,9 +627,9 @@ func TestModifyCosRequest(t *testing.T) {
 
 	id := findRandomOjectId("coses")
 
-	attrs := map[string]string{
+	attrs := zimbraCommon.BuildAttrsNode(map[string]string{
 		"description": "modified",
-	}
+	})
 
 	err = zcs.ModifyCosRequest(id, attrs)
 
@@ -617,9 +646,9 @@ func TestModifyDistributionListRequest(t *testing.T) {
 
 	id := findRandomOjectId("distributionlists")
 
-	attrs := map[string]string{
+	attrs := zimbraCommon.BuildAttrsNode(map[string]string{
 		"displayName": "modified",
-	}
+	})
 
 	err = zcs.ModifyDistributionListRequest(id, attrs)
 
@@ -634,9 +663,9 @@ func TestModifyDomainRequest(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	attrs := map[string]string{
+	attrs := zimbraCommon.BuildAttrsNode(map[string]string{
 		"description": "modified",
-	}
+	})
 
 	err = zcs.ModifyDomainRequest(domain_id, attrs)
 
@@ -651,9 +680,9 @@ func TestModifyServerRequest(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	attrs := map[string]string{
+	attrs := zimbraCommon.BuildAttrsNode(map[string]string{
 		"description": "modified",
-	}
+	})
 
 	err = zcs.ModifyServerRequest(server_id, attrs)
 
@@ -725,7 +754,11 @@ func TestSearchDirectoryRequest(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 100, 0, "", true, true, "mail", "accounts", true, zimbraCommon.StringList{}, false)
+	types := zimbraAdmin.SearchTypeList{
+		zimbraAdmin.SearchTypeAccounts,
+	}
+
+	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 100, 0, "", true, true, "mail", types, true, zimbraCommon.StringList{}, false)
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -744,7 +777,11 @@ func TestSearchDirectoryRequestCount(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 1, 0, "", true, true, "mail", "accounts", true, zimbraCommon.StringList{}, true)
+	types := zimbraAdmin.SearchTypeList{
+		zimbraAdmin.SearchTypeAccounts,
+	}
+
+	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 1, 0, "", true, true, "mail", types, true, zimbraCommon.StringList{}, true)
 
 	if err != nil {
 		t.Fatalf("%v", err)

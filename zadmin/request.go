@@ -75,7 +75,7 @@ func (s *ZAdmin) CopyCosRequest(id string, name string, newName string) (*zimbra
 	return &resp, nil
 }
 
-func (s *ZAdmin) CreateAccountRequest(name string, password string, attrs map[string]string) (*zimbraAdmin.CreateAccountResponse, error) {
+func (s *ZAdmin) CreateAccountRequest(name string, password string, attrs zimbraCommon.AttrsNode) (*zimbraAdmin.CreateAccountResponse, error) {
 	req, resp := zimbraAdmin.NewCreateAccountRequest(name, password, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -88,7 +88,7 @@ func (s *ZAdmin) CreateAccountRequest(name string, password string, attrs map[st
 	return &resp, nil
 }
 
-func (s *ZAdmin) CreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*zimbraAdmin.CreateCalendarResourceResponse, error) {
+func (s *ZAdmin) CreateCalendarResourceRequest(name string, password string, attrs zimbraCommon.AttrsNode) (*zimbraAdmin.CreateCalendarResourceResponse, error) {
 	req, resp := zimbraAdmin.NewCreateCalendarResourceRequest(name, password, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -101,7 +101,7 @@ func (s *ZAdmin) CreateCalendarResourceRequest(name string, password string, att
 	return &resp, nil
 }
 
-func (s *ZAdmin) CreateCosRequest(name string, attrs map[string]string) (*zimbraAdmin.CreateCosResponse, error) {
+func (s *ZAdmin) CreateCosRequest(name string, attrs zimbraCommon.AttrsNode) (*zimbraAdmin.CreateCosResponse, error) {
 	req, resp := zimbraAdmin.NewCreateCosRequest(name, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -114,7 +114,7 @@ func (s *ZAdmin) CreateCosRequest(name string, attrs map[string]string) (*zimbra
 	return &resp, nil
 }
 
-func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attrs map[string]string) (*zimbraAdmin.CreateDistributionListResponse, error) {
+func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attrs zimbraCommon.AttrsNode) (*zimbraAdmin.CreateDistributionListResponse, error) {
 	req, resp := zimbraAdmin.NewCreateDistributionListRequest(name, isDynamic, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -127,7 +127,7 @@ func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attr
 	return &resp, nil
 }
 
-func (s *ZAdmin) CreateDomainRequest(name string, attrs map[string]string) (*zimbraAdmin.CreateDomainResponse, error) {
+func (s *ZAdmin) CreateDomainRequest(name string, attrs zimbraCommon.AttrsNode) (*zimbraAdmin.CreateDomainResponse, error) {
 	req, resp := zimbraAdmin.NewCreateDomainRequest(name, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -309,7 +309,7 @@ func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attr
 	return &resp, nil
 }
 
-func (s *ZAdmin) ModifyAccountRequest(id string, attrs map[string]string) error {
+func (s *ZAdmin) ModifyAccountRequest(id string, attrs zimbraCommon.AttrsNode) error {
 	req, resp := zimbraAdmin.NewModifyAccountRequest(id, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -322,7 +322,7 @@ func (s *ZAdmin) ModifyAccountRequest(id string, attrs map[string]string) error 
 	return nil
 }
 
-func (s *ZAdmin) ModifyCalendarResourceRequest(id string, attrs map[string]string) error {
+func (s *ZAdmin) ModifyCalendarResourceRequest(id string, attrs zimbraCommon.AttrsNode) error {
 	req, resp := zimbraAdmin.NewModifyCalendarResourceRequest(id, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -335,7 +335,7 @@ func (s *ZAdmin) ModifyCalendarResourceRequest(id string, attrs map[string]strin
 	return nil
 }
 
-func (s *ZAdmin) ModifyCosRequest(id string, attrs map[string]string) error {
+func (s *ZAdmin) ModifyCosRequest(id string, attrs zimbraCommon.AttrsNode) error {
 	req, resp := zimbraAdmin.NewModifyCosRequest(id, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -348,7 +348,7 @@ func (s *ZAdmin) ModifyCosRequest(id string, attrs map[string]string) error {
 	return nil
 }
 
-func (s *ZAdmin) ModifyDistributionListRequest(id string, attrs map[string]string) error {
+func (s *ZAdmin) ModifyDistributionListRequest(id string, attrs zimbraCommon.AttrsNode) error {
 	req, resp := zimbraAdmin.NewModifyDistributionListRequest(id, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -361,7 +361,7 @@ func (s *ZAdmin) ModifyDistributionListRequest(id string, attrs map[string]strin
 	return nil
 }
 
-func (s *ZAdmin) ModifyDomainRequest(id string, attrs map[string]string) error {
+func (s *ZAdmin) ModifyDomainRequest(id string, attrs zimbraCommon.AttrsNode) error {
 	req, resp := zimbraAdmin.NewModifyDomainRequest(id, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()
@@ -374,7 +374,7 @@ func (s *ZAdmin) ModifyDomainRequest(id string, attrs map[string]string) error {
 	return nil
 }
 
-func (s *ZAdmin) ModifyServerRequest(id string, attrs map[string]string) error {
+func (s *ZAdmin) ModifyServerRequest(id string, attrs zimbraCommon.AttrsNode) error {
 	req, resp := zimbraAdmin.NewModifyServerRequest(id, attrs)
 
 	connector := s.BuildZimbraConnectorLogged()

@@ -166,57 +166,57 @@ func NewCopyCosRequest(by zimbraCommon.ByNode, newName string) (*CopyCosRequest,
 	}, CopyCosResponse{}
 }
 
-func NewCreateAccountRequest(name string, password string, attrs map[string]string) (*CreateAccountRequest, CreateAccountResponse) {
+func NewCreateAccountRequest(name string, password string, attrs zimbraCommon.AttrsNode) (*CreateAccountRequest, CreateAccountResponse) {
 	return &CreateAccountRequest{
 		Content: CreateAccountRequestContent{
 			Urn:      Urn,
 			Name:     name,
 			Password: password,
-			Attrs:    buildAttrResponses(attrs),
+			Attrs:    attrs,
 		},
 	}, CreateAccountResponse{}
 }
 
-func NewCreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*CreateCalendarResourceRequest, CreateCalendarResourceResponse) {
+func NewCreateCalendarResourceRequest(name string, password string, attrs zimbraCommon.AttrsNode) (*CreateCalendarResourceRequest, CreateCalendarResourceResponse) {
 	return &CreateCalendarResourceRequest{
 		Content: CreateCalendarResourceRequestContent{
 			Urn:      Urn,
 			Name:     name,
 			Password: password,
-			Attrs:    buildAttrResponses(attrs),
+			Attrs:    attrs,
 		},
 	}, CreateCalendarResourceResponse{}
 }
 
-func NewCreateCosRequest(name string, attrs map[string]string) (*CreateCosRequest, CreateCosResponse) {
+func NewCreateCosRequest(name string, attrs zimbraCommon.AttrsNode) (*CreateCosRequest, CreateCosResponse) {
 	return &CreateCosRequest{
 		Content: CreateCosRequestContent{
 			Urn: Urn,
 			Name: zimbraCommon.ContentString{
 				Content: name,
 			},
-			Attrs: buildAttrResponses(attrs),
+			Attrs: attrs,
 		},
 	}, CreateCosResponse{}
 }
 
-func NewCreateDistributionListRequest(name string, dynamic bool, attrs map[string]string) (*CreateDistributionListRequest, CreateDistributionListResponse) {
+func NewCreateDistributionListRequest(name string, dynamic bool, attrs zimbraCommon.AttrsNode) (*CreateDistributionListRequest, CreateDistributionListResponse) {
 	return &CreateDistributionListRequest{
 		Content: CreateDistributionListRequestContent{
 			Urn:     Urn,
 			Name:    name,
 			Dynamic: zimbraCommon.ZBool(dynamic),
-			Attrs:   buildAttrResponses(attrs),
+			Attrs:   attrs,
 		},
 	}, CreateDistributionListResponse{}
 }
 
-func NewCreateDomainRequest(name string, attrs map[string]string) (*CreateDomainRequest, CreateDomainResponse) {
+func NewCreateDomainRequest(name string, attrs zimbraCommon.AttrsNode) (*CreateDomainRequest, CreateDomainResponse) {
 	return &CreateDomainRequest{
 		Content: CreateDomainRequestContent{
 			Urn:   Urn,
 			Name:  name,
-			Attrs: buildAttrResponses(attrs),
+			Attrs: attrs,
 		},
 	}, CreateDomainResponse{}
 }
@@ -311,9 +311,9 @@ func newModifyRequestContent(id string, a []zimbraCommon.AttrNode) ModifyRequest
 	}
 }
 
-func NewModifyAccountRequest(id string, attrs map[string]string) (*ModifyAccountRequest, ModifyAccountResponse) {
+func NewModifyAccountRequest(id string, attrs zimbraCommon.AttrsNode) (*ModifyAccountRequest, ModifyAccountResponse) {
 	return &ModifyAccountRequest{
-		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
+		Content: newModifyRequestContent(id, attrs),
 	}, ModifyAccountResponse{}
 }
 
@@ -337,9 +337,9 @@ func newAccountAliasRequestContent(id string, alias string) AliasRequestContent 
 	}
 }
 
-func NewModifyCalendarResourceRequest(id string, attrs map[string]string) (*ModifyCalendarResourceRequest, ModifyCalendarResourceResponse) {
+func NewModifyCalendarResourceRequest(id string, attrs zimbraCommon.AttrsNode) (*ModifyCalendarResourceRequest, ModifyCalendarResourceResponse) {
 	return &ModifyCalendarResourceRequest{
-		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
+		Content: newModifyRequestContent(id, attrs),
 	}, ModifyCalendarResourceResponse{}
 }
 
@@ -399,47 +399,32 @@ func NewGetLicenseRequest() (*GetLicenseRequest, GetLicenseResponse) {
 	}, GetLicenseResponse{}
 }
 
-func NewModifyCosRequest(id string, attrs map[string]string) (*ModifyCosRequest, ModifyCosResponse) {
+func NewModifyCosRequest(id string, attrs zimbraCommon.AttrsNode) (*ModifyCosRequest, ModifyCosResponse) {
 	return &ModifyCosRequest{
 		Content: ModifyCosRequestContent{
 			Urn:   Urn,
 			ID:    zimbraCommon.ContentString{Content: id},
-			Attrs: buildAttrResponses(attrs),
+			Attrs: attrs,
 		},
 	}, ModifyCosResponse{}
 }
 
-func NewModifyDistributionListRequest(id string, attrs map[string]string) (*ModifyDistributionListRequest, ModifyDistributionListResponse) {
+func NewModifyDistributionListRequest(id string, attrs zimbraCommon.AttrsNode) (*ModifyDistributionListRequest, ModifyDistributionListResponse) {
 	return &ModifyDistributionListRequest{
-		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
+		Content: newModifyRequestContent(id, attrs),
 	}, ModifyDistributionListResponse{}
 }
 
-func NewModifyDomainRequest(id string, attrs map[string]string) (*ModifyDomainRequest, ModifyDomainResponse) {
+func NewModifyDomainRequest(id string, attrs zimbraCommon.AttrsNode) (*ModifyDomainRequest, ModifyDomainResponse) {
 	return &ModifyDomainRequest{
-		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
+		Content: newModifyRequestContent(id, attrs),
 	}, ModifyDomainResponse{}
 }
 
-func NewModifyServerRequest(id string, attrs map[string]string) (*ModifyServerRequest, ModifyServerResponse) {
+func NewModifyServerRequest(id string, attrs zimbraCommon.AttrsNode) (*ModifyServerRequest, ModifyServerResponse) {
 	return &ModifyServerRequest{
-		Content: newModifyRequestContent(id, buildAttrResponses(attrs)),
+		Content: newModifyRequestContent(id, attrs),
 	}, ModifyServerResponse{}
-}
-
-func buildAttrResponses(attrs map[string]string) []zimbraCommon.AttrNode {
-	a := make([]zimbraCommon.AttrNode, len(attrs))
-
-	i := 0
-	for name, value := range attrs {
-		a[i] = zimbraCommon.AttrNode{
-			Name:  name,
-			Value: value,
-		}
-		i++
-	}
-
-	return a
 }
 
 func NewNoOpRequest() *NoOpRequest {

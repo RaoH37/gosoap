@@ -36,6 +36,23 @@ type AttrNode struct {
 	Value string `json:"_content"`
 }
 
+type AttrsNode []AttrNode
+
+func BuildAttrsNode(attrs map[string]string) AttrsNode {
+	a := make(AttrsNode, len(attrs))
+
+	i := 0
+	for name, value := range attrs {
+		a[i] = AttrNode{
+			Name:  name,
+			Value: value,
+		}
+		i++
+	}
+
+	return a
+}
+
 type NameNode struct {
 	Name  string `json:"name,attr"`
 	Value string `json:"_content"`
