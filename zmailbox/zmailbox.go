@@ -85,6 +85,12 @@ func (s *ZMailbox) BuildZimbraConnector() *zimbraConnector.Connector {
 	return zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
 }
 
+func (s *ZMailbox) BuildZimbraConnectorLogged() *zimbraConnector.Connector {
+	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
+	connector.SetHeaderContext(s.GetToken(), "", "", "")
+	return connector
+}
+
 func (s *ZMailbox) authRequestByNode() zimbraCommon.ByNode {
 	if s.id != "" {
 		return zimbraCommon.ByNode{

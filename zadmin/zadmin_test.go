@@ -89,7 +89,7 @@ func NewZAdmin() (zadmin.ZAdmin, error) {
 	zcs := zadmin.NewZAdmin(url, true, login, pwd, testing.Verbose(), time.Second*5, "zsoap", time.Second*30)
 
 	if len(token) > 0 {
-		zcs.AuthToken = token
+		zcs.SetToken(token)
 	} else {
 		resp, err := zcs.AuthRequest()
 
@@ -97,7 +97,7 @@ func NewZAdmin() (zadmin.ZAdmin, error) {
 			return zcs, err
 		}
 
-		zcs.AuthToken = resp.Content.TOKEN[0].Content
+		zcs.SetToken(resp.Content.TOKEN[0].Content)
 	}
 
 	return zcs, nil

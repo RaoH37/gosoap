@@ -46,8 +46,7 @@ func (s *ZMailbox) AuthRequestByPreauth(expires int) (*zimbraAccount.AuthRespons
 func (s *ZMailbox) GetFolderRequest(view zimbraMail.FolderView) (*zimbraMail.GetFolderResponse, error) {
 	req, resp := zimbraMail.NewGetFolderRequest(view, false, false, false)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.GetToken(), "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -60,8 +59,7 @@ func (s *ZMailbox) GetFolderRequest(view zimbraMail.FolderView) (*zimbraMail.Get
 func (s *ZMailbox) GetInfoRequest(rights []string, sections zimbraAccount.InfoSectionList) (*zimbraAccount.GetInfoResponse, error) {
 	req, resp := zimbraAccount.NewGetInfoRequest(rights, sections)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.GetToken(), "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)

@@ -8,8 +8,7 @@ import (
 )
 
 func (s *ZAdmin) invokeWithoutResponse(req interface{}, serverId string, accountName string, userAgent string) error {
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, serverId, accountName, userAgent)
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, nil); err != nil {
 		log.Println(err)
@@ -52,8 +51,7 @@ func (s *ZAdmin) AuthRequest() (*zimbraAdmin.AuthResponse, error) {
 func (s *ZAdmin) BackupQueryRequest() (*zimbraAdmin.BackupQueryResponse, error) {
 	req, resp := zimbraAdmin.NewBackupQueryRequest()
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -67,8 +65,7 @@ func (s *ZAdmin) CopyCosRequest(id string, name string, newName string) (*zimbra
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewCopyCosRequest(by, newName)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, nil); err != nil {
 		log.Println(err)
@@ -81,8 +78,7 @@ func (s *ZAdmin) CopyCosRequest(id string, name string, newName string) (*zimbra
 func (s *ZAdmin) CreateAccountRequest(name string, password string, attrs map[string]string) (*zimbraAdmin.CreateAccountResponse, error) {
 	req, resp := zimbraAdmin.NewCreateAccountRequest(name, password, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -95,8 +91,7 @@ func (s *ZAdmin) CreateAccountRequest(name string, password string, attrs map[st
 func (s *ZAdmin) CreateCalendarResourceRequest(name string, password string, attrs map[string]string) (*zimbraAdmin.CreateCalendarResourceResponse, error) {
 	req, resp := zimbraAdmin.NewCreateCalendarResourceRequest(name, password, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -109,8 +104,7 @@ func (s *ZAdmin) CreateCalendarResourceRequest(name string, password string, att
 func (s *ZAdmin) CreateCosRequest(name string, attrs map[string]string) (*zimbraAdmin.CreateCosResponse, error) {
 	req, resp := zimbraAdmin.NewCreateCosRequest(name, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -123,8 +117,7 @@ func (s *ZAdmin) CreateCosRequest(name string, attrs map[string]string) (*zimbra
 func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attrs map[string]string) (*zimbraAdmin.CreateDistributionListResponse, error) {
 	req, resp := zimbraAdmin.NewCreateDistributionListRequest(name, isDynamic, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -137,8 +130,7 @@ func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attr
 func (s *ZAdmin) CreateDomainRequest(name string, attrs map[string]string) (*zimbraAdmin.CreateDomainResponse, error) {
 	req, resp := zimbraAdmin.NewCreateDomainRequest(name, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -152,8 +144,7 @@ func (s *ZAdmin) DelegateAuthRequest(id string, name string) (*zimbraAdmin.Deleg
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewDelegateAuthRequest(by)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -197,8 +188,7 @@ func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string, apply
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs, applyCos)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -211,8 +201,7 @@ func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string, apply
 func (s *ZAdmin) GetAllServersRequest(service string) (*zimbraAdmin.GetAllServersResponse, error) {
 	req, resp := zimbraAdmin.NewGetAllServersRequest(service)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -226,8 +215,7 @@ func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs []stri
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs, applyCos)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -241,8 +229,7 @@ func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs []stri
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetDistributionListRequest(by, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -256,8 +243,7 @@ func (s *ZAdmin) GetCosRequest(id string, name string, attrs []string) (*zimbraA
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetCosRequest(by, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -271,8 +257,7 @@ func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string, applyC
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs, applyConfig)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -285,8 +270,7 @@ func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string, applyC
 func (s *ZAdmin) GetLicenseRequest() (*zimbraAdmin.GetLicenseResponse, error) {
 	req, resp := zimbraAdmin.NewLicenseRequest()
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -298,7 +282,7 @@ func (s *ZAdmin) GetLicenseRequest() (*zimbraAdmin.GetLicenseResponse, error) {
 
 func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers bool) (*zimbraAdmin.GetQuotaUsageResponse, error) {
 	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, serverId, "", "")
+	connector.SetHeaderContext(s.GetToken(), serverId, "", "")
 
 	req, resp := zimbraAdmin.NewGetQuotaUsageRequest(domain, allServers, 0, 0, "", true, false)
 
@@ -315,8 +299,7 @@ func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attr
 
 	req, resp := zimbraAdmin.NewGetServerRequest(by, applyConfig, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -329,8 +312,7 @@ func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attr
 func (s *ZAdmin) ModifyAccountRequest(id string, attrs map[string]string) error {
 	req, resp := zimbraAdmin.NewModifyAccountRequest(id, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -343,8 +325,7 @@ func (s *ZAdmin) ModifyAccountRequest(id string, attrs map[string]string) error 
 func (s *ZAdmin) ModifyCalendarResourceRequest(id string, attrs map[string]string) error {
 	req, resp := zimbraAdmin.NewModifyCalendarResourceRequest(id, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -357,8 +338,7 @@ func (s *ZAdmin) ModifyCalendarResourceRequest(id string, attrs map[string]strin
 func (s *ZAdmin) ModifyCosRequest(id string, attrs map[string]string) error {
 	req, resp := zimbraAdmin.NewModifyCosRequest(id, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -371,8 +351,7 @@ func (s *ZAdmin) ModifyCosRequest(id string, attrs map[string]string) error {
 func (s *ZAdmin) ModifyDistributionListRequest(id string, attrs map[string]string) error {
 	req, resp := zimbraAdmin.NewModifyDistributionListRequest(id, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -385,8 +364,7 @@ func (s *ZAdmin) ModifyDistributionListRequest(id string, attrs map[string]strin
 func (s *ZAdmin) ModifyDomainRequest(id string, attrs map[string]string) error {
 	req, resp := zimbraAdmin.NewModifyDomainRequest(id, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -399,8 +377,7 @@ func (s *ZAdmin) ModifyDomainRequest(id string, attrs map[string]string) error {
 func (s *ZAdmin) ModifyServerRequest(id string, attrs map[string]string) error {
 	req, resp := zimbraAdmin.NewModifyServerRequest(id, attrs)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)
@@ -413,8 +390,7 @@ func (s *ZAdmin) ModifyServerRequest(id string, attrs map[string]string) error {
 func (s *ZAdmin) NoOpRequest() error {
 	req := zimbraAdmin.NewNoOpRequest()
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, nil); err != nil {
 		log.Println(err)
@@ -500,8 +476,7 @@ func (s *ZAdmin) SearchDirectoryRequest(
 
 	req, resp := zimbraAdmin.NewSearchDirectoryRequest(&params)
 
-	connector := s.BuildZimbraConnector()
-	connector.SetHeaderContext(s.AuthToken, "", "", "")
+	connector := s.BuildZimbraConnectorLogged()
 
 	if err := connector.Invoke(req, &resp); err != nil {
 		log.Println(err)

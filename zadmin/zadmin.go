@@ -14,7 +14,7 @@ const Equipment = "Equipment"
 const Emplacement = "Emplacement"
 
 func NewZAdmin(
-	urlAdmin string,
+	url string,
 	tls bool,
 	login string,
 	password string,
@@ -23,7 +23,7 @@ func NewZAdmin(
 	userAgent string,
 	timeout time.Duration) ZAdmin {
 	return ZAdmin{
-		urlAdmin:             buildUrl(urlAdmin),
+		url:                  buildUrl(url),
 		tls:                  tls,
 		login:                login,
 		password:             password,
@@ -56,8 +56,8 @@ func buildUrl(inputUrl string) string {
 }
 
 type ZAdmin struct {
-	AuthToken            string
-	urlAdmin             string
+	Token                *zimbraCommon.Token
+	url                  string
 	tls                  bool
 	login                string
 	password             string
@@ -67,8 +67,26 @@ type ZAdmin struct {
 	timeout              time.Duration
 }
 
+func (s *ZAdmin) GetToken() string {
+	if s.Token == nil {
+		return ""
+	}
+
+	return s.Token.String()
+}
+
+func (s *ZAdmin) SetToken(rawToken string) {
+	s.Token = zimbraCommon.NewToken(rawToken)
+}
+
 func (s *ZAdmin) BuildZimbraConnector() *zimbraConnector.Connector {
-	return zimbraConnector.BuildConnector(s.urlAdmin, s.tls, s.userAgent, nil, s.debug, s.timeout)
+	return zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
+}
+
+func (s *ZAdmin) BuildZimbraConnectorLogged() *zimbraConnector.Connector {
+	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
+	connector.SetHeaderContext(s.GetToken(), "", "", "")
+	return connector
 }
 
 func (s *ZAdmin) byNode(id string, name string) zimbraCommon.ByNode {
