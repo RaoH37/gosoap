@@ -451,7 +451,7 @@ func (s *ZAdmin) SearchDirectoryRequest(
 	applyCos bool,
 	applyConfig bool,
 	sortBy string,
-	types string,
+	types zimbraAdmin.SearchTypeList,
 	sortAscending bool,
 	attrs zimbraCommon.StringList,
 	isCountOnly bool) (*zimbraAdmin.SearchDirectoryResponse, error) {

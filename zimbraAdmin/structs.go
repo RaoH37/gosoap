@@ -378,7 +378,7 @@ type SearchDirectoryParams struct {
 	ApplyCos      zimbraCommon.ZBool      `json:"applyCos,omitempty"`
 	ApplyConfig   zimbraCommon.ZBool      `json:"applyConfig,omitempty"`
 	SortBy        string                  `json:"sortBy,omitempty"`
-	Types         string                  `json:"types,omitempty"`
+	Types         SearchTypeList          `json:"types,omitempty"`
 	SortAscending zimbraCommon.ZBool      `json:"sortAscending,omitempty"`
 	CountOnly     zimbraCommon.ZBool      `json:"countOnly,omitempty"`
 	Attrs         zimbraCommon.StringList `json:"attrs,omitempty"`
