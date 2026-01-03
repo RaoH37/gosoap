@@ -29,7 +29,7 @@ func NewZMailbox(
 		domainKey:            domainKey,
 		debug:                debug,
 		RetryWaitingDuration: retryWaitingDuration,
-		userAgent:            userAgent,
+		UserAgent:            userAgent,
 		timeout:              timeout,
 	}
 }
@@ -61,7 +61,7 @@ type ZMailbox struct {
 	domainKey            string
 	debug                bool
 	RetryWaitingDuration time.Duration
-	userAgent            string
+	UserAgent            string
 	timeout              time.Duration
 }
 
@@ -82,12 +82,12 @@ func (s *ZMailbox) IsTokenValid() bool {
 }
 
 func (s *ZMailbox) BuildZimbraConnector() *zimbraConnector.Connector {
-	return zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
+	return zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
 }
 
 func (s *ZMailbox) BuildZimbraConnectorLogged() *zimbraConnector.Connector {
-	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
-	connector.SetHeaderContext(s.GetToken(), "", "", "")
+	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
+	connector.SetHeaderContext(s.GetToken(), "", "", s.UserAgent)
 	return connector
 }
 

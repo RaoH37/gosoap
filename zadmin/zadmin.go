@@ -29,7 +29,7 @@ func NewZAdmin(
 		password:             password,
 		debug:                debug,
 		RetryWaitingDuration: retryWaitingDuration,
-		userAgent:            userAgent,
+		UserAgent:            userAgent,
 		timeout:              timeout,
 	}
 }
@@ -63,7 +63,7 @@ type ZAdmin struct {
 	password             string
 	debug                bool
 	RetryWaitingDuration time.Duration
-	userAgent            string
+	UserAgent            string
 	timeout              time.Duration
 }
 
@@ -80,12 +80,12 @@ func (s *ZAdmin) SetToken(rawToken string) {
 }
 
 func (s *ZAdmin) BuildZimbraConnector() *zimbraConnector.Connector {
-	return zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
+	return zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
 }
 
-func (s *ZAdmin) BuildZimbraConnectorLogged() *zimbraConnector.Connector {
-	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.userAgent, nil, s.debug, s.timeout)
-	connector.SetHeaderContext(s.GetToken(), "", "", "")
+func (s *ZAdmin) BuildZimbraConnectorLogged(serverId string, accountName string) *zimbraConnector.Connector {
+	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
+	connector.SetHeaderContext(s.GetToken(), serverId, accountName, s.UserAgent)
 	return connector
 }
 
