@@ -68,17 +68,17 @@ type CreateFolderRequest struct {
 }
 
 type CreateFolderRequestContent struct {
-	Name     string              `json:"name"`
-	View     FolderView          `json:"view,omitempty"`
-	Flags    string              `json:"f,omitempty"`
-	Color    int                 `json:"color,omitzero"`
-	RGB      string              `json:"rgb,omitempty"`
-	Url      string              `json:"url,omitempty"`
-	ParentID string              `json:"l"`
-	Fie      *zimbraCommon.ZBool `json:"fie,omitempty"`
-	Sync     *zimbraCommon.ZBool `json:"sync,omitempty"`
-	Acls     *AclNode            `json:"acl,omitempty"`
-	Urn      string              `json:"_jsns,attr"`
+	Name     string                  `json:"name"`
+	View     FolderView              `json:"view,omitempty"`
+	Flags    zimbraCommon.StringList `json:"f,omitzero"`
+	Color    int                     `json:"color,omitzero"`
+	RGB      string                  `json:"rgb,omitempty"`
+	Url      string                  `json:"url,omitempty"`
+	ParentID string                  `json:"l"`
+	Fie      *zimbraCommon.ZBool     `json:"fie,omitempty"`
+	Sync     *zimbraCommon.ZBool     `json:"sync,omitempty"`
+	Acls     *AclNode                `json:"acl,omitempty"`
+	Urn      string                  `json:"_jsns,attr"`
 }
 
 type ItemActionRequest struct {
@@ -90,20 +90,20 @@ type ItemActionRequestContent struct {
 }
 
 type ActioNode struct {
-	Recursive       *zimbraCommon.ZBool `json:"recursive,omitempty"`
-	Url             string              `json:"url,omitempty"`
-	ExcludeFreeBusy *zimbraCommon.ZBool `json:"excludeFreeBusy,omitempty"`
-	ZID             string              `json:"zid,omitempty"`
-	GranteeType     string              `json:"gt,omitempty"`
-	View            FolderView          `json:"view,omitempty"`
-	ID              string              `json:"id,omitempty"`
-	Operation       ItemOperation       `json:"op"`
-	ParentID        string              `json:"l,omitempty"`
-	Flags           string              `json:"f,omitempty"`
-	Color           int8                `json:"color,omitzero"`
-	RGB             string              `json:"rgb,omitempty"`
-	Name            string              `json:"name,omitempty"`
-	Tags            string              `json:"tn,omitempty"`
+	Recursive       *zimbraCommon.ZBool     `json:"recursive,omitempty"`
+	Url             string                  `json:"url,omitempty"`
+	ExcludeFreeBusy *zimbraCommon.ZBool     `json:"excludeFreeBusy,omitempty"`
+	ZID             string                  `json:"zid,omitempty"`
+	GranteeType     string                  `json:"gt,omitempty"`
+	View            FolderView              `json:"view,omitzero"`
+	ID              string                  `json:"id,omitempty"`
+	Operation       ItemOperation           `json:"op"`
+	ParentID        string                  `json:"l,omitempty"`
+	Flags           zimbraCommon.StringList `json:"f,omitzero"`
+	Color           int8                    `json:"color,omitzero"`
+	RGB             string                  `json:"rgb,omitempty"`
+	Name            string                  `json:"name,omitempty"`
+	Tags            zimbraCommon.StringList `json:"tn,omitzero"`
 }
 
 type FolderActionResponse struct {
@@ -128,11 +128,11 @@ type CreateMountpointRequestContent struct {
 }
 
 type MountpointNode struct {
-	Name     string `json:"n,attr"`
-	View     string `json:"view,attr,omitzero"`
-	Owner    string `json:"owner,attr"`
-	RemoteID string `json:"rid,attr,omitzero"`
-	Color    int8   `json:"color,attr,omitzero"`
+	Name     string     `json:"n,attr"`
+	View     FolderView `json:"view,attr,omitzero"`
+	Owner    string     `json:"owner,attr"`
+	RemoteID string     `json:"rid,attr,omitzero"`
+	Color    int8       `json:"color,attr,omitzero"`
 }
 
 type CreateMountpointResponse struct {
@@ -178,8 +178,8 @@ type AddMsgRequestContent struct {
 
 type MessageNode struct {
 	ParentID string                     `json:"l,attr"`
-	Flags    string                     `json:"f,attr,omitzero"`
-	Tags     string                     `json:"tn,attr,omitzero"`
+	Flags    zimbraCommon.StringList    `json:"f,attr,omitzero"`
+	Tags     zimbraCommon.StringList    `json:"tn,attr,omitzero"`
 	Date     int64                      `json:"d,attr,omitzero"`
 	Content  zimbraCommon.ContentString `json:"content"`
 }

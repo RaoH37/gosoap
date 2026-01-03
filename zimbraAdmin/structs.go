@@ -125,10 +125,10 @@ type GetAccountRequest struct {
 }
 
 type GetAccountRequestContent struct {
-	Account  zimbraCommon.ByNode `json:"account,attr"`
-	Urn      string              `json:"_jsns,attr"`
-	Attrs    string              `json:"attrs,omitempty"`
-	ApplyCos zimbraCommon.ZBool  `json:"applyCos,omitempty"`
+	Account  zimbraCommon.ByNode     `json:"account,attr"`
+	Urn      string                  `json:"_jsns,attr"`
+	Attrs    zimbraCommon.StringList `json:"attrs,omitempty"`
+	ApplyCos zimbraCommon.ZBool      `json:"applyCos,omitempty"`
 }
 
 type GetAccountResponse struct {
@@ -156,9 +156,9 @@ type GetDistributionListRequest struct {
 }
 
 type GetDistributionListRequestContent struct {
-	Dl    zimbraCommon.ByNode `json:"dl,attr"`
-	Urn   string              `json:"_jsns,attr"`
-	Attrs string              `json:"attrs,omitempty"`
+	Dl    zimbraCommon.ByNode     `json:"dl,attr"`
+	Urn   string                  `json:"_jsns,attr"`
+	Attrs zimbraCommon.StringList `json:"attrs,omitempty"`
 }
 
 type GetDistributionListResponse struct {
@@ -369,19 +369,19 @@ type NoOpRequestContent struct {
 }
 
 type SearchDirectoryParams struct {
-	Urn           string             `json:"_jsns,attr"`
-	Query         string             `json:"query,omitempty"`
-	MaxResults    int                `json:"maxResults,omitempty"`
-	Limit         int                `json:"limit,omitempty"`
-	Offset        int                `json:"offset,omitempty"`
-	Domain        string             `json:"domain,omitempty"`
-	ApplyCos      zimbraCommon.ZBool `json:"applyCos,omitempty"`
-	ApplyConfig   zimbraCommon.ZBool `json:"applyConfig,omitempty"`
-	SortBy        string             `json:"sortBy,omitempty"`
-	Types         string             `json:"types,omitempty"`
-	SortAscending zimbraCommon.ZBool `json:"sortAscending,omitempty"`
-	CountOnly     zimbraCommon.ZBool `json:"countOnly,omitempty"`
-	Attrs         string             `json:"attrs,omitempty"`
+	Urn           string                  `json:"_jsns,attr"`
+	Query         string                  `json:"query,omitempty"`
+	MaxResults    int                     `json:"maxResults,omitempty"`
+	Limit         int                     `json:"limit,omitempty"`
+	Offset        int                     `json:"offset,omitempty"`
+	Domain        string                  `json:"domain,omitempty"`
+	ApplyCos      zimbraCommon.ZBool      `json:"applyCos,omitempty"`
+	ApplyConfig   zimbraCommon.ZBool      `json:"applyConfig,omitempty"`
+	SortBy        string                  `json:"sortBy,omitempty"`
+	Types         string                  `json:"types,omitempty"`
+	SortAscending zimbraCommon.ZBool      `json:"sortAscending,omitempty"`
+	CountOnly     zimbraCommon.ZBool      `json:"countOnly,omitempty"`
+	Attrs         zimbraCommon.StringList `json:"attrs,omitempty"`
 }
 
 type SearchDirectoryRequest struct {
@@ -432,10 +432,10 @@ type GetCalendarResourceRequest struct {
 }
 
 type GetCalendarResourceRequestContent struct {
-	CalResource zimbraCommon.ByNode `json:"calresource,attr"`
-	Urn         string              `json:"_jsns,attr"`
-	Attrs       string              `json:"attrs,omitempty"`
-	ApplyCos    zimbraCommon.ZBool  `json:"applyCos,omitempty"`
+	CalResource zimbraCommon.ByNode     `json:"calresource,attr"`
+	Urn         string                  `json:"_jsns,attr"`
+	Attrs       zimbraCommon.StringList `json:"attrs,omitempty"`
+	ApplyCos    zimbraCommon.ZBool      `json:"applyCos,omitempty"`
 }
 
 type GetCalendarResourceResponse struct {
@@ -451,9 +451,9 @@ type GetCosRequest struct {
 }
 
 type GetCosRequestContent struct {
-	Cos   zimbraCommon.ByNode `json:"cos"`
-	Urn   string              `json:"_jsns,attr"`
-	Attrs string              `json:"attrs,omitempty"`
+	Cos   zimbraCommon.ByNode     `json:"cos"`
+	Urn   string                  `json:"_jsns,attr"`
+	Attrs zimbraCommon.StringList `json:"attrs,omitempty"`
 }
 
 type GetCosResponse struct {
@@ -486,10 +486,10 @@ type GetServerRequest struct {
 }
 
 type GetServerRequestContent struct {
-	Server      zimbraCommon.ByNode `json:"server,attr"`
-	Urn         string              `json:"_jsns,attr"`
-	ApplyConfig zimbraCommon.ZBool  `json:"applyConfig,omitempty"`
-	Attrs       string              `json:"attrs,omitempty"`
+	Server      zimbraCommon.ByNode     `json:"server,attr"`
+	Urn         string                  `json:"_jsns,attr"`
+	ApplyConfig zimbraCommon.ZBool      `json:"applyConfig,omitempty"`
+	Attrs       zimbraCommon.StringList `json:"attrs,omitempty"`
 }
 
 type GetServerResponse struct {
@@ -505,10 +505,10 @@ type GetDomainRequest struct {
 }
 
 type GetDomainRequestContent struct {
-	Domain      zimbraCommon.ByNode `json:"domain,attr"`
-	Urn         string              `json:"_jsns,attr"`
-	Attrs       string              `json:"attrs,omitempty"`
-	ApplyConfig zimbraCommon.ZBool  `json:"applyConfig,omitempty"`
+	Domain      zimbraCommon.ByNode     `json:"domain,attr"`
+	Urn         string                  `json:"_jsns,attr"`
+	Attrs       zimbraCommon.StringList `json:"attrs,omitempty"`
+	ApplyConfig zimbraCommon.ZBool      `json:"applyConfig,omitempty"`
 }
 
 type GetDomainResponse struct {

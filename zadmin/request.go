@@ -184,7 +184,7 @@ func (s *ZAdmin) DeleteDomainRequest(id string) error {
 	return s.invokeWithoutResponse(req, "", "", "")
 }
 
-func (s *ZAdmin) GetAccountRequest(id string, name string, attrs []string, applyCos bool) (*zimbraAdmin.GetAccountResponse, error) {
+func (s *ZAdmin) GetAccountRequest(id string, name string, attrs zimbraCommon.StringList, applyCos bool) (*zimbraAdmin.GetAccountResponse, error) {
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs, applyCos)
 
@@ -211,7 +211,7 @@ func (s *ZAdmin) GetAllServersRequest(service string) (*zimbraAdmin.GetAllServer
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs []string, applyCos bool) (*zimbraAdmin.GetCalendarResourceResponse, error) {
+func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs zimbraCommon.StringList, applyCos bool) (*zimbraAdmin.GetCalendarResourceResponse, error) {
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs, applyCos)
 
@@ -225,7 +225,7 @@ func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs []stri
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs []string) (*zimbraAdmin.GetDistributionListResponse, error) {
+func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs zimbraCommon.StringList) (*zimbraAdmin.GetDistributionListResponse, error) {
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetDistributionListRequest(by, attrs)
 
@@ -239,7 +239,7 @@ func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs []stri
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetCosRequest(id string, name string, attrs []string) (*zimbraAdmin.GetCosResponse, error) {
+func (s *ZAdmin) GetCosRequest(id string, name string, attrs zimbraCommon.StringList) (*zimbraAdmin.GetCosResponse, error) {
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetCosRequest(by, attrs)
 
@@ -253,7 +253,7 @@ func (s *ZAdmin) GetCosRequest(id string, name string, attrs []string) (*zimbraA
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetDomainRequest(id string, name string, attrs []string, applyConfig bool) (*zimbraAdmin.GetDomainResponse, error) {
+func (s *ZAdmin) GetDomainRequest(id string, name string, attrs zimbraCommon.StringList, applyConfig bool) (*zimbraAdmin.GetDomainResponse, error) {
 	by := s.byNode(id, name)
 	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs, applyConfig)
 
@@ -294,7 +294,7 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers
 	return &resp, nil
 }
 
-func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attrs []string) (*zimbraAdmin.GetServerResponse, error) {
+func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attrs zimbraCommon.StringList) (*zimbraAdmin.GetServerResponse, error) {
 	by := s.byNode(id, name)
 
 	req, resp := zimbraAdmin.NewGetServerRequest(by, applyConfig, attrs)
@@ -453,7 +453,7 @@ func (s *ZAdmin) SearchDirectoryRequest(
 	sortBy string,
 	types string,
 	sortAscending bool,
-	attrs string,
+	attrs zimbraCommon.StringList,
 	isCountOnly bool) (*zimbraAdmin.SearchDirectoryResponse, error) {
 	params := zimbraAdmin.SearchDirectoryParams{
 		Urn:        "urn:zimbraAdmin",
@@ -464,7 +464,7 @@ func (s *ZAdmin) SearchDirectoryRequest(
 		CountOnly:  zimbraCommon.ZBool(isCountOnly),
 	}
 
-	if isCountOnly {
+	if !isCountOnly {
 		params.Limit = limit
 		params.Offset = offset
 		params.ApplyCos = zimbraCommon.ZBool(applyCos)

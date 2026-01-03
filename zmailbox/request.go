@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/RaoH37/gosoap/zimbraAccount"
+	"github.com/RaoH37/gosoap/zimbraCommon"
 	"github.com/RaoH37/gosoap/zimbraMail"
 )
 
@@ -56,7 +57,7 @@ func (s *ZMailbox) GetFolderRequest(view zimbraMail.FolderView) (*zimbraMail.Get
 	return &resp, nil
 }
 
-func (s *ZMailbox) GetInfoRequest(rights []string, sections zimbraAccount.InfoSectionList) (*zimbraAccount.GetInfoResponse, error) {
+func (s *ZMailbox) GetInfoRequest(rights zimbraCommon.StringList, sections zimbraAccount.InfoSectionList) (*zimbraAccount.GetInfoResponse, error) {
 	req, resp := zimbraAccount.NewGetInfoRequest(rights, sections)
 
 	connector := s.BuildZimbraConnectorLogged()

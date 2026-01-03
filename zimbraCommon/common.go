@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 const ID = "id"
@@ -107,4 +108,21 @@ func (fs *FlexString) UnmarshalJSON(data []byte) error {
 	}
 
 	return fmt.Errorf("impossible de convertir %s en string", string(data))
+}
+
+type StringList []string
+
+func (l StringList) String() string {
+	if len(l) == 0 {
+		return ""
+	}
+	s := make([]string, len(l))
+	for i, v := range l {
+		s[i] = v
+	}
+	return strings.Join(s, ",")
+}
+
+func (l StringList) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l.String())
 }

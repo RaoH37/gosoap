@@ -1,8 +1,6 @@
 package zimbraMail
 
 import (
-	"strings"
-
 	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
@@ -29,7 +27,7 @@ func NewCreateFolderRequest(
 	name string,
 	view FolderView,
 	parentId string,
-	flags []string,
+	flags zimbraCommon.StringList,
 	color int,
 	rgb string,
 	url string) (*CreateFolderRequest, GetFolderResponse) {
@@ -38,7 +36,7 @@ func NewCreateFolderRequest(
 			Name:     name,
 			View:     view,
 			ParentID: parentId,
-			Flags:    strings.Join(flags, ""),
+			Flags:    flags,
 			Color:    color,
 			RGB:      rgb,
 			Url:      url,
@@ -66,10 +64,10 @@ func NewFolderActionRequest(
 	excludeFreeBusy bool,
 	zid string,
 	gt string,
-	flags []string,
+	flags zimbraCommon.StringList,
 	color int8,
 	rgb string,
-	tags []string) (*ItemActionRequest, FolderActionResponse) {
+	tags zimbraCommon.StringList) (*ItemActionRequest, FolderActionResponse) {
 	zrecursive := zimbraCommon.ZBool(recursive)
 	zexcludeFreeBusy := zimbraCommon.ZBool(excludeFreeBusy)
 
@@ -85,11 +83,11 @@ func NewFolderActionRequest(
 				ID:              id,
 				Operation:       op,
 				ParentID:        parentId,
-				Flags:           strings.Join(flags, ""),
+				Flags:           flags,
 				Color:           color,
 				RGB:             rgb,
 				Name:            name,
-				Tags:            strings.Join(tags, ""),
+				Tags:            tags,
 			},
 		},
 	}, FolderActionResponse{}

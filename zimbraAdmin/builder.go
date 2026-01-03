@@ -1,8 +1,6 @@
 package zimbraAdmin
 
 import (
-	"strings"
-
 	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
@@ -18,7 +16,7 @@ func NewAuthRequest(name string, password string) (*AuthRequest, AuthResponse) {
 	}, AuthResponse{}
 }
 
-func NewGetAccountRequest(by zimbraCommon.ByNode, attrs []string, applyCos bool) (*GetAccountRequest, GetAccountResponse) {
+func NewGetAccountRequest(by zimbraCommon.ByNode, attrs zimbraCommon.StringList, applyCos bool) (*GetAccountRequest, GetAccountResponse) {
 	r := &GetAccountRequest{
 		Content: GetAccountRequestContent{
 			Urn:      Urn,
@@ -28,7 +26,7 @@ func NewGetAccountRequest(by zimbraCommon.ByNode, attrs []string, applyCos bool)
 	}
 
 	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
+		r.Content.Attrs = attrs
 	}
 
 	return r, GetAccountResponse{}
@@ -40,7 +38,7 @@ func NewGetAllConfigRequest(by zimbraCommon.ByNode, attrs []string) (*GetAllConf
 	}, GetAllConfigResponse{}
 }
 
-func NewGetDistributionListRequest(by zimbraCommon.ByNode, attrs []string) (*GetDistributionListRequest, GetDistributionListResponse) {
+func NewGetDistributionListRequest(by zimbraCommon.ByNode, attrs zimbraCommon.StringList) (*GetDistributionListRequest, GetDistributionListResponse) {
 	r := &GetDistributionListRequest{
 		Content: GetDistributionListRequestContent{
 			Urn: Urn,
@@ -49,13 +47,13 @@ func NewGetDistributionListRequest(by zimbraCommon.ByNode, attrs []string) (*Get
 	}
 
 	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
+		r.Content.Attrs = attrs
 	}
 
 	return r, GetDistributionListResponse{}
 }
 
-func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs []string, applyCos bool) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
+func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs zimbraCommon.StringList, applyCos bool) (*GetCalendarResourceRequest, GetCalendarResourceResponse) {
 	r := &GetCalendarResourceRequest{
 		Content: GetCalendarResourceRequestContent{
 			Urn:         Urn,
@@ -65,13 +63,13 @@ func NewGetCalendarResourceRequest(by zimbraCommon.ByNode, attrs []string, apply
 	}
 
 	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
+		r.Content.Attrs = attrs
 	}
 
 	return r, GetCalendarResourceResponse{}
 }
 
-func NewGetCosRequest(by zimbraCommon.ByNode, attrs []string) (*GetCosRequest, GetCosResponse) {
+func NewGetCosRequest(by zimbraCommon.ByNode, attrs zimbraCommon.StringList) (*GetCosRequest, GetCosResponse) {
 	r := &GetCosRequest{
 		Content: GetCosRequestContent{
 			Urn: Urn,
@@ -80,13 +78,13 @@ func NewGetCosRequest(by zimbraCommon.ByNode, attrs []string) (*GetCosRequest, G
 	}
 
 	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
+		r.Content.Attrs = attrs
 	}
 
 	return r, GetCosResponse{}
 }
 
-func NewGetDomainRequest(by zimbraCommon.ByNode, attrs []string, applyConfig bool) (*GetDomainRequest, GetDomainResponse) {
+func NewGetDomainRequest(by zimbraCommon.ByNode, attrs zimbraCommon.StringList, applyConfig bool) (*GetDomainRequest, GetDomainResponse) {
 	r := &GetDomainRequest{
 		Content: GetDomainRequestContent{
 			Urn:         Urn,
@@ -96,7 +94,7 @@ func NewGetDomainRequest(by zimbraCommon.ByNode, attrs []string, applyConfig boo
 	}
 
 	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
+		r.Content.Attrs = attrs
 	}
 
 	return r, GetDomainResponse{}
@@ -116,7 +114,7 @@ func NewGetAllServersRequest(service string) (*GetAllServersRequest, GetAllServe
 	return r, GetAllServersResponse{}
 }
 
-func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig bool, attrs []string) (*GetServerRequest, GetServerResponse) {
+func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig bool, attrs zimbraCommon.StringList) (*GetServerRequest, GetServerResponse) {
 	r := &GetServerRequest{
 		Content: GetServerRequestContent{
 			Urn:         Urn,
@@ -126,7 +124,7 @@ func NewGetServerRequest(by zimbraCommon.ByNode, applyConfig bool, attrs []strin
 	}
 
 	if attrs != nil {
-		r.Content.Attrs = strings.Join(attrs, ",")
+		r.Content.Attrs = attrs
 	}
 
 	return r, GetServerResponse{}

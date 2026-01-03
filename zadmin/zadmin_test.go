@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/RaoH37/gosoap/zadmin"
+	"github.com/RaoH37/gosoap/zimbraCommon"
 )
 
 var url = os.Getenv("GOSOAP_URL")
@@ -63,7 +64,7 @@ func findRandomOjectId(objType string) string {
 		query = "(cn=" + prefix + "*)"
 	}
 
-	resp, err := zcs.SearchDirectoryRequest(query, 1_000_000, 1, 0, "", true, true, "mail", objType, true, "", false)
+	resp, err := zcs.SearchDirectoryRequest(query, 1_000_000, 1, 0, "", true, true, "mail", objType, true, zimbraCommon.StringList{}, false)
 
 	if err != nil || (len(resp.Content.Accounts) == 0 && len(resp.Content.CalResources) == 0 && len(resp.Content.Dls) == 0 && len(resp.Content.Domains) == 0 && len(resp.Content.Coses) == 0) {
 		return ""
@@ -724,7 +725,7 @@ func TestSearchDirectoryRequest(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 100, 0, "", true, true, "mail", "accounts", true, "", false)
+	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 100, 0, "", true, true, "mail", "accounts", true, zimbraCommon.StringList{}, false)
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -743,7 +744,7 @@ func TestSearchDirectoryRequestCount(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 1, 0, "", true, true, "mail", "accounts", true, "", true)
+	resp, err := zcs.SearchDirectoryRequest("", 1_000_000, 1, 0, "", true, true, "mail", "accounts", true, zimbraCommon.StringList{}, true)
 
 	if err != nil {
 		t.Fatalf("%v", err)

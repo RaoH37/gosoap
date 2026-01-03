@@ -37,9 +37,9 @@ type GetInfoRequest struct {
 }
 
 type GetInfoRequestContent struct {
-	Urn      string          `json:"_jsns,attr"`
-	Rights   string          `json:"rights,attr,omitempty"`
-	Sections InfoSectionList `json:"sections,attr,omitempty"`
+	Urn      string                  `json:"_jsns,attr"`
+	Rights   zimbraCommon.StringList `json:"rights,attr,omitzero"`
+	Sections InfoSectionList         `json:"sections,attr,omitzero"`
 }
 
 type GetInfoResponse struct {

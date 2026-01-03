@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/RaoH37/gosoap/zimbraAccount"
+	"github.com/RaoH37/gosoap/zimbraCommon"
 	"github.com/RaoH37/gosoap/zimbraMail"
 	"github.com/RaoH37/gosoap/zmailbox"
 )
@@ -82,7 +83,7 @@ func TestGetInfoRequest(t *testing.T) {
 		zimbraAccount.InfoSectionPrefs,
 	}
 
-	resp, err := zcs.GetInfoRequest([]string{}, sections)
+	resp, err := zcs.GetInfoRequest(zimbraCommon.StringList{}, sections)
 
 	if err != nil {
 		t.Fatalf("%v", err)
