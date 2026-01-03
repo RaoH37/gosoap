@@ -5,6 +5,7 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/RaoH37/gosoap/zimbraCommon"
@@ -45,16 +46,16 @@ func NewPreauth(by zimbraCommon.ByNode, expires int, domainKey string) Preauth {
 	}
 }
 
-func NewGetInfoRequest(rights string, sections string) (*GetInfoRequest, GetInfoResponse) {
+func NewGetInfoRequest(rights []string, sections InfoSectionList) (*GetInfoRequest, GetInfoResponse) {
 	content := GetInfoRequestContent{
 		Urn: Urn,
 	}
 
-	if rights != "" {
-		content.Rights = rights
+	if len(rights) > 0 {
+		content.Rights = strings.Join(rights, ",")
 	}
 
-	if sections != "" {
+	if len(sections) > 0 {
 		content.Sections = sections
 	}
 

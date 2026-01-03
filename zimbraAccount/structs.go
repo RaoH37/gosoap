@@ -37,9 +37,9 @@ type GetInfoRequest struct {
 }
 
 type GetInfoRequestContent struct {
-	Urn      string `json:"_jsns,attr"`
-	Rights   string `json:"rights,attr,omitempty"`
-	Sections string `json:"sections,attr,omitempty"`
+	Urn      string          `json:"_jsns,attr"`
+	Rights   string          `json:"rights,attr,omitempty"`
+	Sections InfoSectionList `json:"sections,attr,omitempty"`
 }
 
 type GetInfoResponse struct {

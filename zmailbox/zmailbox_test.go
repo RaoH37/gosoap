@@ -6,6 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/RaoH37/gosoap/zimbraAccount"
+	"github.com/RaoH37/gosoap/zimbraMail"
 	"github.com/RaoH37/gosoap/zmailbox"
 )
 
@@ -50,7 +52,7 @@ func TestGetFolderRequest(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	resp, err := zcs.GetFolderRequest()
+	resp, err := zcs.GetFolderRequest(zimbraMail.FolderViewMessage)
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -75,7 +77,12 @@ func TestGetInfoRequest(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 
-	resp, err := zcs.GetInfoRequest("", "")
+	sections := zimbraAccount.InfoSectionList{
+		zimbraAccount.InfoSectionAttrs,
+		zimbraAccount.InfoSectionPrefs,
+	}
+
+	resp, err := zcs.GetInfoRequest([]string{}, sections)
 
 	if err != nil {
 		t.Fatalf("%v", err)

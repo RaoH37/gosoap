@@ -1,10 +1,14 @@
 package zimbraMail
 
-import "github.com/RaoH37/gosoap/zimbraCommon"
+import (
+	"strings"
+
+	"github.com/RaoH37/gosoap/zimbraCommon"
+)
 
 const Urn = "urn:zimbraMail"
 
-func NewGetFolderRequest(view string, visible bool, needGranteeName bool, tr bool) (*GetFolderRequest, GetFolderResponse) {
+func NewGetFolderRequest(view FolderView, visible bool, needGranteeName bool, tr bool) (*GetFolderRequest, GetFolderResponse) {
 	content := GetFolderRequestContent{
 		Visible:         zimbraCommon.ZBool(visible),
 		NeedGranteeName: zimbraCommon.ZBool(needGranteeName),
@@ -23,9 +27,9 @@ func NewGetFolderRequest(view string, visible bool, needGranteeName bool, tr boo
 
 func NewCreateFolderRequest(
 	name string,
-	view string,
+	view FolderView,
 	parentId string,
-	flags string,
+	flags []string,
 	color int,
 	rgb string,
 	url string) (*CreateFolderRequest, GetFolderResponse) {
@@ -34,7 +38,7 @@ func NewCreateFolderRequest(
 			Name:     name,
 			View:     view,
 			ParentID: parentId,
-			Flags:    flags,
+			Flags:    strings.Join(flags, ""),
 			Color:    color,
 			RGB:      rgb,
 			Url:      url,
@@ -52,9 +56,9 @@ func NewNoOpRequest() (*NoOpRequest, GetFolderResponse) {
 }
 
 func NewFolderActionRequest(
-	op string,
+	op ItemOperation,
 	name string,
-	view string,
+	view FolderView,
 	id string,
 	parentId string,
 	recursive bool,
@@ -62,10 +66,10 @@ func NewFolderActionRequest(
 	excludeFreeBusy bool,
 	zid string,
 	gt string,
-	flags string,
+	flags []string,
 	color int8,
 	rgb string,
-	tags string) (*ItemActionRequest, FolderActionResponse) {
+	tags []string) (*ItemActionRequest, FolderActionResponse) {
 	zrecursive := zimbraCommon.ZBool(recursive)
 	zexcludeFreeBusy := zimbraCommon.ZBool(excludeFreeBusy)
 
@@ -81,11 +85,11 @@ func NewFolderActionRequest(
 				ID:              id,
 				Operation:       op,
 				ParentID:        parentId,
-				Flags:           flags,
+				Flags:           strings.Join(flags, ""),
 				Color:           color,
 				RGB:             rgb,
 				Name:            name,
-				Tags:            tags,
+				Tags:            strings.Join(tags, ""),
 			},
 		},
 	}, FolderActionResponse{}

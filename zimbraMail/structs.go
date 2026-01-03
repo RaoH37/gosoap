@@ -11,7 +11,7 @@ type GetFolderRequest struct {
 type GetFolderRequestContent struct {
 	Visible         zimbraCommon.ZBool `json:"visible,omitzero"`
 	NeedGranteeName zimbraCommon.ZBool `json:"needGranteeName,omitzero"`
-	View            string             `json:"view,omitempty"`
+	View            FolderView         `json:"view,omitempty"`
 	Tr              zimbraCommon.ZBool `json:"tr,omitzero"`
 	Urn             string             `json:"_jsns,attr"`
 }
@@ -69,7 +69,7 @@ type CreateFolderRequest struct {
 
 type CreateFolderRequestContent struct {
 	Name     string              `json:"name"`
-	View     string              `json:"view,omitempty"`
+	View     FolderView          `json:"view,omitempty"`
 	Flags    string              `json:"f,omitempty"`
 	Color    int                 `json:"color,omitzero"`
 	RGB      string              `json:"rgb,omitempty"`
@@ -95,9 +95,9 @@ type ActioNode struct {
 	ExcludeFreeBusy *zimbraCommon.ZBool `json:"excludeFreeBusy,omitempty"`
 	ZID             string              `json:"zid,omitempty"`
 	GranteeType     string              `json:"gt,omitempty"`
-	View            string              `json:"view,omitempty"`
+	View            FolderView          `json:"view,omitempty"`
 	ID              string              `json:"id,omitempty"`
-	Operation       string              `json:"op"`
+	Operation       ItemOperation       `json:"op"`
 	ParentID        string              `json:"l,omitempty"`
 	Flags           string              `json:"f,omitempty"`
 	Color           int8                `json:"color,omitzero"`
