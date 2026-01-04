@@ -23,17 +23,21 @@ func NewZAdmin(
 	userAgent string,
 	timeout time.Duration,
 	serverId string) ZAdmin {
-	return ZAdmin{
+	client := ZAdmin{
 		url:                  buildUrl(url),
 		insecure:             insecure,
 		login:                login,
 		password:             password,
-		debug:                debug,
+		Debug:                debug,
 		RetryWaitingDuration: retryWaitingDuration,
 		UserAgent:            userAgent,
-		timeout:              timeout,
+		Timeout:              timeout,
 		ServerId:             serverId,
 	}
+
+	client.BuildConnector()
+
+	return client
 }
 
 func buildUrl(inputUrl string) string {
@@ -63,12 +67,13 @@ type ZAdmin struct {
 	insecure             bool
 	login                string
 	password             string
-	debug                bool
+	Debug                bool
 	RetryWaitingDuration time.Duration
 	UserAgent            string
-	timeout              time.Duration
+	Timeout              time.Duration
 	ServerId             string
 	accountContext       *zimbraCommon.ByNode
+	Connector            *zimbraConnector.Connector
 }
 
 func (s *ZAdmin) GetToken() string {
@@ -81,19 +86,24 @@ func (s *ZAdmin) GetToken() string {
 
 func (s *ZAdmin) SetToken(rawToken string) {
 	s.Token = zimbraCommon.NewToken(rawToken)
+	s.Connector.SetHeaderContext(rawToken, s.ServerId, s.accountContext)
 }
 
-func (s *ZAdmin) BuildConnector() *zimbraConnector.Connector {
-	return zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
+func (s *ZAdmin) BuildConnector() {
+	s.Connector = s.NewConnector()
 }
 
-func (s *ZAdmin) BuildConnectorWithContext() *zimbraConnector.Connector {
-	connector := zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
-	connector.SetHeaderContext(s.GetToken(), s.ServerId, s.accountContext)
-	return connector
+func (s *ZAdmin) NewConnector() *zimbraConnector.Connector {
+	return zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.Debug, s.Timeout)
 }
 
 func (s *ZAdmin) SetAccountContext(id string, name string) {
 	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	s.accountContext = &by
+	s.Connector.SetHeaderContext(s.GetToken(), s.ServerId, s.accountContext)
+}
+
+func (s *ZAdmin) SetServerId(serverId string) {
+	s.ServerId = serverId
+	s.Connector.SetHeaderContext(s.GetToken(), s.ServerId, s.accountContext)
 }

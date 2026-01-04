@@ -20,18 +20,22 @@ func NewZMailbox(
 	retryWaitingDuration time.Duration,
 	userAgent string,
 	timeout time.Duration) ZMailbox {
-	return ZMailbox{
+	client := ZMailbox{
 		url:                  buildUrl(url),
 		insecure:             insecure,
 		id:                   id,
 		name:                 name,
 		password:             password,
 		domainKey:            domainKey,
-		debug:                debug,
+		Debug:                debug,
 		RetryWaitingDuration: retryWaitingDuration,
 		UserAgent:            userAgent,
-		timeout:              timeout,
+		Timeout:              timeout,
 	}
+
+	client.BuildConnector()
+
+	return client
 }
 
 func buildUrl(inputUrl string) string {
@@ -59,10 +63,11 @@ type ZMailbox struct {
 	name                 string
 	password             string
 	domainKey            string
-	debug                bool
+	Debug                bool
 	RetryWaitingDuration time.Duration
 	UserAgent            string
-	timeout              time.Duration
+	Timeout              time.Duration
+	Connector            *zimbraConnector.Connector
 }
 
 func (s *ZMailbox) GetToken() string {
@@ -75,26 +80,13 @@ func (s *ZMailbox) GetToken() string {
 
 func (s *ZMailbox) SetToken(rawToken string) {
 	s.Token = zimbraCommon.NewToken(rawToken)
+	s.Connector.SetHeaderContext(rawToken, "", nil)
 }
 
 func (s *ZMailbox) IsTokenValid() bool {
 	return s.Token != nil && !s.Token.IsExpired()
 }
 
-func (s *ZMailbox) BuildConnector() *zimbraConnector.Connector {
-	return zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
-}
-
-func (s *ZMailbox) BuildConnectorWithContext() *zimbraConnector.Connector {
-	connector := zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
-	connector.SetHeaderContext(s.GetToken(), "", nil)
-	return connector
-}
-
-func (s *ZMailbox) userAgentContext() *zimbraCommon.NameNode {
-	if s.UserAgent == "" {
-		return nil
-	}
-
-	return &zimbraCommon.NameNode{Name: s.UserAgent}
+func (s *ZMailbox) BuildConnector() {
+	s.Connector = zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.Debug, s.Timeout)
 }
