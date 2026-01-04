@@ -13,7 +13,7 @@ type GetFolderRequestContent struct {
 	NeedGranteeName zimbraCommon.ZBool `json:"needGranteeName,omitzero"`
 	View            FolderView         `json:"view,omitempty"`
 	Tr              zimbraCommon.ZBool `json:"tr,omitzero"`
-	Urn             string             `json:"_jsns,attr"`
+	Urn             string             `json:"_jsns"`
 }
 
 type GetFolderResponse struct {
@@ -78,7 +78,7 @@ type CreateFolderRequestContent struct {
 	Fie      *zimbraCommon.ZBool     `json:"fie,omitempty"`
 	Sync     *zimbraCommon.ZBool     `json:"sync,omitempty"`
 	Acls     *AclNode                `json:"acl,omitempty"`
-	Urn      string                  `json:"_jsns,attr"`
+	Urn      string                  `json:"_jsns"`
 }
 
 type ItemActionRequest struct {
@@ -123,22 +123,22 @@ type CreateMountpointRequest struct {
 }
 
 type CreateMountpointRequestContent struct {
-	Urn  string         `json:"_jsns,attr"`
+	Urn  string         `json:"_jsns"`
 	Link MountpointNode `json:"link"`
 }
 
 type MountpointNode struct {
-	Name     string     `json:"n,attr"`
-	View     FolderView `json:"view,attr,omitzero"`
-	Owner    string     `json:"owner,attr"`
-	RemoteID string     `json:"rid,attr,omitzero"`
-	Color    int8       `json:"color,attr,omitzero"`
+	Name     string     `json:"n"`
+	View     FolderView `json:"view,omitzero"`
+	Owner    string     `json:"owner"`
+	RemoteID string     `json:"rid,omitzero"`
+	Color    int8       `json:"color,omitzero"`
 }
 
 type CreateMountpointResponse struct {
 	Content struct {
 		Link struct {
-			ID string `json:"id,attr"`
+			ID string `json:"id"`
 		} `json:"link"`
 	} `json:"CreateMountpointResponse"`
 }
@@ -148,21 +148,21 @@ type CreateTagRequest struct {
 }
 
 type CreateTagRequestContent struct {
-	Urn string  `json:"_jsns,attr"`
+	Urn string  `json:"_jsns"`
 	Tag TagNode `json:"tag"`
 }
 
 type TagNode struct {
-	Name  string `json:"name,attr"`
-	Color int8   `json:"color,attr,omitzero"` // 0=none, 1=blue, 2=cyan, etc.
+	Name  string `json:"name"`
+	Color int8   `json:"color,omitzero"` // 0=none, 1=blue, 2=cyan, etc.
 }
 
 type CreateTagResponse struct {
 	Content struct {
 		Tag struct {
-			ID    string `json:"id,attr"`
-			Name  string `json:"n,attr"`
-			Color int    `json:"color,attr"`
+			ID    string `json:"id"`
+			Name  string `json:"n"`
+			Color int    `json:"color"`
 		} `json:"tag"`
 	} `json:"CreateTagResponse"`
 }
@@ -172,22 +172,22 @@ type AddMsgRequest struct {
 }
 
 type AddMsgRequestContent struct {
-	Urn     string      `json:"_jsns,attr"`
+	Urn     string      `json:"_jsns"`
 	Message MessageNode `json:"m"`
 }
 
 type MessageNode struct {
-	ParentID string                     `json:"l,attr"`
-	Flags    zimbraCommon.StringList    `json:"f,attr,omitzero"`
-	Tags     zimbraCommon.StringList    `json:"tn,attr,omitzero"`
-	Date     int64                      `json:"d,attr,omitzero"`
+	ParentID string                     `json:"l"`
+	Flags    zimbraCommon.StringList    `json:"f,omitzero"`
+	Tags     zimbraCommon.StringList    `json:"tn,omitzero"`
+	Date     int64                      `json:"d,omitzero"`
 	Content  zimbraCommon.ContentString `json:"content"`
 }
 
 type AddMsgResponse struct {
 	Content struct {
 		Message struct {
-			ID string `json:"id,attr"`
+			ID string `json:"id"`
 		} `json:"m"`
 	} `json:"AddMsgResponse"`
 }

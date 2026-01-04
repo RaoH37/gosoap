@@ -13,16 +13,16 @@ type Header struct {
 
 type HeaderToken struct {
 	TOKEN    string `json:"authToken"`
-	Urn      string `json:"_jsns,attr"`
+	Urn      string `json:"_jsns"`
 	ServerID string `json:"targetServer,omitempty"`
 }
 
 type HeaderContext struct {
-	Urn       string               `json:"_jsns,attr"`
-	Token     string               `json:"authToken,omitempty"`
-	UserAgent *NameNode            `json:"userAgent,omitempty"`
-	Account   *zimbraCommon.ByNode `json:"account,omitempty"`
-	ServerID  string               `json:"targetServer,omitempty"`
+	Urn       string                 `json:"_jsns"`
+	Token     string                 `json:"authToken,omitempty"`
+	UserAgent *zimbraCommon.NameNode `json:"userAgent,omitzero"`
+	Account   *zimbraCommon.ByNode   `json:"account,omitzero"`
+	ServerID  string                 `json:"targetServer,omitempty"`
 }
 
 type NameNode struct {

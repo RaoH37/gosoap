@@ -81,14 +81,22 @@ func (s *ZMailbox) IsTokenValid() bool {
 	return s.Token != nil && !s.Token.IsExpired()
 }
 
-func (s *ZMailbox) BuildZimbraConnector() *zimbraConnector.Connector {
+func (s *ZMailbox) BuildConnector() *zimbraConnector.Connector {
 	return zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
 }
 
-func (s *ZMailbox) BuildZimbraConnectorLogged() *zimbraConnector.Connector {
+func (s *ZMailbox) BuildConnectorWithContext() *zimbraConnector.Connector {
 	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
-	connector.SetHeaderContext(s.GetToken(), "", "", s.UserAgent)
+	connector.SetHeaderContext(s.GetToken(), "", s.userAgentContext(), nil)
 	return connector
+}
+
+func (s *ZMailbox) userAgentContext() *zimbraCommon.NameNode {
+	if s.UserAgent == "" {
+		return nil
+	}
+
+	return &zimbraCommon.NameNode{Name: s.UserAgent}
 }
 
 func (s *ZMailbox) authRequestByNode() zimbraCommon.ByNode {

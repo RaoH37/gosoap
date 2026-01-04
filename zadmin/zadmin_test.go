@@ -105,7 +105,7 @@ func findRandomOjectId(objType string) string {
 }
 
 func NewZAdmin() (zadmin.ZAdmin, error) {
-	zcs := zadmin.NewZAdmin(url, true, login, pwd, testing.Verbose(), time.Second*5, "zsoap", time.Second*30)
+	zcs := zadmin.NewZAdmin(url, true, login, pwd, testing.Verbose(), time.Second*5, "zsoap", time.Second*30, "")
 
 	if len(token) > 0 {
 		zcs.SetToken(token)

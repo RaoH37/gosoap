@@ -7,16 +7,16 @@ type AuthRequest struct {
 }
 
 type AuthRequestContent struct {
-	Account  zimbraCommon.ByNode `json:"account,attr"`
-	Password string              `json:"password,attr,omitempty"`
+	Account  zimbraCommon.ByNode `json:"account"`
+	Password string              `json:"password,omitempty"`
 	Preauth  Preauth             `json:"preauth,omitzero"`
-	Urn      string              `json:"_jsns,attr"`
+	Urn      string              `json:"_jsns"`
 }
 
 type Preauth struct {
-	Timestamp int64  `json:"timestamp,attr"`
-	Expires   int    `json:"expires,attr"`
-	Value     string `json:"_content,attr"`
+	Timestamp int64  `json:"timestamp"`
+	Expires   int    `json:"expires"`
+	Value     string `json:"_content"`
 }
 
 type AuthResponse struct {
@@ -37,9 +37,9 @@ type GetInfoRequest struct {
 }
 
 type GetInfoRequestContent struct {
-	Urn      string                  `json:"_jsns,attr"`
-	Rights   zimbraCommon.StringList `json:"rights,attr,omitzero"`
-	Sections InfoSectionList         `json:"sections,attr,omitzero"`
+	Urn      string                  `json:"_jsns"`
+	Rights   zimbraCommon.StringList `json:"rights,omitzero"`
+	Sections InfoSectionList         `json:"sections,omitzero"`
 }
 
 type GetInfoResponse struct {
@@ -63,13 +63,13 @@ type CreateIdentityRequest struct {
 }
 
 type CreateIdentityRequestContent struct {
-	Urn      string         `json:"_jsns,attr"`
+	Urn      string         `json:"_jsns"`
 	Identity ZimbraIdentity `json:"identity"`
 }
 
 type ZimbraIdentity struct {
-	ID        string                  `json:"id,attr,omitempty"`
-	Name      string                  `json:"name,attr"`
+	ID        string                  `json:"id,omitempty"`
+	Name      string                  `json:"name"`
 	Attributs []zimbraCommon.NameNode `json:"a,omitempty"`
 }
 
@@ -84,9 +84,9 @@ type DeleteIdentityRequest struct {
 }
 
 type DeleteIdentityRequestContent struct {
-	Urn      string `json:"_jsns,attr"`
+	Urn      string `json:"_jsns"`
 	Identity struct {
-		ID string `json:"id,attr,omitempty"`
+		ID string `json:"id,omitempty"`
 	} `json:"identity"`
 }
 
@@ -99,19 +99,19 @@ type CreateSignatureRequest struct {
 }
 
 type CreateSignatureRequestContent struct {
-	Urn       string          `json:"_jsns,attr"`
+	Urn       string          `json:"_jsns"`
 	Signature ZimbraSignature `json:"signature"`
 }
 
 type ZimbraSignature struct {
-	ID      string                   `json:"id,attr,omitempty"`
-	Name    string                   `json:"name,attr"`
+	ID      string                   `json:"id,omitempty"`
+	Name    string                   `json:"name"`
 	Content []ZimbraSignatureContent `json:"content,omitempty"`
 }
 
 type ZimbraSignatureContent struct {
 	Value       string `json:"_content"`
-	ContentType string `json:"type,attr"`
+	ContentType string `json:"type"`
 }
 
 type CreateSignatureResponse struct {
@@ -125,9 +125,9 @@ type DeleteSignatureRequest struct {
 }
 
 type DeleteSignatureContent struct {
-	Urn       string `json:"_jsns,attr"`
+	Urn       string `json:"_jsns"`
 	Signature struct {
-		ID string `json:"id,attr,omitempty"`
+		ID string `json:"id,omitempty"`
 	} `json:"signature"`
 }
 
@@ -140,7 +140,7 @@ type ModifyIdentityRequest struct {
 }
 
 type ModifyIdentityRequestContent struct {
-	Urn      string         `json:"_jsns,attr"`
+	Urn      string         `json:"_jsns"`
 	Identity ZimbraIdentity `json:"identity"` // Réutilise la struct du Create
 }
 
@@ -153,7 +153,7 @@ type ModifySignatureRequest struct {
 }
 
 type ModifySignatureRequestContent struct {
-	Urn       string          `json:"_jsns,attr"`
+	Urn       string          `json:"_jsns"`
 	Signature ZimbraSignature `json:"signature"` // Réutilise la struct du Create
 }
 
@@ -166,7 +166,7 @@ type ModifyPrefsRequest struct {
 }
 
 type ModifyPrefsRequestContent struct {
-	Urn   string                  `json:"_jsns,attr"`
+	Urn   string                  `json:"_jsns"`
 	Prefs []zimbraCommon.AttrNode `json:"pref"`
 }
 
@@ -179,7 +179,7 @@ type GrantRightsRequest struct {
 }
 
 type GrantRightsRequestContent struct {
-	Urn    string                   `json:"_jsns,attr"`
+	Urn    string                   `json:"_jsns"`
 	Rights []zimbraCommon.GrantNode `json:"ace"`
 }
 
@@ -194,7 +194,7 @@ type RevokeRightsRequest struct {
 }
 
 type RevokeRightsContent struct {
-	Urn    string                   `json:"_jsns,attr"`
+	Urn    string                   `json:"_jsns"`
 	Rights []zimbraCommon.GrantNode `json:"ace"`
 }
 

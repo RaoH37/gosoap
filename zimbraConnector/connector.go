@@ -15,6 +15,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+const Urn = "urn:zimbra"
+
 type Connector struct {
 	url       string
 	tls       bool
@@ -29,23 +31,18 @@ func (connector *Connector) resetHeaderContext() {
 	connector.header = nil
 }
 
-func (connector *Connector) SetHeaderContext(token string, serverId string, accountName string, userAgent string) {
-	headerContext := HeaderContext{
-		Urn:      "urn:zimbra",
-		Token:    token,
-		ServerID: serverId,
+func (connector *Connector) SetHeaderContext(
+	token string,
+	serverId string,
+	userAgent *zimbraCommon.NameNode,
+	accountContext *zimbraCommon.ByNode) {
+	connector.header = HeaderContext{
+		Urn:       Urn,
+		Token:     token,
+		ServerID:  serverId,
+		Account:   accountContext,
+		UserAgent: userAgent,
 	}
-
-	if accountName != "" {
-		by := zimbraCommon.NewByNode(zimbraCommon.NAME, accountName)
-		headerContext.Account = &by
-	}
-
-	if userAgent != "" {
-		headerContext.UserAgent = &NameNode{Name: userAgent}
-	}
-
-	connector.header = headerContext
 }
 
 func (connector *Connector) Invoke(request interface{}, response interface{}) error {

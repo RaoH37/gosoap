@@ -27,12 +27,12 @@ type ContentString struct {
 }
 
 type IdNameNode struct {
-	ID   string `json:"id,attr"`
-	Name string `json:"name,attr"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type AttrNode struct {
-	Name  string `json:"n,attr"`
+	Name  string `json:"n"`
 	Value string `json:"_content"`
 }
 
@@ -54,12 +54,12 @@ func BuildAttrsNode(attrs map[string]string) AttrsNode {
 }
 
 type NameNode struct {
-	Name  string `json:"name,attr"`
-	Value string `json:"_content"`
+	Name  string `json:"name"`
+	Value string `json:"_content,omitempty"`
 }
 
 type AttrNamesNode struct {
-	Attributs []NameNode `json:"attr,omitempty"`
+	Attributs []NameNode `json:"omitempty"`
 }
 
 func (anr *AttrNamesNode) ToAttrsNode() []AttrNode {
@@ -82,7 +82,7 @@ type GrantNode struct {
 }
 
 type UrnRequestContent struct {
-	Urn string `json:"_jsns,attr"`
+	Urn string `json:"_jsns"`
 }
 
 type ZBool bool
