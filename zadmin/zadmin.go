@@ -15,7 +15,7 @@ const Emplacement = "Emplacement"
 
 func NewZAdmin(
 	url string,
-	tls bool,
+	insecure bool,
 	login string,
 	password string,
 	debug bool,
@@ -25,7 +25,7 @@ func NewZAdmin(
 	serverId string) ZAdmin {
 	return ZAdmin{
 		url:                  buildUrl(url),
-		tls:                  tls,
+		insecure:             insecure,
 		login:                login,
 		password:             password,
 		debug:                debug,
@@ -60,7 +60,7 @@ func buildUrl(inputUrl string) string {
 type ZAdmin struct {
 	Token                *zimbraCommon.Token
 	url                  string
-	tls                  bool
+	insecure             bool
 	login                string
 	password             string
 	debug                bool
@@ -84,21 +84,13 @@ func (s *ZAdmin) SetToken(rawToken string) {
 }
 
 func (s *ZAdmin) BuildConnector() *zimbraConnector.Connector {
-	return zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
+	return zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
 }
 
 func (s *ZAdmin) BuildConnectorWithContext() *zimbraConnector.Connector {
-	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
-	connector.SetHeaderContext(s.GetToken(), s.ServerId, s.userAgentContext(), s.accountContext)
+	connector := zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
+	connector.SetHeaderContext(s.GetToken(), s.ServerId, s.accountContext)
 	return connector
-}
-
-func (s *ZAdmin) userAgentContext() *zimbraCommon.NameNode {
-	if s.UserAgent == "" {
-		return nil
-	}
-
-	return &zimbraCommon.NameNode{Name: s.UserAgent}
 }
 
 func (s *ZAdmin) SetAccountContext(id string, name string) {

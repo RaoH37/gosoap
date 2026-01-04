@@ -282,7 +282,7 @@ func (s *ZAdmin) GetLicenseRequest() (*zimbraAdmin.GetLicenseResponse, error) {
 
 func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers bool) (*zimbraAdmin.GetQuotaUsageResponse, error) {
 	connector := s.BuildConnector()
-	connector.SetHeaderContext(s.GetToken(), serverId, s.userAgentContext(), s.accountContext)
+	connector.SetHeaderContext(s.GetToken(), serverId, s.accountContext)
 
 	req, resp := zimbraAdmin.NewGetQuotaUsageRequest(domain, allServers, 0, 0, "", true, false)
 

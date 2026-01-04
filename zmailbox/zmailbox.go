@@ -11,7 +11,7 @@ import (
 
 func NewZMailbox(
 	url string,
-	tls bool,
+	insecure bool,
 	id string,
 	name string,
 	password string,
@@ -22,7 +22,7 @@ func NewZMailbox(
 	timeout time.Duration) ZMailbox {
 	return ZMailbox{
 		url:                  buildUrl(url),
-		tls:                  tls,
+		insecure:             insecure,
 		id:                   id,
 		name:                 name,
 		password:             password,
@@ -54,7 +54,7 @@ func buildUrl(inputUrl string) string {
 type ZMailbox struct {
 	Token                *zimbraCommon.Token
 	url                  string
-	tls                  bool
+	insecure             bool
 	id                   string
 	name                 string
 	password             string
@@ -82,12 +82,12 @@ func (s *ZMailbox) IsTokenValid() bool {
 }
 
 func (s *ZMailbox) BuildConnector() *zimbraConnector.Connector {
-	return zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
+	return zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
 }
 
 func (s *ZMailbox) BuildConnectorWithContext() *zimbraConnector.Connector {
-	connector := zimbraConnector.BuildConnector(s.url, s.tls, s.UserAgent, nil, s.debug, s.timeout)
-	connector.SetHeaderContext(s.GetToken(), "", s.userAgentContext(), nil)
+	connector := zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.debug, s.timeout)
+	connector.SetHeaderContext(s.GetToken(), "", nil)
 	return connector
 }
 
