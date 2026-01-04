@@ -94,14 +94,6 @@ func (s *ZAdmin) BuildConnectorWithContext() *zimbraConnector.Connector {
 }
 
 func (s *ZAdmin) SetAccountContext(id string, name string) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	s.accountContext = &by
-}
-
-func (s *ZAdmin) byNode(id string, name string) zimbraCommon.ByNode {
-	if id != "" {
-		return zimbraCommon.NewByNode(zimbraCommon.ID, id)
-	}
-
-	return zimbraCommon.NewByNode(zimbraCommon.NAME, name)
 }

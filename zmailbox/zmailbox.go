@@ -98,17 +98,3 @@ func (s *ZMailbox) userAgentContext() *zimbraCommon.NameNode {
 
 	return &zimbraCommon.NameNode{Name: s.UserAgent}
 }
-
-func (s *ZMailbox) authRequestByNode() zimbraCommon.ByNode {
-	if s.id != "" {
-		return zimbraCommon.ByNode{
-			By:    zimbraCommon.ID,
-			Value: s.id,
-		}
-	}
-
-	return zimbraCommon.ByNode{
-		By:    zimbraCommon.NAME,
-		Value: s.name,
-	}
-}

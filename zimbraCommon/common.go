@@ -22,6 +22,14 @@ func NewByNode(by string, value string) ByNode {
 	}
 }
 
+func NewByIdOrNameNode(id string, name string) ByNode {
+	if id != "" {
+		return NewByNode(ID, id)
+	}
+
+	return NewByNode(NAME, name)
+}
+
 type ContentString struct {
 	Content string `json:"_content"`
 }

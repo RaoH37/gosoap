@@ -62,7 +62,7 @@ func (s *ZAdmin) BackupQueryRequest() (*zimbraAdmin.BackupQueryResponse, error) 
 }
 
 func (s *ZAdmin) CopyCosRequest(id string, name string, newName string) (*zimbraAdmin.CopyCosResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	req, resp := zimbraAdmin.NewCopyCosRequest(by, newName)
 
 	connector := s.BuildConnectorWithContext()
@@ -141,7 +141,7 @@ func (s *ZAdmin) CreateDomainRequest(name string, attrs zimbraCommon.AttrsNode) 
 }
 
 func (s *ZAdmin) DelegateAuthRequest(id string, name string) (*zimbraAdmin.DelegateAuthResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	req, resp := zimbraAdmin.NewDelegateAuthRequest(by)
 
 	connector := s.BuildConnectorWithContext()
@@ -185,7 +185,7 @@ func (s *ZAdmin) DeleteDomainRequest(id string) error {
 }
 
 func (s *ZAdmin) GetAccountRequest(id string, name string, attrs zimbraCommon.StringList, applyCos bool) (*zimbraAdmin.GetAccountResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs, applyCos)
 
 	connector := s.BuildConnectorWithContext()
@@ -212,7 +212,7 @@ func (s *ZAdmin) GetAllServersRequest(service string) (*zimbraAdmin.GetAllServer
 }
 
 func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs zimbraCommon.StringList, applyCos bool) (*zimbraAdmin.GetCalendarResourceResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs, applyCos)
 
 	connector := s.BuildConnectorWithContext()
@@ -226,7 +226,7 @@ func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs zimbra
 }
 
 func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs zimbraCommon.StringList) (*zimbraAdmin.GetDistributionListResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	req, resp := zimbraAdmin.NewGetDistributionListRequest(by, attrs)
 
 	connector := s.BuildConnectorWithContext()
@@ -240,7 +240,7 @@ func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs zimbra
 }
 
 func (s *ZAdmin) GetCosRequest(id string, name string, attrs zimbraCommon.StringList) (*zimbraAdmin.GetCosResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	req, resp := zimbraAdmin.NewGetCosRequest(by, attrs)
 
 	connector := s.BuildConnectorWithContext()
@@ -254,7 +254,7 @@ func (s *ZAdmin) GetCosRequest(id string, name string, attrs zimbraCommon.String
 }
 
 func (s *ZAdmin) GetDomainRequest(id string, name string, attrs zimbraCommon.StringList, applyConfig bool) (*zimbraAdmin.GetDomainResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs, applyConfig)
 
 	connector := s.BuildConnectorWithContext()
@@ -295,7 +295,7 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers
 }
 
 func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attrs zimbraCommon.StringList) (*zimbraAdmin.GetServerResponse, error) {
-	by := s.byNode(id, name)
+	by := zimbraCommon.NewByIdOrNameNode(id, name)
 
 	req, resp := zimbraAdmin.NewGetServerRequest(by, applyConfig, attrs)
 

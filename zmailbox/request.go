@@ -17,7 +17,7 @@ func (s *ZMailbox) AuthRequest() (*zimbraAccount.AuthResponse, error) {
 }
 
 func (s *ZMailbox) AuthRequestByPassword() (*zimbraAccount.AuthResponse, error) {
-	req, resp := zimbraAccount.NewAuthRequestByPassword(s.authRequestByNode(), s.password)
+	req, resp := zimbraAccount.NewAuthRequestByPassword(zimbraCommon.NewByIdOrNameNode(s.id, s.name), s.password)
 
 	connector := s.BuildConnector()
 	if err := connector.Invoke(req, &resp); err != nil {
@@ -29,7 +29,7 @@ func (s *ZMailbox) AuthRequestByPassword() (*zimbraAccount.AuthResponse, error) 
 }
 
 func (s *ZMailbox) AuthRequestByPreauth(expires int) (*zimbraAccount.AuthResponse, error) {
-	by := s.authRequestByNode()
+	by := zimbraCommon.NewByIdOrNameNode(s.id, s.name)
 
 	preauth := zimbraAccount.NewPreauth(by, expires, s.domainKey)
 
