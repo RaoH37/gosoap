@@ -68,6 +68,18 @@ type CreateFolderRequest struct {
 }
 
 type CreateFolderRequestContent struct {
+	Folder Folder `json:"folder"`
+	Urn    string `json:"_jsns"`
+}
+
+type CreateFolderResponse struct {
+	Content struct {
+		Folder []Folder `json:"folder"`
+	} `json:"CreateFolderResponse"`
+}
+
+type Folder struct {
+	ID       string                  `json:"id"`
 	Name     string                  `json:"name"`
 	View     FolderView              `json:"view,omitempty"`
 	Flags    zimbraCommon.StringList `json:"f,omitzero"`
@@ -78,7 +90,8 @@ type CreateFolderRequestContent struct {
 	Fie      *zimbraCommon.ZBool     `json:"fie,omitempty"`
 	Sync     *zimbraCommon.ZBool     `json:"sync,omitempty"`
 	Acls     *AclNode                `json:"acl,omitempty"`
-	Urn      string                  `json:"_jsns"`
+	Size     int                     `json:"s,omitempty"`
+	Count    int                     `json:"n,omitempty"`
 }
 
 type ItemActionRequest struct {

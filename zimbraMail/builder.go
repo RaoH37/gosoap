@@ -26,23 +26,20 @@ func NewGetFolderRequest(view FolderView, visible bool, needGranteeName bool, tr
 func NewCreateFolderRequest(
 	name string,
 	view FolderView,
-	parentId string,
-	flags zimbraCommon.StringList,
-	color int,
-	rgb string,
-	url string) (*CreateFolderRequest, GetFolderResponse) {
+	parentId string) (*CreateFolderRequest, CreateFolderResponse) {
+
+	folder := Folder{
+		Name:     name,
+		View:     view,
+		ParentID: parentId,
+	}
+
 	return &CreateFolderRequest{
 		Content: CreateFolderRequestContent{
-			Name:     name,
-			View:     view,
-			ParentID: parentId,
-			Flags:    flags,
-			Color:    color,
-			RGB:      rgb,
-			Url:      url,
-			Urn:      Urn,
+			Folder: folder,
+			Urn:    Urn,
 		},
-	}, GetFolderResponse{}
+	}, CreateFolderResponse{}
 }
 
 func NewNoOpRequest() (*NoOpRequest, GetFolderResponse) {

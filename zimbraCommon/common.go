@@ -132,7 +132,7 @@ func (fs *FlexString) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	return fmt.Errorf("impossible de convertir %s en string", string(data))
+	return fmt.Errorf("cannot convert %s to string", string(data))
 }
 
 type StringList []string

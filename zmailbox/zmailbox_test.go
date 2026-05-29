@@ -2,6 +2,7 @@ package zmailbox_test
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"testing"
 	"time"
@@ -17,6 +18,25 @@ var login = os.Getenv("GOSOAP_LOGIN")
 var pwd = os.Getenv("GOSOAP_PWD")
 var domainKey = os.Getenv("GOSOAP_DOMAIN_KEY")
 var token = os.Getenv("GOSOAP_TOKEN")
+
+var letters = os.Getenv("GOSOAP_LETTERS")
+
+func RandStringRunes(n int) string {
+	source := rand.NewSource(time.Now().UnixNano())
+	rng := rand.New(source)
+
+	b := make([]byte, n)
+
+	for i := range b {
+		b[i] = letters[rng.Intn(len(letters))]
+	}
+
+	newStr := string(b)
+
+	fmt.Println(newStr)
+
+	return newStr
+}
 
 func NewZMailbox() (zmailbox.ZMailbox, error) {
 	zcs := zmailbox.NewZMailbox(url, true, "", login, pwd, "", testing.Verbose(), time.Second*5, "zsoap", time.Second*30)
@@ -69,6 +89,27 @@ func TestGetFolderRequest(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestCreateFolderRequest(t *testing.T) {
+	zcs, err := NewZMailbox()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	name := "test_" + RandStringRunes(6)
+
+	resp, err := zcs.CreateFolderRequest(name, zimbraMail.FolderViewMessage, "1", func(req *zimbraMail.CreateFolderRequest) {
+		req.Content.Folder.Color = 1
+	})
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	if testing.Verbose() {
+		fmt.Printf("%v\n", resp)
 	}
 }
 

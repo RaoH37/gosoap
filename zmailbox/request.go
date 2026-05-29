@@ -1,8 +1,6 @@
 package zmailbox
 
 import (
-	"log"
-
 	"github.com/RaoH37/gosoap/zimbraAccount"
 	"github.com/RaoH37/gosoap/zimbraCommon"
 	"github.com/RaoH37/gosoap/zimbraMail"
@@ -20,7 +18,6 @@ func (s *ZMailbox) AuthRequestByPassword() (*zimbraAccount.AuthResponse, error) 
 	req, resp := zimbraAccount.NewAuthRequestByPassword(zimbraCommon.NewByIdOrNameNode(s.id, s.name), s.password)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -35,7 +32,20 @@ func (s *ZMailbox) AuthRequestByPreauth(expires int) (*zimbraAccount.AuthRespons
 	req, resp := zimbraAccount.NewAuthRequestByPreauth(by, preauth)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+func (s *ZMailbox) CreateFolderRequest(name string, view zimbraMail.FolderView, parentId string, options func(*zimbraMail.CreateFolderRequest)) (*zimbraMail.CreateFolderResponse, error) {
+	req, resp := zimbraMail.NewCreateFolderRequest(name, view, parentId)
+
+	if options != nil {
+		options(req)
+	}
+
+	if err := s.Connector.Invoke(req, &resp); err != nil {
 		return nil, err
 	}
 
@@ -46,7 +56,6 @@ func (s *ZMailbox) GetFolderRequest(view zimbraMail.FolderView) (*zimbraMail.Get
 	req, resp := zimbraMail.NewGetFolderRequest(view, false, false, false)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -57,7 +66,6 @@ func (s *ZMailbox) GetInfoRequest(rights zimbraCommon.StringList, sections zimbr
 	req, resp := zimbraAccount.NewGetInfoRequest(rights, sections)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 

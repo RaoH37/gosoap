@@ -1,8 +1,6 @@
 package zadmin
 
 import (
-	"log"
-
 	"github.com/RaoH37/gosoap/zimbraAdmin"
 	"github.com/RaoH37/gosoap/zimbraCommon"
 	"github.com/RaoH37/gosoap/zimbraConnector"
@@ -11,7 +9,6 @@ import (
 func (s *ZAdmin) invokeWithoutResponse(req interface{}) error {
 
 	if err := s.Connector.Invoke(req, nil); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -40,7 +37,6 @@ func (s *ZAdmin) AuthRequest() (*zimbraAdmin.AuthResponse, error) {
 	req, resp := zimbraAdmin.NewAuthRequest(s.login, s.password)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -51,7 +47,6 @@ func (s *ZAdmin) BackupQueryRequest() (*zimbraAdmin.BackupQueryResponse, error) 
 	req, resp := zimbraAdmin.NewBackupQueryRequest()
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -63,7 +58,6 @@ func (s *ZAdmin) CopyCosRequest(id string, name string, newName string) (*zimbra
 	req, resp := zimbraAdmin.NewCopyCosRequest(by, newName)
 
 	if err := s.Connector.Invoke(req, nil); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -74,7 +68,6 @@ func (s *ZAdmin) CreateAccountRequest(name string, password string, attrs zimbra
 	req, resp := zimbraAdmin.NewCreateAccountRequest(name, password, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -85,7 +78,6 @@ func (s *ZAdmin) CreateCalendarResourceRequest(name string, password string, att
 	req, resp := zimbraAdmin.NewCreateCalendarResourceRequest(name, password, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -96,7 +88,6 @@ func (s *ZAdmin) CreateCosRequest(name string, attrs zimbraCommon.AttrsNode) (*z
 	req, resp := zimbraAdmin.NewCreateCosRequest(name, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -107,7 +98,6 @@ func (s *ZAdmin) CreateDistributionListRequest(name string, isDynamic bool, attr
 	req, resp := zimbraAdmin.NewCreateDistributionListRequest(name, isDynamic, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -118,7 +108,6 @@ func (s *ZAdmin) CreateDomainRequest(name string, attrs zimbraCommon.AttrsNode) 
 	req, resp := zimbraAdmin.NewCreateDomainRequest(name, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -130,7 +119,6 @@ func (s *ZAdmin) DelegateAuthRequest(id string, name string) (*zimbraAdmin.Deleg
 	req, resp := zimbraAdmin.NewDelegateAuthRequest(by)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -172,7 +160,6 @@ func (s *ZAdmin) GetAccountRequest(id string, name string, attrs zimbraCommon.St
 	req, resp := zimbraAdmin.NewGetAccountRequest(by, attrs, applyCos)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -183,7 +170,6 @@ func (s *ZAdmin) GetAllServersRequest(service string) (*zimbraAdmin.GetAllServer
 	req, resp := zimbraAdmin.NewGetAllServersRequest(service)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -195,7 +181,6 @@ func (s *ZAdmin) GetCalendarResourceRequest(id string, name string, attrs zimbra
 	req, resp := zimbraAdmin.NewGetCalendarResourceRequest(by, attrs, applyCos)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -207,7 +192,6 @@ func (s *ZAdmin) GetDistributionListRequest(id string, name string, attrs zimbra
 	req, resp := zimbraAdmin.NewGetDistributionListRequest(by, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -219,7 +203,6 @@ func (s *ZAdmin) GetCosRequest(id string, name string, attrs zimbraCommon.String
 	req, resp := zimbraAdmin.NewGetCosRequest(by, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -231,7 +214,6 @@ func (s *ZAdmin) GetDomainRequest(id string, name string, attrs zimbraCommon.Str
 	req, resp := zimbraAdmin.NewGetDomainRequest(by, attrs, applyConfig)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -242,7 +224,6 @@ func (s *ZAdmin) GetLicenseRequest() (*zimbraAdmin.GetLicenseResponse, error) {
 	req, resp := zimbraAdmin.NewLicenseRequest()
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -263,7 +244,6 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers
 	req, resp := zimbraAdmin.NewGetQuotaUsageRequest(domain, allServers, 0, 0, "", true, false)
 
 	if err := connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -284,7 +264,6 @@ func (s *ZAdmin) GetAllMailboxesRequest(serverId string) (*zimbraAdmin.GetAllMai
 	req, resp := zimbraAdmin.NewGetAllMailboxesRequest()
 
 	if err := connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -297,7 +276,6 @@ func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attr
 	req, resp := zimbraAdmin.NewGetServerRequest(by, applyConfig, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -308,7 +286,6 @@ func (s *ZAdmin) ModifyAccountRequest(id string, attrs zimbraCommon.AttrsNode) e
 	req, resp := zimbraAdmin.NewModifyAccountRequest(id, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -319,7 +296,6 @@ func (s *ZAdmin) ModifyCalendarResourceRequest(id string, attrs zimbraCommon.Att
 	req, resp := zimbraAdmin.NewModifyCalendarResourceRequest(id, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -330,7 +306,6 @@ func (s *ZAdmin) ModifyCosRequest(id string, attrs zimbraCommon.AttrsNode) error
 	req, resp := zimbraAdmin.NewModifyCosRequest(id, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -341,7 +316,6 @@ func (s *ZAdmin) ModifyDistributionListRequest(id string, attrs zimbraCommon.Att
 	req, resp := zimbraAdmin.NewModifyDistributionListRequest(id, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -352,7 +326,6 @@ func (s *ZAdmin) ModifyDomainRequest(id string, attrs zimbraCommon.AttrsNode) er
 	req, resp := zimbraAdmin.NewModifyDomainRequest(id, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -363,7 +336,6 @@ func (s *ZAdmin) ModifyServerRequest(id string, attrs zimbraCommon.AttrsNode) er
 	req, resp := zimbraAdmin.NewModifyServerRequest(id, attrs)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -374,7 +346,6 @@ func (s *ZAdmin) NoOpRequest() error {
 	req := zimbraAdmin.NewNoOpRequest()
 
 	if err := s.Connector.Invoke(req, nil); err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -458,7 +429,6 @@ func (s *ZAdmin) SearchDirectoryRequest(
 	req, resp := zimbraAdmin.NewSearchDirectoryRequest(&params)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
