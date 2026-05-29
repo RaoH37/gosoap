@@ -813,3 +813,21 @@ func TestSetPasswordRequest(t *testing.T) {
 		t.Fatalf("%v", err)
 	}
 }
+func TestGetAllMailboxesRequest(t *testing.T) {
+	zcs, err := NewZAdmin()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	resp, err := zcs.GetAllMailboxesRequest(server_id)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	if testing.Verbose() {
+		for _, mbox := range resp.Content.Mbox {
+			fmt.Printf("%v\n", mbox)
+		}
+	}
+}

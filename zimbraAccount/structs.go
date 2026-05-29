@@ -141,7 +141,7 @@ type ModifyIdentityRequest struct {
 
 type ModifyIdentityRequestContent struct {
 	Urn      string         `json:"_jsns"`
-	Identity ZimbraIdentity `json:"identity"` // Réutilise la struct du Create
+	Identity ZimbraIdentity `json:"identity"`
 }
 
 type ModifyIdentityResponse struct {
@@ -154,7 +154,7 @@ type ModifySignatureRequest struct {
 
 type ModifySignatureRequestContent struct {
 	Urn       string          `json:"_jsns"`
-	Signature ZimbraSignature `json:"signature"` // Réutilise la struct du Create
+	Signature ZimbraSignature `json:"signature"`
 }
 
 type ModifySignatureResponse struct {

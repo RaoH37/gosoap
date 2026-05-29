@@ -145,6 +145,14 @@ func NewGetQuotaUsageRequest(domain string, allServers bool, limit int, offset i
 	}, GetQuotaUsageResponse{}
 }
 
+func NewGetAllMailboxesRequest() (*GetAllMailboxesRequest, GetAllMailboxesResponse) {
+	return &GetAllMailboxesRequest{
+		Content: GetAllMailboxesRequestContent{
+			Urn: Urn,
+		},
+	}, GetAllMailboxesResponse{}
+}
+
 func NewBackupQueryRequest() (*BackupQueryRequest, BackupQueryResponse) {
 	return &BackupQueryRequest{
 		Content: BackupQueryRequestContent{

@@ -637,3 +637,28 @@ type SetPasswordRequestContent struct {
 	ID          string `json:"id"`
 	NewPassword string `json:"newPassword"`
 }
+
+type GetAllMailboxesRequest struct {
+	Content GetAllMailboxesRequestContent `json:"GetAllMailboxesRequest"`
+}
+
+type GetAllMailboxesRequestContent struct {
+	Urn    string `json:"_jsns"`
+	Limit  int    `json:"limit,omitempty"`
+	Offset int    `json:"offset,omitempty"`
+}
+
+type GetAllMailboxesResponse struct {
+	Content struct {
+		Mbox []MboxResponse `json:"mbox"`
+	} `json:"GetAllMailboxesResponse"`
+}
+
+type MboxResponse struct {
+	ID             int    `json:"id"`
+	GroupId        int    `json:"groupId"`
+	AccountID      string `json:"accountId"`
+	ContactCount   int    `json:"contactCount"`
+	LastSoapAccess int    `json:"lastSoapAccess"`
+	NewMessages    int    `json:"newMessages"`
+}

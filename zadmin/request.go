@@ -270,6 +270,27 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers
 	return &resp, nil
 }
 
+func (s *ZAdmin) GetAllMailboxesRequest(serverId string) (*zimbraAdmin.GetAllMailboxesResponse, error) {
+	var connector *zimbraConnector.Connector
+
+	if serverId != s.ServerId {
+		// Use another connector for this request
+		connector = s.NewConnector()
+		connector.SetHeaderContext(s.GetToken(), serverId, nil)
+	} else {
+		connector = s.Connector
+	}
+
+	req, resp := zimbraAdmin.NewGetAllMailboxesRequest()
+
+	if err := connector.Invoke(req, &resp); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
 func (s *ZAdmin) GetServerRequest(id string, name string, applyConfig bool, attrs zimbraCommon.StringList) (*zimbraAdmin.GetServerResponse, error) {
 	by := zimbraCommon.NewByIdOrNameNode(id, name)
 
