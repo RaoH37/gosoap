@@ -478,7 +478,7 @@ type GetAllServersResponse struct {
 }
 
 type GetAllServersResponseContent struct {
-	Servers []GenericResponse `json:"servers"`
+	Servers []GenericResponse `json:"server"`
 }
 
 type GetServerRequest struct {

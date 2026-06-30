@@ -204,3 +204,42 @@ type AddMsgResponse struct {
 		} `json:"m"`
 	} `json:"AddMsgResponse"`
 }
+
+type SearchRequest struct {
+	Content SearchRequestContent `json:"SearchRequest"`
+}
+
+type SearchRequestContent struct {
+	Urn                string `json:"_jsns"`
+	Types              string `json:"types"`
+	Offset             int    `json:"offset,omitzero"`
+	Limit              int    `json:"limit,omitzero"`
+	SortBy             string `json:"sortBy,omitempty"`
+	ResultMode         string `json:"resultMode,omitempty"`
+	CalExpandInstStart int    `json:"calExpandInstStart,omitzero"`
+	CalExpandInstEnd   int    `json:"calExpandInstEnd,omitzero"`
+	Query              string `json:"query,omitempty"`
+	Locale             string `json:"locale,omitempty"`
+}
+
+type SearchResponse struct {
+	Content struct {
+		SortBy string `json:"sortBy"`
+		Offset int    `json:"offset,omitzero"`
+		More   bool   `json:"more"`
+		Hit    struct {
+			ID string `json:"id"`
+			Sf string `json:"sf"`
+		} `json:"hit"`
+		Messages []struct {
+			ID       string `json:"id"`
+			Date     int64  `json:"d"`
+			FolderID string `json:"l"`
+			Subject  string `json:"fr"`
+			Summary  string `json:"su"`
+			Flags    string `json:"f"`
+			Tags     string `json:"tn"`
+			Size     int    `json:"s"`
+		} `json:"m"`
+	} `json:"SearchResponse"`
+}

@@ -13,29 +13,23 @@ import (
 const Equipment = "Equipment"
 const Emplacement = "Emplacement"
 
-func NewZAdmin(
-	url string,
-	insecure bool,
-	login string,
-	password string,
-	debug bool,
-	retryWaitingDuration time.Duration,
-	userAgent string,
-	timeout time.Duration,
-	serverId string) ZAdmin {
-	client := ZAdmin{
+func NewZAdmin(url string, login string, password string, opts ...ZAdminOption) *ZAdmin {
+	client := &ZAdmin{
 		url:                  buildUrl(url),
-		insecure:             insecure,
+		insecure:             false,
 		login:                login,
 		password:             password,
-		Debug:                debug,
-		RetryWaitingDuration: retryWaitingDuration,
-		UserAgent:            userAgent,
-		Timeout:              timeout,
-		ServerId:             serverId,
+		debug:                false,
+		retryWaitingDuration: time.Second * 5,
+		userAgent:            "gosoap",
+		timeout:              time.Second * 30,
 	}
 
-	client.BuildConnector()
+	for _, applyOpt := range opts {
+		applyOpt(client)
+	}
+
+	client.buildConnector()
 
 	return client
 }
@@ -61,17 +55,55 @@ func buildUrl(inputUrl string) string {
 	return u.String()
 }
 
+type ZAdminOption func(admin *ZAdmin)
+
+func WithInsecureMode() ZAdminOption {
+	return func(client *ZAdmin) {
+		client.insecure = true
+	}
+}
+
+func WithDebugMode() ZAdminOption {
+	return func(client *ZAdmin) {
+		client.debug = true
+	}
+}
+
+func WithRetryWaitingDuration(duration time.Duration) ZAdminOption {
+	return func(client *ZAdmin) {
+		client.retryWaitingDuration = duration
+	}
+}
+
+func WithUserAgent(userAgent string) ZAdminOption {
+	return func(client *ZAdmin) {
+		client.userAgent = userAgent
+	}
+}
+
+func WithTimeout(timeout time.Duration) ZAdminOption {
+	return func(client *ZAdmin) {
+		client.timeout = timeout
+	}
+}
+
+func WithServerId(serverId string) ZAdminOption {
+	return func(client *ZAdmin) {
+		client.serverId = serverId
+	}
+}
+
 type ZAdmin struct {
 	Token                *zimbraCommon.Token
 	url                  string
 	insecure             bool
 	login                string
 	password             string
-	Debug                bool
-	RetryWaitingDuration time.Duration
-	UserAgent            string
-	Timeout              time.Duration
-	ServerId             string
+	debug                bool
+	retryWaitingDuration time.Duration
+	userAgent            string
+	timeout              time.Duration
+	serverId             string
 	accountContext       *zimbraCommon.ByNode
 	Connector            *zimbraConnector.Connector
 }
@@ -86,24 +118,24 @@ func (s *ZAdmin) GetToken() string {
 
 func (s *ZAdmin) SetToken(rawToken string) {
 	s.Token = zimbraCommon.NewToken(rawToken)
-	s.Connector.SetHeaderContext(rawToken, s.ServerId, s.accountContext)
+	s.Connector.SetHeaderContext(rawToken, s.serverId, s.accountContext)
 }
 
-func (s *ZAdmin) BuildConnector() {
-	s.Connector = s.NewConnector()
+func (s *ZAdmin) buildConnector() {
+	s.Connector = s.newConnector()
 }
 
-func (s *ZAdmin) NewConnector() *zimbraConnector.Connector {
-	return zimbraConnector.NewConnector(s.url, s.insecure, s.UserAgent, s.Debug, s.Timeout)
+func (s *ZAdmin) newConnector() *zimbraConnector.Connector {
+	return zimbraConnector.NewConnector(s.url, s.insecure, s.userAgent, s.debug, s.timeout)
 }
 
-func (s *ZAdmin) SetAccountContext(id string, name string) {
+func (s *ZAdmin) setAccountContext(id string, name string) {
 	by := zimbraCommon.NewByIdOrNameNode(id, name)
 	s.accountContext = &by
-	s.Connector.SetHeaderContext(s.GetToken(), s.ServerId, s.accountContext)
+	s.Connector.SetHeaderContext(s.GetToken(), s.serverId, s.accountContext)
 }
 
-func (s *ZAdmin) SetServerId(serverId string) {
-	s.ServerId = serverId
-	s.Connector.SetHeaderContext(s.GetToken(), s.ServerId, s.accountContext)
+func (s *ZAdmin) setServerId(serverId string) {
+	s.serverId = serverId
+	s.Connector.SetHeaderContext(s.GetToken(), s.serverId, s.accountContext)
 }

@@ -134,3 +134,23 @@ func TestGetInfoRequest(t *testing.T) {
 		fmt.Printf("%v\n", resp)
 	}
 }
+
+func TestSearchRequest(t *testing.T) {
+	zcs, err := NewZMailbox()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	types := []string{"message"}
+	query := "inid:2"
+
+	resp, err := zcs.SearchRequest(types, 0, 500, query)
+
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+
+	if testing.Verbose() {
+		fmt.Printf("%v\n", resp)
+	}
+}

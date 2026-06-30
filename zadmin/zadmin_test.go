@@ -104,8 +104,15 @@ func findRandomOjectId(objType string) string {
 	}
 }
 
-func NewZAdmin() (zadmin.ZAdmin, error) {
-	zcs := zadmin.NewZAdmin(url, true, login, pwd, testing.Verbose(), time.Second*5, "zsoap", time.Second*30, "")
+func NewZAdmin() (*zadmin.ZAdmin, error) {
+	//zcs := zadmin.NewZAdmin(url, true, login, pwd, testing.Verbose(), time.Second*5, "zsoap", time.Second*30, "")
+	zcs := zadmin.NewZAdmin(
+		url,
+		login,
+		pwd,
+		zadmin.WithInsecureMode(),
+		//zadmin.WithDebugMode(),
+	)
 
 	if len(token) > 0 {
 		zcs.SetToken(token)
@@ -440,6 +447,10 @@ func TestGetAllServersRequest(t *testing.T) {
 
 	if testing.Verbose() {
 		fmt.Printf("%v\n", resp)
+	}
+
+	if len(resp.Content.Servers) == 0 {
+		t.Fatalf("GetAllServersRequest is empty !")
 	}
 }
 

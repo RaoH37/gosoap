@@ -233,9 +233,9 @@ func (s *ZAdmin) GetLicenseRequest() (*zimbraAdmin.GetLicenseResponse, error) {
 func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers bool) (*zimbraAdmin.GetQuotaUsageResponse, error) {
 	var connector *zimbraConnector.Connector
 
-	if serverId != s.ServerId {
+	if serverId != s.serverId {
 		// Use another connector for this request
-		connector = s.NewConnector()
+		connector = s.newConnector()
 		connector.SetHeaderContext(s.GetToken(), serverId, nil)
 	} else {
 		connector = s.Connector
@@ -253,9 +253,9 @@ func (s *ZAdmin) GetQuotaUsageRequest(serverId string, domain string, allServers
 func (s *ZAdmin) GetAllMailboxesRequest(serverId string) (*zimbraAdmin.GetAllMailboxesResponse, error) {
 	var connector *zimbraConnector.Connector
 
-	if serverId != s.ServerId {
+	if serverId != s.serverId {
 		// Use another connector for this request
-		connector = s.NewConnector()
+		connector = s.newConnector()
 		connector.SetHeaderContext(s.GetToken(), serverId, nil)
 	} else {
 		connector = s.Connector

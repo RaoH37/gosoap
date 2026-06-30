@@ -89,3 +89,17 @@ func NewFolderActionRequest(
 		},
 	}, FolderActionResponse{}
 }
+
+func NewSearchRequest(types string, offset int, limit int, query string) (*SearchRequest, SearchResponse) {
+	content := SearchRequestContent{
+		Urn:    Urn,
+		Types:  types,
+		Offset: offset,
+		Limit:  limit,
+		Query:  query,
+	}
+
+	return &SearchRequest{
+		Content: content,
+	}, SearchResponse{}
+}

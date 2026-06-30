@@ -1,6 +1,8 @@
 package zmailbox
 
 import (
+	"strings"
+
 	"github.com/RaoH37/gosoap/zimbraAccount"
 	"github.com/RaoH37/gosoap/zimbraCommon"
 	"github.com/RaoH37/gosoap/zimbraMail"
@@ -64,6 +66,16 @@ func (s *ZMailbox) GetFolderRequest(view zimbraMail.FolderView) (*zimbraMail.Get
 
 func (s *ZMailbox) GetInfoRequest(rights zimbraCommon.StringList, sections zimbraAccount.InfoSectionList) (*zimbraAccount.GetInfoResponse, error) {
 	req, resp := zimbraAccount.NewGetInfoRequest(rights, sections)
+
+	if err := s.Connector.Invoke(req, &resp); err != nil {
+		return nil, err
+	}
+
+	return &resp, nil
+}
+
+func (s *ZMailbox) SearchRequest(types []string, offset int, limit int, query string) (*zimbraMail.SearchResponse, error) {
+	req, resp := zimbraMail.NewSearchRequest(strings.Join(types, ","), offset, limit, query)
 
 	if err := s.Connector.Invoke(req, &resp); err != nil {
 		return nil, err
